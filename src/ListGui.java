@@ -18,8 +18,6 @@ public class ListGui {
         PARENT.setSize(new Dimension(500, 300));
         layout = new GridBagLayout();
         gbc = new GridBagConstraints();
-        gbc.ipadx = 300;
-        gbc.ipady = 150;
 
         PARENT.setLayout(layout);
 
@@ -29,42 +27,58 @@ public class ListGui {
     }
 
     private void addLists() {
+        //label padding
+        gbc.ipadx = 300;
+
         //title for first list
-        JPanel labelPanel1 = new JPanel();
-
-        labelPanel1.setLayout(new BorderLayout());
-        labelPanel1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
         Label listLabel1 = new Label("To-Do");
         listLabel1.setAlignment(Label.CENTER);
-        labelPanel1.add(listLabel1, BorderLayout.CENTER);
+
+        JPanel labelPanel1 = newPanel(listLabel1, new BorderLayout(),BorderLayout.CENTER);
+
+        labelPanel1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         labelPanel1.setPreferredSize(new Dimension(100,20));
 
         addTo(labelPanel1, 0, 0);
 
         //title for second list
-        JPanel labelPanel2 = new JPanel();
 
         Label listLabel2 = new Label("Completed");
         listLabel2.setAlignment(Label.CENTER);
 
-        labelPanel2.setLayout(new BorderLayout());
-        labelPanel2.add((listLabel2), BorderLayout.CENTER);
+        JPanel labelPanel2 = newPanel(listLabel2, new BorderLayout(), BorderLayout.CENTER);
         labelPanel2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         labelPanel2.setPreferredSize(new Dimension(100,20));
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         addTo(labelPanel2, 1, 0);
+        gbc.gridwidth = 1;
+
+        //list padding
+        gbc.ipady = 400;
 
         //list 1
         String[] arr = {"a","b","c"};
         JList<String> list1 = new JList<>(arr);
-        gbc.gridwidth = 1;
-        addTo(list1, 0, 1);
+        list1.setBackground(Color.BLACK);
+
+        JPanel listPanel1 = newPanel(list1, new BorderLayout(), BorderLayout.CENTER);
+        listPanel1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        gbc.gridheight = GridBagConstraints.REMAINDER;
+        addTo(listPanel1, 0, 1);
 
         //list 2
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
         JList<String> list2 = new JList<>(arr);
-        addTo(list2, 1, 1);
+
+        JPanel listPanel2 = newPanel(list2, new BorderLayout(), BorderLayout.CENTER);
+        listPanel2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        addTo(listPanel2, 1, 1);
+
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
     }
 
     //adds component to grid at index x and y
@@ -81,4 +95,19 @@ public class ListGui {
         gbc.gridy = orgy;
     }
 
+    //creates and returns a new Panel with the specified component added
+    //uses specified LayoutManager and adds with specified constraints
+    //if null, adds with default settings
+    private JPanel newPanel(Component c, LayoutManager layout, Object layoutRules) {
+        JPanel panel = new JPanel();
+        if (layout != null) {
+            panel.setLayout(layout);
+        }
+        if (layoutRules != null) {
+            panel.add(c, layoutRules);
+        } else {
+            panel.add(c);
+        }
+        return panel;
+    }
 }
