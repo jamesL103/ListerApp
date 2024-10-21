@@ -60,13 +60,13 @@ public class ListGui {
         gbc.ipady = 400;
 
         //list 1
-        ListEntry[] lst = new ListEntry[3];
-        for (int i = 0; i < 3; i ++) {
-            lst[i] = new ListEntry();
+        ScrollTaskList list1 = new ScrollTaskList();
+        for (int i = 0; i < 100; i ++) {
+            list1.MODEL.addElement(new ListEntry());
         }
         String[] arr = {"a","b","c"};
-        JList<ListEntry> list1 = new JList<>(lst);
-        list1.setCellRenderer(new EntryCellRenderer());
+//        JList<ListEntry> list1 = new JList<>(model1);
+//        list1.setCellRenderer(new EntryCellRenderer());
 //        list1.setBackground(Color.BLACK);
 
         JPanel listPanel1 = newPanel(list1, new BorderLayout(), BorderLayout.CENTER);
