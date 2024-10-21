@@ -1,3 +1,5 @@
+import listItemStorage.ListEntry;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -58,9 +60,14 @@ public class ListGui {
         gbc.ipady = 400;
 
         //list 1
+        ListEntry[] lst = new ListEntry[3];
+        for (int i = 0; i < 3; i ++) {
+            lst[i] = new ListEntry();
+        }
         String[] arr = {"a","b","c"};
-        JList<String> list1 = new JList<>(arr);
-        list1.setBackground(Color.BLACK);
+        JList<ListEntry> list1 = new JList<>(lst);
+        list1.setCellRenderer(new EntryCellRenderer());
+//        list1.setBackground(Color.BLACK);
 
         JPanel listPanel1 = newPanel(list1, new BorderLayout(), BorderLayout.CENTER);
         listPanel1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -85,14 +92,14 @@ public class ListGui {
     //resets gridx and gridy back to original values
     //does NOT reset GridBagLayout constraints
     private void addTo(Component c, int x, int y) {
-        int orgx = gbc.gridx;
-        int orgy = gbc.gridy;
+        int origx = gbc.gridx;
+        int origy = gbc.gridy;
         gbc.gridx = x;
         gbc.gridy = y;
         layout.setConstraints(c, gbc);
         PARENT.add(c);
-        gbc.gridx = orgx;
-        gbc.gridy = orgy;
+        gbc.gridx = origx;
+        gbc.gridy = origy;
     }
 
     //creates and returns a new Panel with the specified component added
