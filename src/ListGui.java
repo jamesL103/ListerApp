@@ -77,7 +77,7 @@ public class ListGui {
 
         //list 2
         gbc.gridwidth = GridBagConstraints.REMAINDER;
-        JList<String> list2 = new JList<>(arr);
+        ScrollTaskList list2 = new ScrollTaskList();
 
         JPanel listPanel2 = newPanel(list2, new BorderLayout(), BorderLayout.CENTER);
         listPanel2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -88,8 +88,12 @@ public class ListGui {
         gbc.gridheight = 1;
     }
 
+    public void loadLists() {
+
+    }
+
     //adds component to grid at index x and y
-    //resets gridx and gridy back to original values
+    //resets grid x and grid y back to original values
     //does NOT reset GridBagLayout constraints
     private void addTo(Component c, int x, int y) {
         int origx = gbc.gridx;

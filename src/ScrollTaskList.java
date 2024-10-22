@@ -5,11 +5,7 @@ import java.awt.*;
 
 public class ScrollTaskList extends JPanel {
 
-    private static final int DEF_WIDTH = 500;
-    private static final int DEF_HEIGHT = 200;
-
-
-    public final JScrollPane ROOT;
+    private final JScrollPane ROOT;
 
     private final JList<ListEntry> LIST;
 
@@ -19,6 +15,8 @@ public class ScrollTaskList extends JPanel {
 
     public ScrollTaskList() {
         super();
+
+        setLayout(new BorderLayout());
 
         //create the Jlist
         LIST = new JList<>();
@@ -30,11 +28,8 @@ public class ScrollTaskList extends JPanel {
         //create ScrollPane
         ROOT = new JScrollPane();
         ROOT.getViewport().setView(LIST);
-        ROOT.setSize(DEF_WIDTH, DEF_HEIGHT);
 
-
-        //set size to default
-        add(ROOT);
+        add(ROOT, BorderLayout.CENTER);
     }
 
 }
