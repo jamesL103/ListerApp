@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 /**Class to store data for an entry in the list.
+ * An entry stores a string name, string description, and a date object.
  *
  */
 public class ListEntry {
@@ -13,18 +14,18 @@ public class ListEntry {
 
     //data for the entry
     private String name, desc;
-    private Calendar dueDate;
+    private Calendar date;
 
     public ListEntry() {
         name = "item" + entryCount++;
         desc = "";
-        dueDate = Calendar.getInstance();
+        date = Calendar.getInstance();
     }
 
     public ListEntry(String name) {
         this.name = name;
         desc = "";
-        dueDate = Calendar.getInstance();
+        date = Calendar.getInstance();
     }
 
     public void setName(String n) {
@@ -43,10 +44,15 @@ public class ListEntry {
         return desc;
     }
 
-    public String getStringDueDate() {
-        String display = dueDate.getDisplayName(Calendar.DATE, Calendar.SHORT, Locale.ENGLISH);
-        display = display + "/" + dueDate.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH);
-        display = display + "/" + dueDate.getDisplayName(Calendar.YEAR, Calendar.SHORT, Locale.ENGLISH);
+    public void setDate(Calendar calendar) {
+        date = calendar;
+    }
+
+
+    public String getStringDate() {
+        String display = date.getDisplayName(Calendar.DATE, Calendar.SHORT, Locale.ENGLISH);
+        display = display + "/" + date.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH);
+        display = display + "/" + date.getDisplayName(Calendar.YEAR, Calendar.SHORT, Locale.ENGLISH);
         return display;
     }
 

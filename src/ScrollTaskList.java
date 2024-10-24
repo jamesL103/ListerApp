@@ -20,6 +20,7 @@ public class ScrollTaskList extends JPanel {
 
         //create the Jlist
         LIST = new JList<>();
+        LIST.setCellRenderer(new EntryCellRenderer());
         MODEL = new DefaultListModel<>();
         LIST.setModel(MODEL);
         LIST.setFixedCellHeight(24);

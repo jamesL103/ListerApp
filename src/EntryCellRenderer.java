@@ -12,9 +12,9 @@ public class EntryCellRenderer extends JLabel implements ListCellRenderer<ListEn
 
     @Override
     public Component getListCellRendererComponent(JList<? extends ListEntry> list, ListEntry value, int index, boolean isSelected, boolean cellHasFocus) {
-        int maxWidth = list.getWidth();
+        setSize(list.getWidth(), getHeight());
         String entry = value.toString();
-        entry = entry + "               Due: " + value.getStringDueDate();
+        entry = entry + "  ----Due: " + value.getStringDate();
         setText(entry);
         setFont(list.getFont());
         if (isSelected) {
