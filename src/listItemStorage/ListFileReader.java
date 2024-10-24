@@ -20,11 +20,17 @@ public class ListFileReader {
     private List<ListEntry> entries;
 
     //regex pattern to match with a valid date
-    private final static Pattern DATE_REGEX = Pattern.compile("[0-9]{2}/[0-9]{2}/[0-9]{4}");
+    private final static Pattern DATE_REGEX = Pattern.compile("\\s*[0-9]{2}/[0-9]{2}/[0-9]{4}\\s*");
 
     public ListFileReader(File file) throws FileNotFoundException {
         READ = new Scanner(file);
         FIN = new File(file.getPath());
+    }
+
+    //private default
+    private ListFileReader() {
+        READ = null;
+        FIN = null;
     }
 
     /**Loads all ListEntries from the reader's file.
@@ -38,43 +44,51 @@ public class ListFileReader {
     public List<ListEntry> loadFromFile() {
         List<ListEntry> toReturn = new LinkedList<>();
 
-        Scanner lineReader;
-
         //load each line from the file
         while (READ.hasNext()) {
             String line = READ.nextLine();
-
-            lineReader = new Scanner(line).useDelimiter("\\s*(,|$)");
-
-            String tok = lineReader.next();
-
             //if first field is blank, skip the line
-            if (!(tok.isEmpty())) {
+            if (!(line.isEmpty())) {
+                ListEntry entry = makeEntry(line);
+                toReturn.add(entry);
+            }
+        }
+        return toReturn;
+    }
 
-                //parse line for fields
-                ListEntry entry = new ListEntry(tok);
+    //helper method to create a ListEntry from a String line read from a file
+    //assume the line forms a valid entry
+    private ListEntry makeEntry(String line) {
 
-                //get desc (optional)
-                tok = lineReader.next();
-                if (!(tok.isEmpty())) {
-                    entry.setDescription(tok);
-                }
+        Scanner lineReader = new Scanner(line).useDelimiter("\\s*(,|$)");
 
-                //get date (optional)
-                tok = lineReader.next();
-                if (!(tok.isEmpty())) {
-                    Calendar cal = makeCalendar(tok);
+        //parse line for fields
+        ListEntry entry = new ListEntry(lineReader.next());
+
+        //get desc (optional)
+        if (lineReader.hasNext()) {
+            line = lineReader.next();
+            if (!(line.isEmpty())) {
+                entry.setDescription(line);
+            }
+
+            //get date (optional)
+            if (lineReader.hasNext()) {
+                line = lineReader.next();
+                if (!(line.isEmpty())) {
+                    Calendar cal = makeCalendar(line.strip());
                     if (cal != null) {
                         entry.setDate(cal);
                     }
                 }
             }
         }
-        return toReturn;
+
+        return entry;
     }
 
     //helper method to make a Calendar from string input
-    //String must be of form dd/mm/yyyy
+    //String must be of form dd/mm/yyyy, no spaces
     //invalid strings will result in null return
     private Calendar makeCalendar(String input) {
         Matcher dateMatch = DATE_REGEX.matcher(input);
@@ -89,6 +103,8 @@ public class ListFileReader {
         }
         return toReturn;
     }
+
+
 
     //inner class to hold an array of all calendar months
     private static class Months {

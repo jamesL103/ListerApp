@@ -50,9 +50,9 @@ public class ListEntry {
 
 
     public String getStringDate() {
-        String display = date.getDisplayName(Calendar.DATE, Calendar.SHORT, Locale.ENGLISH);
+        String display = String.valueOf(date.get(Calendar.DATE));
         display = display + "/" + date.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH);
-        display = display + "/" + date.getDisplayName(Calendar.YEAR, Calendar.SHORT, Locale.ENGLISH);
+        display = display + "/" + date.get(Calendar.YEAR);
         return display;
     }
 
