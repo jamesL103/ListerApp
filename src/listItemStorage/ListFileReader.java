@@ -97,7 +97,7 @@ public class ListFileReader {
             int date = Integer.parseInt(input.substring(0,2));
             int month = Integer.parseInt(input.substring(3,5));
             month = Months.MONTHS[month-1];
-            int year = Integer.parseInt(input.substring(7));
+            int year = Integer.parseInt(input.substring(6));
             toReturn = new GregorianCalendar();
             toReturn.set(year,month,date);
         }
