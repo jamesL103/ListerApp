@@ -76,5 +76,13 @@ public class ListManager {
         model.removeElement(entry);
     }
 
+    public void initList(JList<ListEntry> list) {
+
+    }
+
+    public void initAll() {
+
+    }
+
 
 }
