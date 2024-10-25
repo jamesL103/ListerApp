@@ -48,6 +48,10 @@ public class ListEntry {
         date = calendar;
     }
 
+    public Calendar getDate() {
+        return date;
+    }
+
 
     public String getStringDate() {
         String display = String.valueOf(date.get(Calendar.DATE));

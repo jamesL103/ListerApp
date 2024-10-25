@@ -4,11 +4,13 @@ import javax.swing.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Calendar;
 
 /**Class to write a list to a file.
  *The Writer is instantiated to write the entries from a single list
  * to a single specified file.
  *Once instantiated, the source list and target file cannot be changed.
+ * All information in the target file will be overwritten.
  *
  */
 public class ListFileWriter {
@@ -39,9 +41,13 @@ public class ListFileWriter {
     //helper method to write another line into the file
     //representing another list entry
     private void writeEntry(ListEntry entry) throws IOException{
-        writer.append((entry.getName() +","));
+        writer.write((entry.getName() +","));
         writer.append(entry.getDescription() + ",");
-        writer.append(entry.getStringDate() + "\n");
+        String date = "" + entry.getDate().get(Calendar.DATE) + "/"
+                + (entry.getDate().get(Calendar.MONTH) + 1) + "/" +
+                entry.getDate().get(Calendar.YEAR);
+        writer.append(date + "\n");
+        writer.flush();
     }
 
 }
