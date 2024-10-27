@@ -67,10 +67,6 @@ public class ListGui {
         MANAGER.registerList(todo.LIST, "todo");
 
 
-//        JList<ListEntry> todo = new JList<>(model1);
-//        todo.setCellRenderer(new EntryCellRenderer());
-//        todo.setBackground(Color.BLACK);
-
         JPanel todoPanel = newPanel(todo, new BorderLayout(), BorderLayout.CENTER);
         todoPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
