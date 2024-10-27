@@ -1,5 +1,3 @@
-import listItemStorage.ListEntry;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,6 +10,9 @@ public class ListGui {
 
     private GridBagLayout layout;
 
+    //manages the data stored in all the lists
+    private final ListManager MANAGER;
+
 
     //create the gui for the list app
     public ListGui() {
@@ -22,6 +23,8 @@ public class ListGui {
         gbc = new GridBagConstraints();
 
         PARENT.setLayout(layout);
+
+        MANAGER = new ListManager();
 
         addLists();
 
@@ -59,37 +62,40 @@ public class ListGui {
         //list padding
         gbc.ipady = 400;
 
-        //list 1
-        ScrollTaskList list1 = new ScrollTaskList();
-        for (int i = 0; i < 100; i ++) {
-            list1.MODEL.addElement(new ListEntry());
-        }
-        String[] arr = {"a","b","c"};
-//        JList<ListEntry> list1 = new JList<>(model1);
-//        list1.setCellRenderer(new EntryCellRenderer());
-//        list1.setBackground(Color.BLACK);
+        //to do list
+        ScrollTaskList todo = new ScrollTaskList();
+        MANAGER.registerList(todo.LIST, "todo");
 
-        JPanel listPanel1 = newPanel(list1, new BorderLayout(), BorderLayout.CENTER);
-        listPanel1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+//        JList<ListEntry> todo = new JList<>(model1);
+//        todo.setCellRenderer(new EntryCellRenderer());
+//        todo.setBackground(Color.BLACK);
+
+        JPanel todoPanel = newPanel(todo, new BorderLayout(), BorderLayout.CENTER);
+        todoPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         gbc.gridheight = GridBagConstraints.REMAINDER;
-        addTo(listPanel1, 0, 1);
+        addTo(todoPanel, 0, 1);
 
         //list 2
         gbc.gridwidth = GridBagConstraints.REMAINDER;
-        ScrollTaskList list2 = new ScrollTaskList();
+        ScrollTaskList completedTasks = new ScrollTaskList();
+        MANAGER.registerList(completedTasks.LIST, "completed");
 
-        JPanel listPanel2 = newPanel(list2, new BorderLayout(), BorderLayout.CENTER);
-        listPanel2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        JPanel completedTaskPanel = newPanel(completedTasks, new BorderLayout(), BorderLayout.CENTER);
+        completedTaskPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        addTo(listPanel2, 1, 1);
+        addTo(completedTaskPanel, 1, 1);
 
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
+
+        loadLists();
+
     }
 
     public void loadLists() {
-
+        MANAGER.initAll();
     }
 
     //adds component to grid at index x and y

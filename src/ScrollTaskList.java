@@ -7,7 +7,7 @@ public class ScrollTaskList extends JPanel {
 
     private final JScrollPane ROOT;
 
-    private final JList<ListEntry> LIST;
+    public final JList<ListEntry> LIST;
 
     public final DefaultListModel<ListEntry> MODEL;
 
