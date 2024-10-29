@@ -1,5 +1,6 @@
 import listItemStorage.ListEntry;
 import listItemStorage.ListFileReader;
+import listItemStorage.ListFileWriter;
 
 import javax.swing.*;
 import java.io.File;
@@ -9,11 +10,15 @@ import java.util.*;
 
 /**Class to allow manipulation of the data stored within Jlists displayed in the GUI.
  * The class provides methods to manipulate their ListModels when registered.
+ *
  */
 public class ListManager {
 
+    //determines if lists are saved to file after every change
+    private boolean AUTOSAVE = true;
+
     //private class to store a DefaultListModel and a string name of a list
-    private class ListRec {
+    private static class ListRec {
         public static int count = 0;
         public DefaultListModel<ListEntry> model;
         public String name;
@@ -71,20 +76,22 @@ public class ListManager {
     public void addTo(JList<ListEntry> list, ListEntry entry) {
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
         model.addElement(entry);
+        autosave(list);
     }
 
-    /**Inserts the specified entry at the specified index of the specified list.
+    /**Inserts the specified item at the specified index of the specified list.
      *
      * @param list the list to add to
-     * @param entry the entry to add
+     * @param entry the item to add
      * @param index the index to insert at
      */
     public void addTo(JList<ListEntry> list, ListEntry entry, int index) {
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
         model.add(index, entry);
+        autosave(list);
     }
 
-    /**Removes an entry in a list at specified index.
+    /**Removes an item in a list at specified index.
      *
      * @param list list to remove from
      * @param index index of element to remove
@@ -92,9 +99,10 @@ public class ListManager {
     public void removeAt(JList<ListEntry> list, int index) {
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
         model.remove(index);
+        autosave(list);
     }
 
-    /**Removes a specified entry from a list.
+    /**Removes a specified item from a list.
      *
      * @param list list to remove from
      * @param entry element to remove
@@ -102,6 +110,7 @@ public class ListManager {
     public void removeEntry(JList<ListEntry> list,ListEntry entry) {
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
         model.removeElement(entry);
+        autosave(list);
     }
 
     /**Initializes the elements in the specified gui JList to be displayed from a file.
@@ -123,7 +132,9 @@ public class ListManager {
         } catch (FileNotFoundException e) {
             File fin = new File(filePath);
             try {
-                fin.createNewFile();
+                if (!(fin.createNewFile())) {
+                    System.out.println("Couldn't create file " + filePath);
+                }
             } catch (IOException fail) {
                 System.out.println("Error initializing list '" + LIST_MODELS.get(list).name + "'");
             }
@@ -138,6 +149,30 @@ public class ListManager {
     public void initAll() {
         for (JList<ListEntry> list : LIST_MODELS.keySet()) {
             initList(list);
+        }
+    }
+
+    //if AUTOSAVE is true, will write the list that is updated to its file
+    private void autosave(JList<ListEntry> list) {
+        if (AUTOSAVE) {
+            save(list);
+        }
+    }
+
+    /**Saves the specified list to its file.
+     *
+     * @param list the list to save
+     */
+    public void save(JList<ListEntry> list) {
+        String pathname = LIST_DIR + "/" + LIST_MODELS.get(list).name;
+        File fout = new File(pathname);
+        DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
+        try {
+            ListFileWriter write = new ListFileWriter(fout, model);
+            write.writeList();
+        } catch (IOException e) {
+            System.out.println("Cannot open file " + pathname);
+            System.out.println(e.getMessage());
         }
     }
 

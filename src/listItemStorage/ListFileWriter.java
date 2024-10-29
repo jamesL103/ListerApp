@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
 
-/**Class to write a list to a file.
+/**Class to write a list model to a file.
  *The Writer is instantiated to write the entries from a single list
  * to a single specified file.
  *Once instantiated, the source list and target file cannot be changed.
@@ -28,25 +28,28 @@ public class ListFileWriter {
     }
 
     /**Writes the entirety of the source list to the target file.
-     * This method should only be called on a file that is empty.
+     * This will replace the previous contents of the file.
      */
     public void writeList() throws IOException  {
         FileWriter writer = new FileWriter(fin);
         for (int i = 0; i < SOURCE.getSize(); i ++) {
             writeEntry(SOURCE.get(i), writer);
+            if (i % 128 == 0) {
+                writer.flush();
+            }
         }
+        writer.close();
     }
 
     //helper method to write another line into the file
     //representing another list entry
     private void writeEntry(ListEntry entry, FileWriter writer) throws IOException{
-        writer.append((entry.getName() +","));
-        writer.append(entry.getDescription() + ",");
+        writer.write((entry.getName() +","));
+        writer.write(entry.getDescription() + ",");
         String date = "" + entry.getDate().get(Calendar.DATE) + "/"
                 + (entry.getDate().get(Calendar.MONTH) + 1) + "/" +
                 entry.getDate().get(Calendar.YEAR);
-        writer.append(date + "\n");
-        writer.flush();
+        writer.write(date + "\n");
     }
 
 }

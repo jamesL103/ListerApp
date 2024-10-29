@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ListGui {
 
@@ -27,6 +29,7 @@ public class ListGui {
         MANAGER = new ListManager();
 
         addLists();
+        addButtons();
 
         PARENT.setVisible(true);
     }
@@ -92,6 +95,16 @@ public class ListGui {
 
     public void loadLists() {
         MANAGER.initAll();
+    }
+
+    private void addButtons() {
+        JButton add = new JButton();
+        add.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
     }
 
     //adds component to grid at index x and y
