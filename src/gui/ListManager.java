@@ -17,7 +17,7 @@ import java.util.*;
 public class ListManager {
 
     //determines if lists are saved to file after every change
-    private boolean AUTOSAVE = true;
+    private final boolean AUTOSAVE = true;
 
     //private class to store a DefaultListModel and a string name of a list
     private static class ListRec {

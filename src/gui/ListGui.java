@@ -8,9 +8,9 @@ public class ListGui {
     //Parent container of the gui
     private final JFrame PARENT;
 
-    private GridBagConstraints gbc;
+    private final GridBagConstraints gbc;
 
-    private GridBagLayout layout;
+    private final GridBagLayout layout;
 
     //manages the data stored in all the lists
     private final ListManager MANAGER;
@@ -119,7 +119,6 @@ public class ListGui {
         gbc.weightx = 0.0;
         gbc.weighty = 1.0;
         addTo(bar, 0, 2);
-        int x = 0;
     }
 
     //adds component to grid at index x and y
