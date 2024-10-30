@@ -1,5 +1,12 @@
+import gui.ListGui;
+
+import javax.swing.*;
+
 public class Main {
     public static void main(String[] args) {
-        ListGui gui = new ListGui();
+        SwingUtilities.invokeLater( ()-> {
+            ListGui gui = new ListGui();
+        });
+
     }
 }

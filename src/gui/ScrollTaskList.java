@@ -1,3 +1,5 @@
+package gui;
+
 import listItemStorage.ListEntry;
 
 import javax.swing.*;
@@ -33,4 +35,21 @@ public class ScrollTaskList extends JPanel {
         add(ROOT, BorderLayout.CENTER);
     }
 
+    /**Sets the background color of the scroll pane to the specified color
+     *
+     * @param color the new color
+     */
+    public void setBg(Color color) {
+        super.setBackground(color);
+        LIST.setBackground(color);
+    }
+
+    /**Sets the foreground color of the scroll pane to the specified color
+     *
+     * @param color the new color
+     */
+    public void setFg(Color color) {
+        super.setForeground(color);
+        LIST.setForeground(color);
+    }
 }

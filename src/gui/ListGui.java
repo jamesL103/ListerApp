@@ -1,7 +1,7 @@
+package gui;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ListGui {
 
@@ -15,16 +15,20 @@ public class ListGui {
     //manages the data stored in all the lists
     private final ListManager MANAGER;
 
+    //default colors
+    private final Color BACKGROUND = new Color(24, 32, 54);
+    private final Color TEXT = new Color(255, 255, 255);
 
     //create the gui for the list app
     public ListGui() {
         PARENT = new JFrame("List App");
         PARENT.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        PARENT.setSize(new Dimension(500, 300));
+        PARENT.setSize(new Dimension(800, 500));
         layout = new GridBagLayout();
         gbc = new GridBagConstraints();
 
         PARENT.setLayout(layout);
+        PARENT.getContentPane().setBackground(BACKGROUND);
 
         MANAGER = new ListManager();
 
@@ -35,24 +39,27 @@ public class ListGui {
     }
 
     private void addLists() {
-        //label padding
-        gbc.ipadx = 300;
 
         //title for first list
-        Label listLabel1 = new Label("To-Do");
-        listLabel1.setAlignment(Label.CENTER);
+        JLabel listLabel1 = createLabel("To-Do");
+        listLabel1.setHorizontalAlignment(JLabel.CENTER);
 
         JPanel labelPanel1 = newPanel(listLabel1, new BorderLayout(),BorderLayout.CENTER);
 
         labelPanel1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         labelPanel1.setPreferredSize(new Dimension(100,20));
 
+
+        //constraints for title 1
+        gbc.weightx = 1.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
         addTo(labelPanel1, 0, 0);
 
         //title for second list
 
-        Label listLabel2 = new Label("Completed");
-        listLabel2.setAlignment(Label.CENTER);
+        JLabel listLabel2 = createLabel("Completed");
+        listLabel2.setHorizontalAlignment(JLabel.CENTER);
 
         JPanel labelPanel2 = newPanel(listLabel2, new BorderLayout(), BorderLayout.CENTER);
         labelPanel2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -60,29 +67,35 @@ public class ListGui {
         labelPanel2.setPreferredSize(new Dimension(100,20));
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         addTo(labelPanel2, 1, 0);
-        gbc.gridwidth = 1;
 
-        //list padding
-        gbc.ipady = 400;
+
+        //list component constraints
+        gbc.gridwidth = 1;
+        gbc.weighty = 1.0;
+        gbc.gridheight = GridBagConstraints.RELATIVE;
+        gbc.fill = GridBagConstraints.BOTH;
 
         //to do list
-        ScrollTaskList todo = new ScrollTaskList();
+        ScrollTaskList todo = createScroll();
         MANAGER.registerList(todo.LIST, "todo");
 
 
         JPanel todoPanel = newPanel(todo, new BorderLayout(), BorderLayout.CENTER);
         todoPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        gbc.gridheight = GridBagConstraints.REMAINDER;
+
         addTo(todoPanel, 0, 1);
 
         //list 2
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        ScrollTaskList completedTasks = new ScrollTaskList();
+
+        ScrollTaskList completedTasks = createScroll();
         MANAGER.registerList(completedTasks.LIST, "completed");
 
         JPanel completedTaskPanel = newPanel(completedTasks, new BorderLayout(), BorderLayout.CENTER);
         completedTaskPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        //update constraints for list 2
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
 
         addTo(completedTaskPanel, 1, 1);
 
@@ -99,6 +112,14 @@ public class ListGui {
 
     private void addButtons() {
         EntryControlBar bar = new EntryControlBar(MANAGER);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth= GridBagConstraints.REMAINDER;
+        gbc.gridheight = 1;
+        gbc.ipady = 0;
+        gbc.weightx = 0.0;
+        gbc.weighty = 1.0;
+        addTo(bar, 0, 2);
+        int x = 0;
     }
 
     //adds component to grid at index x and y
@@ -120,6 +141,8 @@ public class ListGui {
     //if null, adds with default settings
     private JPanel newPanel(Component c, LayoutManager layout, Object layoutRules) {
         JPanel panel = new JPanel();
+        panel.setBackground(BACKGROUND);
+        panel.setForeground(TEXT);
         if (layout != null) {
             panel.setLayout(layout);
         }
@@ -129,5 +152,21 @@ public class ListGui {
             panel.add(c);
         }
         return panel;
+    }
+
+    //helper to create new label with correct colors
+    private JLabel createLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setBackground(BACKGROUND);
+        label.setForeground(TEXT);
+        return label;
+    }
+
+    //helper to create Scroll task list with correct colors
+    private ScrollTaskList createScroll() {
+        ScrollTaskList scroll = new ScrollTaskList();
+        scroll.setBg(BACKGROUND);
+        scroll.setFg(TEXT);
+        return scroll;
     }
 }
