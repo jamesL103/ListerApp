@@ -98,13 +98,7 @@ public class ListGui {
     }
 
     private void addButtons() {
-        JButton add = new JButton();
-        add.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        EntryControlBar bar = new EntryControlBar(MANAGER);
     }
 
     //adds component to grid at index x and y
