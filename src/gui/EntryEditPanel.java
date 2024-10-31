@@ -1,51 +1,57 @@
 package gui;
 
+import listItemStorage.ListEntry;
+
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 
-public class EntryEditPanel extends JPanel {
+public class EntryEditPanel extends EntryAccessPanel {
 
-    private final GridBagLayout layout;
-    private final GridBagConstraints gbc;
 
-    private Font titleFont = new Font("arial", Font.PLAIN, 36);
-
-    public EntryEditPanel() {
-        super();
-        layout = new GridBagLayout();
-        gbc = new GridBagConstraints();
-
-        addFields();
+    public EntryEditPanel(ListEntry entry) {
+        super(entry);
     }
 
-    private void addFields() {
-        JLabel name = new JLabel("default");
+    @Override
+    public void initialize() {
+        addName();
+        addDescription();
+        addButton();
+    }
+
+    @Override
+    public void updateFields() {
+        ((JTextComponent)nameDisplay).setText(toDisplay.getName());
+        ((JTextComponent)descDisplay).setText(toDisplay.getName());
+    }
+
+    private void addName() {
+        JTextField name = new JTextField();
+        name.setText("default");
         name.setFont(titleFont);
         name.setHorizontalAlignment(JLabel.LEFT);
         name.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        //gbc constraints for name
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.weightx = 1.0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        addComponent(name, 0, 0);
+        addNameAccessor(name);
 
     }
 
     private void addDescription() {
+        JTextArea desc = new JTextArea();
+        desc.setLineWrap(true);
+        desc.setText("default");
 
+        addDescAccessor(desc);
     }
 
-    //helper to add component to specified position in layout
-    private void addComponent(Component c, int x, int y) {
-        int origx = gbc.gridx;
-        int origy = gbc.gridy;
-        gbc.gridx = x;
-        gbc.gridy = y;
-        layout.setConstraints(c, gbc);
-        add(c);
-        gbc.gridx = origx;
-        gbc.gridy = origy;
+    private void addButton() {
+        JButton save = new JButton("Save");
+
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weighty = 0.1;
+
+        addComponent(save, 0, 3);
     }
 
 }
