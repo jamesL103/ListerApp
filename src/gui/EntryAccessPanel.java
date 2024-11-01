@@ -3,6 +3,7 @@ package gui;
 import listItemStorage.ListEntry;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 
 /**Abstract class to create a gui that accesses the fields of a ListEntry.
@@ -25,6 +26,7 @@ public abstract class EntryAccessPanel extends JPanel {
 
     protected final Font titleFont = new Font("arial", Font.PLAIN, 36);
     protected final Font subTitleFont = new Font("arial", Font.PLAIN, 24);
+    protected final Font smallFont = new Font("arial", Font.PLAIN, 12);
 
     public EntryAccessPanel(ListEntry entry) {
         super();
@@ -88,6 +90,13 @@ public abstract class EntryAccessPanel extends JPanel {
 
     protected void addDateAccessor(JComponent comp) {
         dateDisplay = comp;
+        comp.setFont(smallFont);
+
+        gbc.weighty = 0.1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 1;
+
+        addComponent(comp, 0, 3);
 
     }
 
