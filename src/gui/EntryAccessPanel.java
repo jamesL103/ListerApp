@@ -3,7 +3,6 @@ package gui;
 import listItemStorage.ListEntry;
 
 import javax.swing.*;
-import javax.swing.text.JTextComponent;
 import java.awt.*;
 
 /**Abstract class to create a gui that accesses the fields of a ListEntry.
