@@ -19,6 +19,7 @@ public abstract class EntryAccessPanel extends JPanel {
     protected JComponent nameDisplay;
     protected JComponent descDisplay;
     protected JComponent dateDisplay;
+    protected JComponent buttonDisplay;
 
     private final GridBagLayout layout;
     protected final GridBagConstraints gbc;
@@ -97,6 +98,18 @@ public abstract class EntryAccessPanel extends JPanel {
 
         addComponent(comp, 0, 3);
 
+    }
+
+    protected void addButtons(JComponent comp) {
+        buttonDisplay = comp;
+        comp.setFont(smallFont);
+
+        gbc.weighty = 0.1;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.gridheight = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        addComponent(comp, 0, 4);
     }
 
     /**Updates the gui to the current entry's fields.

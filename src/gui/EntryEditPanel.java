@@ -15,9 +15,10 @@ public class EntryEditPanel extends EntryAccessPanel {
 
     @Override
     public void initialize() {
-        addName();
-        addDescription();
-        addButton();
+        addNameAccessor(makeName());
+        addDescAccessor(makeDescription());
+        addButtons(makeButton());
+        updateFields();
     }
 
     @Override
@@ -26,32 +27,26 @@ public class EntryEditPanel extends EntryAccessPanel {
         ((JTextComponent)descDisplay).setText(toDisplay.getName());
     }
 
-    private void addName() {
+    private JTextField makeName() {
         JTextField name = new JTextField();
         name.setText("default");
         name.setFont(titleFont);
         name.setHorizontalAlignment(JLabel.LEFT);
         name.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-        addNameAccessor(name);
-
+        return name;
     }
 
-    private void addDescription() {
+    private JTextArea makeDescription() {
         JTextArea desc = new JTextArea();
         desc.setLineWrap(true);
         desc.setText("default");
 
-        addDescAccessor(desc);
+        return desc;
     }
 
-    private void addButton() {
+    private JButton makeButton() {
         JButton save = new JButton("Save");
-
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.weighty = 0.1;
-
-        addComponent(save, 0, 3);
+        return save;
     }
 
 }

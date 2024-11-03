@@ -17,37 +17,36 @@ public class EntryViewPanel extends EntryAccessPanel {
 
     @Override
     public void initialize() {
-        addName();
-        addDescription();
-        addDate();
+        addNameAccessor(makeName());
+        addDescAccessor(makeDescription());
+        addDateAccessor(makeDate());
 
         updateFields();
     }
 
-    private void addName() {
+    private JLabel makeName() {
         JLabel name = new JLabel();
         name.setFont(titleFont);
         name.setText("default");
         name.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        addNameAccessor(name);
+        return name;
     }
 
-    private void addDescription() {
+    private JTextArea makeDescription() {
         JTextArea desc = new JTextArea();
         desc.setEditable(false);
         desc.setLineWrap(true);
         desc.setText("default");
 
-        addDescAccessor(desc);
+        return desc;
     }
 
-    private void addDate() {
+    private JLabel makeDate() {
         JLabel date = new JLabel();
         date.setText("Due: " + toDisplay.getStringDate());
 
-        addDateAccessor(date);
-
+        return date;
     }
 
     @Override
