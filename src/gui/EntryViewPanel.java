@@ -20,13 +20,14 @@ public class EntryViewPanel extends EntryAccessPanel {
         addNameAccessor(makeName());
         addDescAccessor(makeDescription());
         addDateAccessor(makeDate());
+        addButtons(makeButtons());
 
         updateFields();
     }
 
     private JLabel makeName() {
         JLabel name = new JLabel();
-        name.setFont(titleFont);
+        name.setFont(ListGui.TITLE);
         name.setText("default");
         name.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
@@ -36,6 +37,7 @@ public class EntryViewPanel extends EntryAccessPanel {
     private JTextArea makeDescription() {
         JTextArea desc = new JTextArea();
         desc.setEditable(false);
+        desc.setFocusable(false);
         desc.setLineWrap(true);
         desc.setText("default");
 
@@ -47,6 +49,16 @@ public class EntryViewPanel extends EntryAccessPanel {
         date.setText("Due: " + toDisplay.getStringDate());
 
         return date;
+    }
+
+    private JPanel makeButtons() {
+        JPanel panel = new JPanel();
+        JButton edit = new JButton("Edit");
+        edit.setFont(smallFont);
+        panel.add(edit);
+
+        return panel;
+
     }
 
     @Override

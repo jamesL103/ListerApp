@@ -19,6 +19,9 @@ public class ListGui {
     private final Color BACKGROUND = new Color(24, 32, 54);
     private final Color TEXT = new Color(255, 255, 255);
 
+    //fonts
+    public static final Font TITLE = new Font("arial", Font.PLAIN, 36);
+
     //create the gui for the list app
     public ListGui() {
         PARENT = new JFrame("List App");

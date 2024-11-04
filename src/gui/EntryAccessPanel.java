@@ -24,7 +24,6 @@ public abstract class EntryAccessPanel extends JPanel {
     private final GridBagLayout layout;
     protected final GridBagConstraints gbc;
 
-    protected final Font titleFont = new Font("arial", Font.PLAIN, 36);
     protected final Font subTitleFont = new Font("arial", Font.PLAIN, 24);
     protected final Font smallFont = new Font("arial", Font.PLAIN, 12);
 
@@ -52,7 +51,7 @@ public abstract class EntryAccessPanel extends JPanel {
      */
     protected void addNameAccessor(JComponent comp) {
         nameDisplay = comp;
-        comp.setFont(titleFont);
+        comp.setFont(ListGui.TITLE);
         comp.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         //gbc constraints

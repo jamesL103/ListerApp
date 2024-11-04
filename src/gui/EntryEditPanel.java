@@ -17,20 +17,27 @@ public class EntryEditPanel extends EntryAccessPanel {
     public void initialize() {
         addNameAccessor(makeName());
         addDescAccessor(makeDescription());
+        addDateAccessor(makeDateEditor());
         addButtons(makeButton());
+
         updateFields();
     }
 
     @Override
     public void updateFields() {
         ((JTextComponent)nameDisplay).setText(toDisplay.getName());
-        ((JTextComponent)descDisplay).setText(toDisplay.getName());
+        ((JTextComponent)descDisplay).setText(toDisplay.getDescription());
+        updateDate();
+    }
+
+    private void updateDate() {
+
     }
 
     private JTextField makeName() {
         JTextField name = new JTextField();
         name.setText("default");
-        name.setFont(titleFont);
+        name.setFont(ListGui.TITLE);
         name.setHorizontalAlignment(JLabel.LEFT);
         name.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         return name;
@@ -44,9 +51,31 @@ public class EntryEditPanel extends EntryAccessPanel {
         return desc;
     }
 
-    private JButton makeButton() {
+    private JPanel makeDateEditor() {
+        JPanel panel = new JPanel();
+        dateDisplay = panel;
+        Label title = new Label("Due: ");
+        title.setFont(smallFont);
+        panel.add(title);
+
+        JTextField date = new JTextField("1");
+        panel.add(date);
+
+        JComboBox<String> month = new JComboBox<>();
+        panel.add(month);
+
+
+        JTextField year = new JTextField("1000");
+        panel.add(year);
+
+        return panel;
+    }
+
+    private JPanel makeButton() {
+        JPanel panel = new JPanel();
         JButton save = new JButton("Save");
-        return save;
+        panel.add(save);
+        return panel;
     }
 
 }
