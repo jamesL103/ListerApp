@@ -95,33 +95,12 @@ public class ListFileReader {
         if (dateMatch.matches()) {
             int date = Integer.parseInt(input.substring(0,2));
             int month = Integer.parseInt(input.substring(3,5));
-            month = Months.MONTHS[month-1];
+            month --;
             int year = Integer.parseInt(input.substring(6));
             toReturn = new GregorianCalendar();
             toReturn.set(year,month,date);
         }
         return toReturn;
     }
-
-
-
-    //inner class to hold an array of all calendar months
-    private static class Months {
-        private static final int[] MONTHS = {
-            Calendar.JANUARY,
-            Calendar.FEBRUARY,
-            Calendar.MARCH,
-            Calendar.APRIL,
-            Calendar.MAY,
-            Calendar.JUNE,
-            Calendar.JULY,
-            Calendar.AUGUST,
-            Calendar.SEPTEMBER,
-            Calendar.OCTOBER,
-            Calendar.NOVEMBER,
-            Calendar.DECEMBER
-        };
-    }
-
 
 }

@@ -5,6 +5,7 @@ import listItemStorage.ListEntry;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import util.Util;
 
 public class EntryEditPanel extends EntryAccessPanel {
 
@@ -53,22 +54,35 @@ public class EntryEditPanel extends EntryAccessPanel {
 
     private JPanel makeDateEditor() {
         JPanel panel = new JPanel();
+        ((FlowLayout)panel.getLayout()).setAlignment(FlowLayout.LEFT);
         dateDisplay = panel;
-        Label title = new Label("Due: ");
+        Label title = new Label("Due:");
         title.setFont(smallFont);
         panel.add(title);
 
         JTextField date = new JTextField("1");
+        date.setColumns(2);
         panel.add(date);
 
-        JComboBox<String> month = new JComboBox<>();
+        JComboBox<Util.Months> month = makeMonthChooser();
         panel.add(month);
 
 
         JTextField year = new JTextField("1000");
+        year.setColumns(4);
         panel.add(year);
 
         return panel;
+    }
+
+    private JComboBox<Util.Months> makeMonthChooser() {
+        JComboBox<Util.Months> toReturn = new JComboBox<>();
+        Util.Months[] months = Util.Months.values();
+        for (Util.Months month : months) {
+            toReturn.addItem(month);
+        }
+
+        return toReturn;
     }
 
     private JPanel makeButton() {
