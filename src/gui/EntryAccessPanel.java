@@ -24,8 +24,8 @@ public abstract class EntryAccessPanel extends JPanel {
     private final GridBagLayout layout;
     protected final GridBagConstraints gbc;
 
-    protected final Font subTitleFont = new Font("arial", Font.PLAIN, 24);
-    protected final Font smallFont = new Font("arial", Font.PLAIN, 12);
+    protected static final Font subTitleFont = new Font("arial", Font.PLAIN, 24);
+    protected static final Font smallFont = new Font("arial", Font.PLAIN, 12);
 
     public EntryAccessPanel(ListEntry entry) {
         super();

@@ -53,6 +53,11 @@ public class ListEntry {
     }
 
 
+    /**Returns a string representation of the date stored in the ListEntry.
+     * The date will be of format 'mmm' dd, [year]
+     *
+     * @return the string representation of the date
+     */
     public String getStringDate() {
         String display = date.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH);
         display = display + " " + date.get(Calendar.DATE);

@@ -5,20 +5,30 @@ import listItemStorage.ListEntry;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Calendar;
+
 import util.Util;
 
 public class EntryEditPanel extends EntryAccessPanel {
 
+    private final DatePanel DATE_EDITOR;
+
+
 
     public EntryEditPanel(ListEntry entry) {
         super(entry);
+        DATE_EDITOR = new DatePanel();
+
+        addDateAccessor(DATE_EDITOR);
+        updateDate();
     }
 
     @Override
     public void initialize() {
         addNameAccessor(makeName());
         addDescAccessor(makeDescription());
-        addDateAccessor(makeDateEditor());
         addButtons(makeButton());
 
         updateFields();
@@ -28,11 +38,14 @@ public class EntryEditPanel extends EntryAccessPanel {
     public void updateFields() {
         ((JTextComponent)nameDisplay).setText(toDisplay.getName());
         ((JTextComponent)descDisplay).setText(toDisplay.getDescription());
-        updateDate();
     }
 
+    //set all fields in the date panel based on the entry
     private void updateDate() {
-
+        Calendar cal = toDisplay.getDate();
+        DATE_EDITOR.MONTH.setSelectedIndex(cal.get(Calendar.MONTH));
+        DATE_EDITOR.DATE.setText(String.valueOf(cal.get(Calendar.DATE)));
+        DATE_EDITOR.YEAR.setText(String.valueOf(cal.get(Calendar.YEAR)));
     }
 
     private JTextField makeName() {
@@ -52,42 +65,70 @@ public class EntryEditPanel extends EntryAccessPanel {
         return desc;
     }
 
-    private JPanel makeDateEditor() {
-        JPanel panel = new JPanel();
-        ((FlowLayout)panel.getLayout()).setAlignment(FlowLayout.LEFT);
-        dateDisplay = panel;
-        Label title = new Label("Due:");
-        title.setFont(smallFont);
-        panel.add(title);
+    //subclass of Jpanel to display all the elements for editing the date
+    //and accessing the data
+    private static class DatePanel extends JPanel {
 
-        JTextField date = new JTextField("1");
-        date.setColumns(2);
-        panel.add(date);
-
-        JComboBox<Util.Months> month = makeMonthChooser();
-        panel.add(month);
+        public final JTextField DATE;
+        public final JComboBox<Util.Months> MONTH;
+        public final JTextField YEAR;
 
 
-        JTextField year = new JTextField("1000");
-        year.setColumns(4);
-        panel.add(year);
+        public DatePanel() {
+            super();
+            ((FlowLayout)getLayout()).setAlignment(FlowLayout.LEFT);
+            Label title = new Label("Due:");
+            title.setFont(smallFont);
+            add(title);
 
-        return panel;
-    }
+            JTextField date = new JTextField("1");
+            date.setColumns(2);
+            DATE = date;
+            add(date);
 
-    private JComboBox<Util.Months> makeMonthChooser() {
-        JComboBox<Util.Months> toReturn = new JComboBox<>();
-        Util.Months[] months = Util.Months.values();
-        for (Util.Months month : months) {
-            toReturn.addItem(month);
+            JComboBox<Util.Months> month = makeMonthChooser();
+            MONTH = month;
+            add(month);
+
+
+            JTextField year = new JTextField("1000");
+            year.setColumns(4);
+            YEAR = year;
+            add(year);
         }
 
-        return toReturn;
+        //makes the combobox dropdown that allows selection of month
+        private static JComboBox<Util.Months> makeMonthChooser() {
+            JComboBox<Util.Months> toReturn = new JComboBox<>();
+            Util.Months[] months = Util.Months.values();
+            for (Util.Months month : months) {
+                toReturn.addItem(month);
+            }
+
+            return toReturn;
+        }
     }
+
+
 
     private JPanel makeButton() {
         JPanel panel = new JPanel();
         JButton save = new JButton("Save");
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                toDisplay.setName(((JTextField)nameDisplay).getText());
+                toDisplay.setDescription(((JTextArea)descDisplay).getText());
+                setDate();
+            }
+
+            private void setDate() {
+                Calendar cal = toDisplay.getDate();
+                cal.set(Calendar.DATE, Integer.parseInt(DATE_EDITOR.DATE.getText()));
+                cal.set(Calendar.MONTH, DATE_EDITOR.MONTH.getSelectedIndex());
+                cal.set(Calendar.YEAR, Integer.parseInt(DATE_EDITOR.YEAR.getText()));
+            }
+        });
         panel.add(save);
         return panel;
     }
