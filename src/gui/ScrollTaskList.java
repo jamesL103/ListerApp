@@ -3,6 +3,8 @@ package gui;
 import listItemStorage.ListEntry;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 
 public class ScrollTaskList extends JPanel {
@@ -13,15 +15,21 @@ public class ScrollTaskList extends JPanel {
 
     public final DefaultListModel<ListEntry> MODEL;
 
+    private final ListGui.ListSelectionObserver OBSERVER;
 
 
-    public ScrollTaskList() {
+
+    public ScrollTaskList(ListGui.ListSelectionObserver observer) {
         super();
+
+        OBSERVER = observer;
 
         setLayout(new BorderLayout());
 
         //create the Jlist
         LIST = new JList<>();
+        LIST.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        LIST.addListSelectionListener(makeAccessListener());
         LIST.setCellRenderer(new EntryCellRenderer());
         MODEL = new DefaultListModel<>();
         LIST.setModel(MODEL);
@@ -52,4 +60,17 @@ public class ScrollTaskList extends JPanel {
         super.setForeground(color);
         LIST.setForeground(color);
     }
+
+    //creates an access listener that sets the currently selected
+    //ListEntry
+    private ListSelectionListener makeAccessListener() {
+        return new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                OBSERVER.notifySelection(LIST.getSelectedValue());
+            }
+        };
+    }
+
+
 }

@@ -1,6 +1,10 @@
 package gui;
 
+import listItemStorage.ListEntry;
+
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 
 public class ListGui {
@@ -14,6 +18,11 @@ public class ListGui {
 
     //manages the data stored in all the lists
     private final ListManager MANAGER;
+
+    //observer to track when list selection changes
+    private final ListSelectionObserver SELECTION_OBSERVER = new ListSelectionObserver();
+
+    private ScrollTaskList completed;
 
     //default colors
     private final Color BACKGROUND = new Color(24, 32, 54);
@@ -92,6 +101,7 @@ public class ListGui {
         //list 2
 
         ScrollTaskList completedTasks = createScroll();
+        completed = completedTasks;
         MANAGER.registerList(completedTasks.LIST, "completed");
 
         JPanel completedTaskPanel = newPanel(completedTasks, new BorderLayout(), BorderLayout.CENTER);
@@ -156,6 +166,16 @@ public class ListGui {
         return panel;
     }
 
+    //displays the Access Panel for the selected entry
+    private void displayEntry(ListEntry entry) {
+        EntryAccessPanel panel = new EntryEditPanel(entry);
+        //todo figure out updating the gui when displaying the entry
+
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+
+        addTo(panel, 2, 1);
+    }
+
     //helper to create new label with correct colors
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);
@@ -166,9 +186,22 @@ public class ListGui {
 
     //helper to create Scroll task list with correct colors
     private ScrollTaskList createScroll() {
-        ScrollTaskList scroll = new ScrollTaskList();
+        ScrollTaskList scroll = new ScrollTaskList(SELECTION_OBSERVER);
         scroll.setBg(BACKGROUND);
         scroll.setFg(TEXT);
         return scroll;
     }
+
+
+    //observer that notifies gui when list selection changes
+    public class ListSelectionObserver {
+
+        //called when the list selection is changed
+        //notifies gui to display and update access panel
+        public void notifySelection(ListEntry entry) {
+            displayEntry(entry);
+        }
+
+    }
+
 }
