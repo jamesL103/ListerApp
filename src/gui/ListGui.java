@@ -22,7 +22,7 @@ public class ListGui {
     //observer to track when list selection changes
     private final ListSelectionObserver SELECTION_OBSERVER = new ListSelectionObserver();
 
-    private ScrollTaskList completed;
+    private JPanel completed;
 
     //default colors
     private final Color BACKGROUND = new Color(24, 32, 54);
@@ -98,14 +98,15 @@ public class ListGui {
 
         addTo(todoPanel, 0, 1);
 
-        //list 2
+        //completed list
 
         ScrollTaskList completedTasks = createScroll();
-        completed = completedTasks;
         MANAGER.registerList(completedTasks.LIST, "completed");
 
         JPanel completedTaskPanel = newPanel(completedTasks, new BorderLayout(), BorderLayout.CENTER);
         completedTaskPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        completed = completedTaskPanel;
 
         //update constraints for list 2
         gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -168,12 +169,20 @@ public class ListGui {
 
     //displays the Access Panel for the selected entry
     private void displayEntry(ListEntry entry) {
-        EntryAccessPanel panel = new EntryEditPanel(entry);
-        //todo figure out updating the gui when displaying the entry
+        EntryAccessPanel panel = new EntryViewPanel(entry);
 
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        //remove completed list to be resized
+        PARENT.remove(completed);
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        addTo(completed, 1, 1);
+
+
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.BOTH;
 
         addTo(panel, 2, 1);
+        PARENT.paintAll(PARENT.getGraphics());
     }
 
     //helper to create new label with correct colors
@@ -193,10 +202,10 @@ public class ListGui {
     }
 
 
-    //observer that notifies gui when list selection changes
+    //observer that notifies gui when list entry is selected from list
     public class ListSelectionObserver {
 
-        //called when the list selection is changed
+        //called when a ListEntry is selected
         //notifies gui to display and update access panel
         public void notifySelection(ListEntry entry) {
             displayEntry(entry);
