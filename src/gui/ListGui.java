@@ -189,4 +189,13 @@ public class ListGui {
 
     }
 
+    //observer that handles events with the EntryViewPanel
+    public class ViewPanelObserver {
+
+        public void notifyClose() {
+
+        }
+
+    }
+
 }

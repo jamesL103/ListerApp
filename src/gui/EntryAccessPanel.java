@@ -4,6 +4,8 @@ import listItemStorage.ListEntry;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**Abstract class to create a gui that accesses the fields of a ListEntry.
  * Will automatically organize the components based on the layout and

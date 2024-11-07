@@ -1,12 +1,17 @@
 package gui;
 
 import listItemStorage.ListEntry;
+import util.Util;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class EntryViewPanel extends EntryAccessPanel {
+
+    private ListGui.ViewPanelObserver observer;
 
 
     public EntryViewPanel(ListEntry entry) {
@@ -21,8 +26,21 @@ public class EntryViewPanel extends EntryAccessPanel {
         addDescAccessor(makeDescription());
         addDateAccessor(makeDate());
         addButtons(makeButtons());
+        addExitButton(makeExitButton());
 
         updateFields();
+    }
+
+    private void addExitButton(JButton button) {
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0.1;
+        gbc.weighty = 0.1;
+
+        Util.addToGb(this, button, gbc, 1, 0);
+
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.5;
+
     }
 
     private JLabel makeName() {
@@ -59,6 +77,29 @@ public class EntryViewPanel extends EntryAccessPanel {
 
         return panel;
 
+    }
+
+    private JButton makeExitButton() {
+        JButton exit = new JButton("x");
+        exit.setFont(smallFont);
+        return exit;
+    }
+
+    private ActionListener makeExitListener() {
+        ActionListener exit = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                observer.notifyClose();
+            }
+        };
+        return null;
+    }
+
+    /**Sets this panel's observer to the specified observer
+     * @param observer the observer for this panel
+     */
+    public void addObserver(ListGui.ViewPanelObserver observer) {
+        this.observer = observer;
     }
 
     @Override
