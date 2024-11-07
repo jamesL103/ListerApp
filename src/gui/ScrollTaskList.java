@@ -9,13 +9,18 @@ import java.awt.*;
 
 public class ScrollTaskList extends JPanel {
 
-    private final JScrollPane ROOT;
+    private final JScrollPane SCROLLER;
 
     public final JList<ListEntry> LIST;
+
+    private final JLabel TITLE;
 
     public final DefaultListModel<ListEntry> MODEL;
 
     private final ListGui.ListSelectionObserver OBSERVER;
+
+    private final GridBagLayout LAYOUT;
+    private final GridBagConstraints GBC;
 
 
 
@@ -24,7 +29,12 @@ public class ScrollTaskList extends JPanel {
 
         OBSERVER = observer;
 
-        setLayout(new BorderLayout());
+        //set layout
+        LAYOUT = new GridBagLayout();
+        GBC = new GridBagConstraints();
+
+        //add title to graph
+        TITLE = new JLabel();
 
         //create the Jlist
         LIST = new JList<>();
@@ -37,10 +47,16 @@ public class ScrollTaskList extends JPanel {
 
 
         //create ScrollPane
-        ROOT = new JScrollPane();
-        ROOT.getViewport().setView(LIST);
+        SCROLLER = new JScrollPane();
+        SCROLLER.getViewport().setView(LIST);
 
-        add(ROOT, BorderLayout.CENTER);
+        //add scrollpane to panel
+
+        add(SCROLLER, BorderLayout.CENTER);
+    }
+
+    public void addTitle() {
+        JLabel title = new JLabel();
     }
 
     /**Sets the background color of the scroll pane to the specified color
