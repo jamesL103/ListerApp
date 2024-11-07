@@ -1,6 +1,7 @@
 package gui;
 
 import listItemStorage.ListEntry;
+import util.Util;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -25,11 +26,11 @@ public class ListGui {
     private JPanel completed;
 
     //default colors
-    private final Color BACKGROUND = new Color(24, 32, 54);
-    private final Color TEXT = new Color(255, 255, 255);
+    public static final Color BACKGROUND = new Color(24, 32, 54);
+    public static final Color TEXT = new Color(255, 255, 255);
 
     //fonts
-    public static final Font TITLE = new Font("arial", Font.PLAIN, 36);
+    public static final Font TITLE = new Font("arial", Font.PLAIN, 24);
 
     //create the gui for the list app
     public ListGui() {
@@ -51,44 +52,16 @@ public class ListGui {
     }
 
     private void addLists() {
-
-        //title for first list
-        JLabel listLabel1 = createLabel("To-Do");
-        listLabel1.setHorizontalAlignment(JLabel.CENTER);
-
-        JPanel labelPanel1 = newPanel(listLabel1, new BorderLayout(),BorderLayout.CENTER);
-
-        labelPanel1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        labelPanel1.setPreferredSize(new Dimension(100,20));
-
-
-        //constraints for title 1
-        gbc.weightx = 1.0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-
-        addTo(labelPanel1, 0, 0);
-
-        //title for second list
-
-        JLabel listLabel2 = createLabel("Completed");
-        listLabel2.setHorizontalAlignment(JLabel.CENTER);
-
-        JPanel labelPanel2 = newPanel(listLabel2, new BorderLayout(), BorderLayout.CENTER);
-        labelPanel2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-        labelPanel2.setPreferredSize(new Dimension(100,20));
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        addTo(labelPanel2, 1, 0);
-
-
         //list component constraints
         gbc.gridwidth = 1;
+        gbc.weightx = 0.5;
         gbc.weighty = 1.0;
         gbc.gridheight = GridBagConstraints.RELATIVE;
         gbc.fill = GridBagConstraints.BOTH;
 
         //to do list
         ScrollTaskList todo = createScroll();
+        todo.setTitle("To-Do");
         MANAGER.registerList(todo.LIST, "todo");
 
 
@@ -96,11 +69,12 @@ public class ListGui {
         todoPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 
-        addTo(todoPanel, 0, 1);
+        addTo(todoPanel, 0, 0);
 
         //completed list
 
         ScrollTaskList completedTasks = createScroll();
+        completedTasks.setTitle("Completed");
         MANAGER.registerList(completedTasks.LIST, "completed");
 
         JPanel completedTaskPanel = newPanel(completedTasks, new BorderLayout(), BorderLayout.CENTER);
@@ -111,7 +85,7 @@ public class ListGui {
         //update constraints for list 2
         gbc.gridwidth = GridBagConstraints.REMAINDER;
 
-        addTo(completedTaskPanel, 1, 1);
+        addTo(completedTaskPanel, 1, 0);
 
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
@@ -132,7 +106,7 @@ public class ListGui {
         gbc.ipady = 0;
         gbc.weightx = 0.0;
         gbc.weighty = 1.0;
-        addTo(bar, 0, 2);
+        addTo(bar, 0, 1);
     }
 
     //adds component to grid at index x and y
@@ -171,17 +145,19 @@ public class ListGui {
     private void displayEntry(ListEntry entry) {
         EntryAccessPanel panel = new EntryViewPanel(entry);
 
-        //remove completed list to be resized
-        PARENT.remove(completed);
-        gbc.gridwidth = 1;
+        //change layout constraints for completed list
         gbc.fill = GridBagConstraints.BOTH;
-        addTo(completed, 1, 1);
+        gbc.gridwidth = GridBagConstraints.RELATIVE;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 0.25;
+        layout.setConstraints(completed, gbc);
 
 
-        gbc.gridwidth = 1;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.BOTH;
 
-        addTo(panel, 2, 1);
+        addTo(panel, 2, 0);
         PARENT.paintAll(PARENT.getGraphics());
     }
 

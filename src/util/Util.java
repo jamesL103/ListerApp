@@ -1,5 +1,9 @@
 package util;
 
+import gui.ListGui;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.Calendar;
 
 public class Util {
@@ -37,6 +41,55 @@ public class Util {
             name = symbol;
         }
 
+    }
+
+    /**Adds the specified Jcomponent to the specified target JComponent assuming
+     * the target is using a GridBagLayout.
+     * The JComponent will be added at the specified coordinates in the layout.
+     * All other GridBagConstraint fields should be set before calling this method.
+     * The gridx and gridy fields of the specified constraints will be unchanged from before calling the method.
+     * If the target Component is using a different layout, the method will no-op.
+     *
+     * @param target the component to add to
+     * @param toAdd the component to add
+     * @param contraints the GridBagConstraints to apply
+     * @param x the x coordinate
+     * @param y the y coordinate
+     */
+    public static void addToGb(Container target, JComponent toAdd, GridBagConstraints contraints, int x, int y) {
+        if (target.getLayout() instanceof GridBagLayout) {
+            int tempx = contraints.gridx;
+            int tempy = contraints.gridy;
+            GridBagLayout layout = (GridBagLayout) (target.getLayout());
+            contraints.gridx = x;
+            contraints.gridy = y;
+            layout.setConstraints(toAdd, contraints);
+            target.add(toAdd);
+            contraints.gridx = tempx;
+            contraints.gridy = tempy;
+        }
+    }
+
+    /**Creates a new JPanel with the specified component added according to the specified layout.
+     *
+     * @param c the component to add to the panel
+     * @param layout the layout of the panel
+     * @param layoutRules the constraints for adding the component
+     * @return a JPanel containing the component.
+     */
+    public static JPanel newPanel(Component c, LayoutManager layout, Object layoutRules) {
+        JPanel panel = new JPanel();
+        panel.setBackground(ListGui.BACKGROUND);
+        panel.setForeground(ListGui.TEXT);
+        if (layout != null) {
+            panel.setLayout(layout);
+        }
+        if (layoutRules != null) {
+            panel.add(c, layoutRules);
+        } else {
+            panel.add(c);
+        }
+        return panel;
     }
 
 }

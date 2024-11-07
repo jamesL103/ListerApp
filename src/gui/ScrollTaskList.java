@@ -1,6 +1,7 @@
 package gui;
 
 import listItemStorage.ListEntry;
+import util.Util;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -32,9 +33,16 @@ public class ScrollTaskList extends JPanel {
         //set layout
         LAYOUT = new GridBagLayout();
         GBC = new GridBagConstraints();
+        setLayout(LAYOUT);
 
-        //add title to graph
+
+        //set title
         TITLE = new JLabel();
+        TITLE.setHorizontalAlignment(JLabel.CENTER);
+        TITLE.setFont(ListGui.TITLE);
+        TITLE.setForeground(ListGui.TEXT);
+        //add title
+        addTitle();
 
         //create the Jlist
         LIST = new JList<>();
@@ -52,11 +60,28 @@ public class ScrollTaskList extends JPanel {
 
         //add scrollpane to panel
 
-        add(SCROLLER, BorderLayout.CENTER);
+        GBC.gridheight = GridBagConstraints.REMAINDER;
+        GBC.fill = GridBagConstraints.BOTH;
+        GBC.weighty = 1.0;
+
+        Util.addToGb(this, SCROLLER, GBC, 0, 1);
     }
 
     public void addTitle() {
-        JLabel title = new JLabel();
+        //put title in a panel
+        JPanel titlePanel = Util.newPanel(TITLE, new BorderLayout(),BorderLayout.CENTER);
+
+        titlePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+//        titlePanel.setPreferredSize(new Dimension(100,20));
+
+        //add title to graph
+        GBC.gridwidth = GridBagConstraints.REMAINDER;
+        GBC.gridheight = GridBagConstraints.RELATIVE;
+        GBC.weightx = 1.0;
+        GBC.weighty = 0.1;
+        GBC.fill = GridBagConstraints.HORIZONTAL;
+
+        Util.addToGb(this, TITLE, GBC, 0, 0);
     }
 
     /**Sets the background color of the scroll pane to the specified color
@@ -75,6 +100,14 @@ public class ScrollTaskList extends JPanel {
     public void setFg(Color color) {
         super.setForeground(color);
         LIST.setForeground(color);
+    }
+
+    /**Sets the title of the scroll list to the specified string.
+     *
+     * @param title the title
+     */
+    public void setTitle(String title) {
+        TITLE.setText(title);
     }
 
     //creates an access listener that sets the currently selected
