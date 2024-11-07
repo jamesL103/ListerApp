@@ -81,6 +81,7 @@ public class EntryViewPanel extends EntryAccessPanel {
 
     private JButton makeExitButton() {
         JButton exit = new JButton("x");
+        exit.addActionListener(makeExitListener());
         exit.setFont(smallFont);
         return exit;
     }
@@ -92,7 +93,7 @@ public class EntryViewPanel extends EntryAccessPanel {
                 observer.notifyClose();
             }
         };
-        return null;
+        return exit;
     }
 
     /**Sets this panel's observer to the specified observer

@@ -23,7 +23,9 @@ public class ListGui {
     //observer to track when list selection changes
     private final ListSelectionObserver SELECTION_OBSERVER = new ListSelectionObserver();
 
+    //components of the gui
     private JPanel completed;
+    private EntryViewPanel viewPanel;
 
     //default colors
     public static final Color BACKGROUND = new Color(24, 32, 54);
@@ -42,6 +44,8 @@ public class ListGui {
 
         PARENT.setLayout(layout);
         PARENT.getContentPane().setBackground(BACKGROUND);
+
+        initViewPanel();
 
         MANAGER = new ListManager();
 
@@ -109,6 +113,38 @@ public class ListGui {
         addTo(bar, 0, 1);
     }
 
+    //creates the EntryViewPanel and sets its constraints in the layout
+    private void initViewPanel() {
+        viewPanel = new EntryViewPanel(new ListEntry("null"));
+        viewPanel.addObserver(new ViewPanelObserver());
+
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.weightx = 0.25;
+        gbc.weighty = 1.0;
+
+        layout.setConstraints(viewPanel, gbc);
+    }
+
+    //displays the Access Panel for the selected entry
+    private void displayEntry(ListEntry entry) {
+
+        //change layout constraints for completed list
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridwidth = GridBagConstraints.RELATIVE;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 0.25;
+        layout.setConstraints(completed, gbc);
+
+        PARENT.add(viewPanel);
+        viewPanel.setEntry(entry);
+
+        PARENT.paintAll(PARENT.getGraphics());
+    }
+
     //adds component to grid at index x and y
     //resets grid x and grid y back to original values
     //does NOT reset GridBagLayout constraints
@@ -141,25 +177,7 @@ public class ListGui {
         return panel;
     }
 
-    //displays the Access Panel for the selected entry
-    private void displayEntry(ListEntry entry) {
-        EntryAccessPanel panel = new EntryViewPanel(entry);
 
-        //change layout constraints for completed list
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.gridwidth = GridBagConstraints.RELATIVE;
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weightx = 0.25;
-        layout.setConstraints(completed, gbc);
-
-
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.fill = GridBagConstraints.BOTH;
-
-        addTo(panel, 2, 0);
-        PARENT.paintAll(PARENT.getGraphics());
-    }
 
     //helper to create new label with correct colors
     private JLabel createLabel(String text) {
@@ -192,8 +210,10 @@ public class ListGui {
     //observer that handles events with the EntryViewPanel
     public class ViewPanelObserver {
 
+        //closes the entryViewPanel
         public void notifyClose() {
-
+            PARENT.remove(viewPanel);
+            PARENT.paintAll(PARENT.getGraphics());
         }
 
     }
