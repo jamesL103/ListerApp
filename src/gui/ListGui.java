@@ -1,11 +1,8 @@
 package gui;
 
 import listItemStorage.ListEntry;
-import util.Util;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 
 public class ListGui {
@@ -13,7 +10,10 @@ public class ListGui {
     //Parent container of the gui
     private final JFrame PARENT;
 
+    //GridBagLayout Constraints
     private final GridBagConstraints gbc;
+    private final GridBagConstraints CONSTRAINTS_ENTRY = new GridBagConstraints();
+    private final GridBagConstraints CONSTRAINTS_L2 = new GridBagConstraints();
 
     private final GridBagLayout layout;
 
@@ -46,6 +46,7 @@ public class ListGui {
         PARENT.getContentPane().setBackground(BACKGROUND);
 
         initViewPanel();
+        initListConstraints();
 
         MANAGER = new ListManager();
 
@@ -118,14 +119,21 @@ public class ListGui {
         viewPanel = new EntryViewPanel(new ListEntry("null"));
         viewPanel.addObserver(new ViewPanelObserver());
 
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.weightx = 0.25;
-        gbc.weighty = 1.0;
-
-        layout.setConstraints(viewPanel, gbc);
+        CONSTRAINTS_ENTRY.gridwidth = GridBagConstraints.REMAINDER;
+        CONSTRAINTS_ENTRY.fill = GridBagConstraints.BOTH;
+        CONSTRAINTS_ENTRY.gridx = 3;
+        CONSTRAINTS_ENTRY.gridy = 0;
+        CONSTRAINTS_ENTRY.weightx = 0.25;
+        CONSTRAINTS_ENTRY.weighty = 0.5;
+    }
+    
+    //initialize the default layout constraints for the second list
+    private void initListConstraints() {
+        CONSTRAINTS_L2.gridwidth = 1;
+        CONSTRAINTS_L2.weightx = 0.5;
+        CONSTRAINTS_L2.weighty = 1.0;
+        CONSTRAINTS_L2.gridheight = GridBagConstraints.RELATIVE;
+        CONSTRAINTS_L2.fill = GridBagConstraints.BOTH;
     }
 
     //displays the Access Panel for the selected entry
@@ -139,7 +147,7 @@ public class ListGui {
         gbc.weightx = 0.25;
         layout.setConstraints(completed, gbc);
 
-        PARENT.add(viewPanel);
+        PARENT.add(viewPanel, CONSTRAINTS_ENTRY);
         viewPanel.setEntry(entry);
 
         PARENT.paintAll(PARENT.getGraphics());
@@ -153,8 +161,7 @@ public class ListGui {
         int origy = gbc.gridy;
         gbc.gridx = x;
         gbc.gridy = y;
-        layout.setConstraints(c, gbc);
-        PARENT.add(c);
+        PARENT.add(c, gbc);
         gbc.gridx = origx;
         gbc.gridy = origy;
     }
@@ -214,6 +221,7 @@ public class ListGui {
         public void notifyClose() {
             PARENT.remove(viewPanel);
             PARENT.paintAll(PARENT.getGraphics());
+            layout.setConstraints(completed, CONSTRAINTS_L2);
         }
 
     }
