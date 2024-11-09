@@ -13,19 +13,23 @@ public class ListGui {
     //GridBagLayout Constraints
     private final GridBagConstraints gbc;
     private final GridBagConstraints CONSTRAINTS_ENTRY = new GridBagConstraints();
-    private final GridBagConstraints CONSTRAINTS_L2 = new GridBagConstraints();
+    private final GridBagConstraints CONSTRAINTS_L2_DEFAULT = createDefList2Constraints();
+    private final GridBagConstraints CONSTRAINTS_L2_SMALL = createSmallList2Constraints();
 
     private final GridBagLayout layout;
 
     //manages the data stored in all the lists
     private final ListManager MANAGER;
 
-    //observer to track when list selection changes
-    private final ListSelectionObserver SELECTION_OBSERVER = new ListSelectionObserver();
-
     //components of the gui
-    private JPanel completed;
+    private ScrollTaskList toDo;
+    private ScrollTaskList completed;
+
     private EntryViewPanel viewPanel;
+    private EntryEditPanel editPanel;
+
+    //whether the entry viewer is visible
+    private boolean entryVisible = false;
 
     //default colors
     public static final Color BACKGROUND = new Color(24, 32, 54);
@@ -46,7 +50,7 @@ public class ListGui {
         PARENT.getContentPane().setBackground(BACKGROUND);
 
         initViewPanel();
-        initListConstraints();
+        initEditPanel();
 
         MANAGER = new ListManager();
 
@@ -69,12 +73,11 @@ public class ListGui {
         todo.setTitle("To-Do");
         MANAGER.registerList(todo.LIST, "todo");
 
+        todo.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        JPanel todoPanel = newPanel(todo, new BorderLayout(), BorderLayout.CENTER);
-        todoPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        toDo = todo;
 
-
-        addTo(todoPanel, 0, 0);
+        addTo(todo, 0, 0);
 
         //completed list
 
@@ -82,15 +85,14 @@ public class ListGui {
         completedTasks.setTitle("Completed");
         MANAGER.registerList(completedTasks.LIST, "completed");
 
-        JPanel completedTaskPanel = newPanel(completedTasks, new BorderLayout(), BorderLayout.CENTER);
-        completedTaskPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        completedTasks.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        completed = completedTaskPanel;
+        completed = completedTasks;
 
         //update constraints for list 2
         gbc.gridwidth = GridBagConstraints.REMAINDER;
 
-        addTo(completedTaskPanel, 1, 0);
+        PARENT.add(completedTasks, CONSTRAINTS_L2_DEFAULT);
 
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
@@ -103,8 +105,9 @@ public class ListGui {
         MANAGER.initAll();
     }
 
+    //create and add button bar
     private void addButtons() {
-        EntryControlBar bar = new EntryControlBar(MANAGER);
+        EntryControlBar bar = new EntryControlBar(new ListEditObserver());
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth= GridBagConstraints.REMAINDER;
         gbc.gridheight = 1;
@@ -117,40 +120,82 @@ public class ListGui {
     //creates the EntryViewPanel and sets its constraints in the layout
     private void initViewPanel() {
         viewPanel = new EntryViewPanel(new ListEntry("null"));
-        viewPanel.addObserver(new ViewPanelObserver());
+        viewPanel.addObserver(new EntryPanelObserver());
 
         CONSTRAINTS_ENTRY.gridwidth = GridBagConstraints.REMAINDER;
-        CONSTRAINTS_ENTRY.fill = GridBagConstraints.BOTH;
+        CONSTRAINTS_ENTRY.fill = GridBagConstraints.VERTICAL;
         CONSTRAINTS_ENTRY.gridx = 3;
         CONSTRAINTS_ENTRY.gridy = 0;
         CONSTRAINTS_ENTRY.weightx = 0.25;
         CONSTRAINTS_ENTRY.weighty = 0.5;
     }
-    
+
+    //creates the EntryEditPanel
+    private void initEditPanel() {
+        editPanel = new EntryEditPanel(new ListEntry("null"));
+        editPanel.setObserver(new EntryPanelObserver());
+    }
+
     //initialize the default layout constraints for the second list
-    private void initListConstraints() {
-        CONSTRAINTS_L2.gridwidth = 1;
-        CONSTRAINTS_L2.weightx = 0.5;
-        CONSTRAINTS_L2.weighty = 1.0;
-        CONSTRAINTS_L2.gridheight = GridBagConstraints.RELATIVE;
-        CONSTRAINTS_L2.fill = GridBagConstraints.BOTH;
+    private static GridBagConstraints createDefList2Constraints() {
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        constraints.gridheight = GridBagConstraints.RELATIVE;
+        constraints.weightx = 0.5;
+        constraints.weighty = 1.0;
+        return constraints;
+    }
+
+    //initialize the minimized layout constraints for the second list
+    private static GridBagConstraints createSmallList2Constraints() {
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.weightx = 0.25;
+        constraints.weighty = 1.0;
+        constraints.gridwidth = GridBagConstraints.RELATIVE;
+        constraints.gridheight = GridBagConstraints.RELATIVE;
+        constraints.fill = GridBagConstraints.BOTH;
+        return constraints;
     }
 
     //displays the Access Panel for the selected entry
     private void displayEntry(ListEntry entry) {
+        if (!entryVisible) {
+            //change layout constraints for completed list
+            
+            layout.setConstraints(completed, CONSTRAINTS_L2_SMALL);
 
-        //change layout constraints for completed list
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.gridwidth = GridBagConstraints.RELATIVE;
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weightx = 0.25;
-        layout.setConstraints(completed, gbc);
+            PARENT.add(viewPanel, CONSTRAINTS_ENTRY);
+            entryVisible = true;
 
-        PARENT.add(viewPanel, CONSTRAINTS_ENTRY);
+        } else {
+            PARENT.remove(editPanel);
+        }
         viewPanel.setEntry(entry);
+        PARENT.repaint();
+        viewPanel.repaint();
+    }
 
-        PARENT.paintAll(PARENT.getGraphics());
+    //displays the edit panel for an entry
+    private void editEntry (ListEntry entry) {
+        if (!entryVisible) {
+            //change layout constraints for completed list
+
+            layout.setConstraints(completed, CONSTRAINTS_L2_SMALL);
+
+
+            entryVisible = true;
+        } else {
+            PARENT.remove(viewPanel);
+        }
+        PARENT.add(editPanel, CONSTRAINTS_ENTRY);
+        editPanel.setEntry(entry);
+        PARENT.repaint();
+        editPanel.repaint();
     }
 
     //adds component to grid at index x and y
@@ -166,37 +211,10 @@ public class ListGui {
         gbc.gridy = origy;
     }
 
-    //creates and returns a new Panel with the specified component added
-    //uses specified LayoutManager and adds with specified constraints
-    //if null, adds with default settings
-    private JPanel newPanel(Component c, LayoutManager layout, Object layoutRules) {
-        JPanel panel = new JPanel();
-        panel.setBackground(BACKGROUND);
-        panel.setForeground(TEXT);
-        if (layout != null) {
-            panel.setLayout(layout);
-        }
-        if (layoutRules != null) {
-            panel.add(c, layoutRules);
-        } else {
-            panel.add(c);
-        }
-        return panel;
-    }
-
-
-
-    //helper to create new label with correct colors
-    private JLabel createLabel(String text) {
-        JLabel label = new JLabel(text);
-        label.setBackground(BACKGROUND);
-        label.setForeground(TEXT);
-        return label;
-    }
 
     //helper to create Scroll task list with correct colors
     private ScrollTaskList createScroll() {
-        ScrollTaskList scroll = new ScrollTaskList(SELECTION_OBSERVER);
+        ScrollTaskList scroll = new ScrollTaskList(new ListSelectionObserver());
         scroll.setBg(BACKGROUND);
         scroll.setFg(TEXT);
         return scroll;
@@ -209,21 +227,40 @@ public class ListGui {
         //called when a ListEntry is selected
         //notifies gui to display and update access panel
         public void notifySelection(ListEntry entry) {
-            displayEntry(entry);
+            if (entry != null) {
+                displayEntry(entry);
+            }
         }
 
     }
 
-    //observer that handles events with the EntryViewPanel
-    public class ViewPanelObserver {
+    //observer that handles events with any entry panel
+    public class EntryPanelObserver {
 
         //closes the entryViewPanel
         public void notifyClose() {
             PARENT.remove(viewPanel);
+            entryVisible = false;
             PARENT.paintAll(PARENT.getGraphics());
-            layout.setConstraints(completed, CONSTRAINTS_L2);
+            layout.setConstraints(completed, CONSTRAINTS_L2_DEFAULT);
+            toDo.clearSelection();
+            completed.clearSelection();
         }
 
+        //opens editing of the currently viewed entry
+        public void notifyEdit(ListEntry entry) {
+            editEntry(entry);
+        }
+
+    }
+
+    //observer that tracks when modifications to the lists are made
+    public class ListEditObserver {
+
+        public void notifyAdd() {
+            ListEntry entry = new ListEntry();
+            editEntry(entry);
+        }
     }
 
 }

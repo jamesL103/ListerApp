@@ -15,6 +15,7 @@ public class EntryEditPanel extends EntryAccessPanel {
 
     private final DatePanel DATE_EDITOR;
 
+    private ListGui.EntryPanelObserver observer;
 
 
     public EntryEditPanel(ListEntry entry) {
@@ -38,6 +39,18 @@ public class EntryEditPanel extends EntryAccessPanel {
     public void updateFields() {
         ((JTextComponent)nameDisplay).setText(toDisplay.getName());
         ((JTextComponent)descDisplay).setText(toDisplay.getDescription());
+    }
+
+    @Override
+    public ActionListener makeExitListener() {
+        return (e) -> {
+            observer.notifyClose();
+        };
+    }
+
+    //sets the panel's observer
+    public void setObserver(ListGui.EntryPanelObserver ob) {
+        observer = ob;
     }
 
     //set all fields in the date panel based on the entry

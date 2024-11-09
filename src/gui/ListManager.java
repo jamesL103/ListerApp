@@ -72,10 +72,11 @@ public class ListManager {
 
     /**Adds the specified entry to the end of the specified list.
      *
-     * @param list the list to add to
+     * @param lstPanel the list to add to
      * @param entry the entry to add
      */
-    public void addTo(JList<ListEntry> list, ListEntry entry) {
+    public void addTo(ScrollTaskList lstPanel, ListEntry entry) {
+        JList<ListEntry> list = lstPanel.LIST;
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
         model.addElement(entry);
         autosave(list);
@@ -83,11 +84,12 @@ public class ListManager {
 
     /**Inserts the specified item at the specified index of the specified list.
      *
-     * @param list the list to add to
+     * @param lstPanel the list to add to
      * @param entry the item to add
      * @param index the index to insert at
      */
-    public void addTo(JList<ListEntry> list, ListEntry entry, int index) {
+    public void addTo(ScrollTaskList lstPanel, ListEntry entry, int index) {
+        JList<ListEntry> list = lstPanel.LIST;
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
         model.add(index, entry);
         autosave(list);

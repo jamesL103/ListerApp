@@ -84,6 +84,11 @@ public class ScrollTaskList extends JPanel {
         Util.addToGb(this, TITLE, GBC, 0, 0);
     }
 
+    //clears the selection of the list
+    public void clearSelection() {
+        LIST.clearSelection();
+    }
+
     /**Sets the background color of the scroll pane to the specified color
      *
      * @param color the new color

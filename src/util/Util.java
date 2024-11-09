@@ -92,4 +92,12 @@ public class Util {
         return panel;
     }
 
+    //helper to create new label with correct colors
+    private JLabel createLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setBackground(ListGui.BACKGROUND);
+        label.setForeground(ListGui.TEXT);
+        return label;
+    }
+
 }

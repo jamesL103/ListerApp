@@ -1,10 +1,10 @@
 package gui;
 
 import listItemStorage.ListEntry;
+import util.Util;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**Abstract class to create a gui that accesses the fields of a ListEntry.
@@ -23,6 +23,10 @@ public abstract class EntryAccessPanel extends JPanel {
     protected JComponent dateDisplay;
     protected JComponent buttonDisplay;
 
+    //exit button
+    //actionlistener automatically added on init using makeExitListener()
+    protected JButton exitButton;
+
     private final GridBagLayout layout;
     protected final GridBagConstraints gbc;
 
@@ -35,6 +39,7 @@ public abstract class EntryAccessPanel extends JPanel {
         layout = new GridBagLayout();
         gbc = new GridBagConstraints();
         setLayout(layout);
+        addExitButton();
         initialize();
     }
 
@@ -112,6 +117,21 @@ public abstract class EntryAccessPanel extends JPanel {
 
         addComponent(comp, 0, 4);
     }
+
+    //create and add the exit button
+    private void addExitButton() {
+        JButton button = new JButton("x");
+        exitButton = button;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0.1;
+        gbc.weighty = 0.1;
+
+        button.addActionListener(makeExitListener());
+
+        Util.addToGb(this, button, gbc, 1, 0);
+    }
+
+   public abstract ActionListener makeExitListener();
 
     /**Updates the gui to the current entry's fields.
      * Assumes the entry is not null.

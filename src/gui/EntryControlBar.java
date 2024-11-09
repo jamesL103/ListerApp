@@ -2,19 +2,21 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**JPanel storing all the buttons in the main ListGui to
+ * edit and move list entries.
+ */
 public class EntryControlBar extends JPanel {
 
-    private final ListManager MANAGER;
+    private ListGui.ListEditObserver observer;
 
     private final int BAR_HEIGHT = 50;
 
-    public EntryControlBar(ListManager manager) {
+    public EntryControlBar(ListGui.ListEditObserver observer) {
         super();
-        MANAGER = manager;
 
+        this.observer = observer;
         FlowLayout layout = new FlowLayout();
         layout.setHgap(20);
         setLayout(layout);
@@ -27,7 +29,7 @@ public class EntryControlBar extends JPanel {
     private void addButtons() {
         JButton add = new JButton();
         add.setText("Create New Entry");
-        add.addActionListener(ADD_EVENT);
+        add.addActionListener(EVENT_ADD);
         add(add);
 
         JButton complete = new JButton();
@@ -39,11 +41,14 @@ public class EntryControlBar extends JPanel {
         add(delete);
     }
 
-    private final ActionListener ADD_EVENT = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
+    //event for creating a new entry
+    private final ActionListener EVENT_ADD = (e) -> {
+        observer.notifyAdd();
+    };
 
-        }
+    //event for completing and entry and moving it to the completed list
+    private final ActionListener EVENT_COMPLETE = (e) -> {
+
     };
 
 }
