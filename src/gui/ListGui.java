@@ -25,6 +25,8 @@ public class ListGui {
     private ScrollTaskList toDo;
     private ScrollTaskList completed;
 
+    //panels for accessing and editing entry fields
+    private EntryAccessPanel currentView;
     private EntryViewPanel viewPanel;
     private EntryEditPanel editPanel;
 
@@ -162,14 +164,34 @@ public class ListGui {
         return constraints;
     }
 
+    //displays the current entry and its fields as a side panel
+    private void displayEntryAccess(ListEntry entry) {
+        if (true) {
+
+            //change layout constraints for completed list
+            layout.setConstraints(completed, CONSTRAINTS_L2_SMALL);
+
+            layout.setConstraints(currentView, CONSTRAINTS_ENTRY);
+
+            PARENT.add(currentView, CONSTRAINTS_ENTRY);
+//            PARENT.add(new JButton("eeeeeeeeeeeeeeeeee"));
+            entryVisible = true;
+
+        }
+        currentView.setEntry(entry);
+        PARENT.getContentPane().repaint();
+        currentView.repaint();
+    }
+
     //displays the Access Panel for the selected entry
     private void displayEntry(ListEntry entry) {
+        currentView = viewPanel;
         if (!entryVisible) {
             //change layout constraints for completed list
             
             layout.setConstraints(completed, CONSTRAINTS_L2_SMALL);
 
-            PARENT.add(viewPanel, CONSTRAINTS_ENTRY);
+            PARENT.add(currentView, CONSTRAINTS_ENTRY);
             entryVisible = true;
 
         } else {
@@ -187,13 +209,13 @@ public class ListGui {
 
             layout.setConstraints(completed, CONSTRAINTS_L2_SMALL);
 
+            PARENT.add(editPanel, CONSTRAINTS_ENTRY);
 
             entryVisible = true;
         } else {
             PARENT.remove(viewPanel);
         }
-        PARENT.add(editPanel, CONSTRAINTS_ENTRY);
-        editPanel.setEntry(entry);
+//        editPanel.setEntry(entry);
         PARENT.repaint();
         editPanel.repaint();
     }
@@ -228,7 +250,8 @@ public class ListGui {
         //notifies gui to display and update access panel
         public void notifySelection(ListEntry entry) {
             if (entry != null) {
-                displayEntry(entry);
+                currentView = viewPanel;
+                displayEntryAccess(entry);
             }
         }
 
@@ -239,7 +262,7 @@ public class ListGui {
 
         //closes the entryViewPanel
         public void notifyClose() {
-            PARENT.remove(viewPanel);
+            PARENT.remove(currentView);
             entryVisible = false;
             PARENT.paintAll(PARENT.getGraphics());
             layout.setConstraints(completed, CONSTRAINTS_L2_DEFAULT);
@@ -249,7 +272,8 @@ public class ListGui {
 
         //opens editing of the currently viewed entry
         public void notifyEdit(ListEntry entry) {
-            editEntry(entry);
+            currentView = editPanel;
+            displayEntryAccess(entry);
         }
 
     }
@@ -258,8 +282,9 @@ public class ListGui {
     public class ListEditObserver {
 
         public void notifyAdd() {
+            currentView = editPanel;
             ListEntry entry = new ListEntry();
-            editEntry(entry);
+            displayEntryAccess(entry);
         }
     }
 
