@@ -9,11 +9,11 @@ import java.awt.event.ActionListener;
  */
 public class EntryControlBar extends JPanel {
 
-    private ListGui.ListEditObserver observer;
+    private ListGui.ControlBarObserver observer;
 
     private final int BAR_HEIGHT = 50;
 
-    public EntryControlBar(ListGui.ListEditObserver observer) {
+    public EntryControlBar(ListGui.ControlBarObserver observer) {
         super();
 
         this.observer = observer;
@@ -54,7 +54,7 @@ public class EntryControlBar extends JPanel {
 
     //event for completing and entry and moving it to the completed list
     private final ActionListener EVENT_COMPLETE = (e) -> {
-
+        observer.notifyComplete();
     };
 
 }

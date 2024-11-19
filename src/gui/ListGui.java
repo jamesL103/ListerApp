@@ -113,7 +113,7 @@ public class ListGui {
 
     //create and add button bar
     private void addButtons() {
-        EntryControlBar bar = new EntryControlBar(new ListEditObserver());
+        EntryControlBar bar = new EntryControlBar(new ControlBarObserver());
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth= GridBagConstraints.REMAINDER;
         gbc.gridheight = 1;
@@ -186,6 +186,11 @@ public class ListGui {
         PARENT.paintComponents(PARENT.getGraphics());
     }
 
+    //completes an entry, moving it from to-do to completed
+    private void completeEntry() {
+
+    }
+
     //adds component to grid at index x and y
     //resets grid x and grid y back to original values
     //does NOT reset GridBagLayout constraints
@@ -212,7 +217,7 @@ public class ListGui {
     //observer that notifies gui when list entry is selected from list
     public class ListSelectionObserver {
 
-        //called when a ListEntry is selected
+        //called when a ListEntry is selected in the JList
         //notifies gui to display and update access panel
         public void notifySelection(ListEntry entry) {
             if (entry != null) {
@@ -242,12 +247,16 @@ public class ListGui {
 
     }
 
-    //observer that tracks when modifications to the lists are made
-    public class ListEditObserver {
+    //observer that tracks when buttons in the control bar are used
+    public class ControlBarObserver {
 
         public void notifyAdd() {
             ListEntry entry = new ListEntry();
             displayEntryAccess(entry, editPanel);
+        }
+
+        public void notifyComplete() {
+
         }
     }
 
