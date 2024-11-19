@@ -4,7 +4,6 @@ import gui.ListGui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Calendar;
 
 public class Util {
 
@@ -93,11 +92,25 @@ public class Util {
     }
 
     //helper to create new label with correct colors
-    private JLabel createLabel(String text) {
+    public static JLabel newLabel(String text) {
         JLabel label = new JLabel(text);
-        label.setBackground(ListGui.BACKGROUND);
         label.setForeground(ListGui.TEXT);
         return label;
+    }
+
+    //helper to create new label with correct colors
+    public static JLabel newLabel() {
+        JLabel label = new JLabel();
+        label.setForeground(ListGui.TEXT);
+        return label;
+    }
+
+    //helper to make new button with app theme
+    public static JButton newButton(String text) {
+        JButton button = new JButton(text);
+        button.setBackground(ListGui.COLOR_BUTTON);
+        button.setForeground(ListGui.TEXT);
+        return button;
     }
 
 }

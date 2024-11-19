@@ -1,6 +1,7 @@
 package gui;
 
 import listItemStorage.ListEntry;
+import util.Util;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -29,7 +30,7 @@ public class EntryViewPanel extends EntryAccessPanel {
     }
 
     private JLabel makeName() {
-        JLabel name = new JLabel();
+        JLabel name = Util.newLabel();
         name.setFont(ListGui.TITLE);
         name.setText("default");
         name.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -56,7 +57,9 @@ public class EntryViewPanel extends EntryAccessPanel {
 
     private JPanel makeButtons() {
         JPanel panel = new JPanel();
-        JButton edit = new JButton("Edit");
+        panel.setBackground(ListGui.BACKGROUND);
+
+        JButton edit = Util.newButton("Edit");
         edit.addActionListener(makeEditListener());
         edit.setFont(smallFont);
         panel.add(edit);

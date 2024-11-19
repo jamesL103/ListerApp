@@ -38,6 +38,9 @@ public abstract class EntryAccessPanel extends JPanel {
         toDisplay = entry;
         layout = new GridBagLayout();
         gbc = new GridBagConstraints();
+
+        setBackground(ListGui.BACKGROUND);
+
         setLayout(layout);
         addExitButton();
         initialize();
@@ -59,7 +62,10 @@ public abstract class EntryAccessPanel extends JPanel {
     protected void addNameAccessor(JComponent comp) {
         nameDisplay = comp;
         comp.setFont(ListGui.TITLE);
-        comp.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        comp.setBorder(BorderFactory.createLineBorder(ListGui.COLOR_BORDER));
+
+        comp.setBackground(ListGui.COLOR_BG_ACCENT);
+        comp.setForeground(ListGui.TEXT);
 
         //gbc constraints
         gbc.gridwidth = 1;
@@ -70,7 +76,7 @@ public abstract class EntryAccessPanel extends JPanel {
     }
 
     protected void addDescAccessor(JComponent comp) {
-        JLabel descTitle = new JLabel("Description:");
+        JLabel descTitle = Util.newLabel("Description:");
 
         descTitle.setFont(subTitleFont);
 
@@ -81,6 +87,8 @@ public abstract class EntryAccessPanel extends JPanel {
         addComponent(descTitle, 0, 1);
 
         descDisplay = comp;
+        comp.setBackground(ListGui.COLOR_BG_ACCENT);
+        comp.setForeground(ListGui.TEXT);
 
         JScrollPane descPane = new JScrollPane();
         descPane.setViewportView(comp);
@@ -97,6 +105,9 @@ public abstract class EntryAccessPanel extends JPanel {
     protected void addDateAccessor(JComponent comp) {
         dateDisplay = comp;
         comp.setFont(smallFont);
+
+        comp.setBackground(ListGui.COLOR_BG_ACCENT);
+        comp.setForeground(ListGui.TEXT);
 
         gbc.weighty = 0.1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -120,7 +131,8 @@ public abstract class EntryAccessPanel extends JPanel {
 
     //create and add the exit button
     private void addExitButton() {
-        JButton button = new JButton("x");
+        JButton button = Util.newButton("x");
+
         exitButton = button;
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0.1;
@@ -131,6 +143,10 @@ public abstract class EntryAccessPanel extends JPanel {
         Util.addToGb(this, button, gbc, 1, 0);
     }
 
+    /**Creates and returns an ActionListener for when the close button is pressed.
+     *
+     * @return a Listener for the close button
+     */
    public abstract ActionListener makeExitListener();
 
     /**Updates the gui to the current entry's fields.

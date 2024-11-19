@@ -35,6 +35,8 @@ public class ListGui {
 
     //default colors
     public static final Color BACKGROUND = new Color(24, 32, 54);
+    public static final Color COLOR_BG_ACCENT = new Color(54, 60, 81);
+    public static final Color COLOR_BORDER = new Color(101, 101, 101);
     public static final Color TEXT = new Color(255, 255, 255);
     public static final Color COLOR_BUTTON = new Color(116, 160, 255);
 

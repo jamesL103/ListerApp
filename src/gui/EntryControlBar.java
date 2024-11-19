@@ -21,22 +21,28 @@ public class EntryControlBar extends JPanel {
         layout.setHgap(20);
         setLayout(layout);
         setPreferredSize(new Dimension(getWidth(), BAR_HEIGHT));
+        setBackground(ListGui.COLOR_BG_ACCENT);
         addButtons();
-
-        setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
 
     private void addButtons() {
         JButton add = new JButton();
+        add.setBackground(ListGui.COLOR_BUTTON);
+        add.setForeground(ListGui.TEXT);
         add.setText("Create New Entry");
         add.addActionListener(EVENT_ADD);
         add(add);
 
         JButton complete = new JButton();
+        complete.setBackground(ListGui.COLOR_BUTTON);
+        complete.setForeground(ListGui.TEXT);
         complete.setText("Complete");
+        complete.addActionListener(EVENT_COMPLETE);
         add(complete);
 
         JButton delete = new JButton();
+        delete.setBackground(ListGui.COLOR_BUTTON);
+        delete.setForeground(ListGui.TEXT);
         delete.setText("Delete Entry");
         add(delete);
     }
