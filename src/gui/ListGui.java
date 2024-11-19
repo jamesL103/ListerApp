@@ -36,6 +36,7 @@ public class ListGui {
     //default colors
     public static final Color BACKGROUND = new Color(24, 32, 54);
     public static final Color TEXT = new Color(255, 255, 255);
+    public static final Color COLOR_BUTTON = new Color(116, 160, 255);
 
     //fonts
     public static final Font TITLE = new Font("arial", Font.PLAIN, 24);
@@ -53,6 +54,7 @@ public class ListGui {
 
         initViewPanel();
         initEditPanel();
+        currentView = viewPanel;
 
         MANAGER = new ListManager();
 
@@ -164,60 +166,22 @@ public class ListGui {
         return constraints;
     }
 
-    //displays the current entry and its fields as a side panel
-    private void displayEntryAccess(ListEntry entry) {
-        if (true) {
+    //displays the specified entry and its fields as a side panel of a specified type
+    private void displayEntryAccess(ListEntry entry, EntryAccessPanel panel) {
 
-            //change layout constraints for completed list
-            layout.setConstraints(completed, CONSTRAINTS_L2_SMALL);
+        PARENT.remove(currentView);
+        currentView = panel;
 
-            layout.setConstraints(currentView, CONSTRAINTS_ENTRY);
+        //change layout constraints for completed list
+        layout.setConstraints(completed, CONSTRAINTS_L2_SMALL);
 
-            PARENT.add(currentView, CONSTRAINTS_ENTRY);
-//            PARENT.add(new JButton("eeeeeeeeeeeeeeeeee"));
-            entryVisible = true;
+        layout.setConstraints(currentView, CONSTRAINTS_ENTRY);
 
-        }
+
+        PARENT.add(panel, CONSTRAINTS_ENTRY);
+        entryVisible = true;
         currentView.setEntry(entry);
-        PARENT.getContentPane().repaint();
-        currentView.repaint();
-    }
-
-    //displays the Access Panel for the selected entry
-    private void displayEntry(ListEntry entry) {
-        currentView = viewPanel;
-        if (!entryVisible) {
-            //change layout constraints for completed list
-            
-            layout.setConstraints(completed, CONSTRAINTS_L2_SMALL);
-
-            PARENT.add(currentView, CONSTRAINTS_ENTRY);
-            entryVisible = true;
-
-        } else {
-            PARENT.remove(editPanel);
-        }
-        viewPanel.setEntry(entry);
-        PARENT.repaint();
-        viewPanel.repaint();
-    }
-
-    //displays the edit panel for an entry
-    private void editEntry (ListEntry entry) {
-        if (!entryVisible) {
-            //change layout constraints for completed list
-
-            layout.setConstraints(completed, CONSTRAINTS_L2_SMALL);
-
-            PARENT.add(editPanel, CONSTRAINTS_ENTRY);
-
-            entryVisible = true;
-        } else {
-            PARENT.remove(viewPanel);
-        }
-//        editPanel.setEntry(entry);
-        PARENT.repaint();
-        editPanel.repaint();
+        PARENT.paintComponents(PARENT.getGraphics());
     }
 
     //adds component to grid at index x and y
@@ -250,8 +214,7 @@ public class ListGui {
         //notifies gui to display and update access panel
         public void notifySelection(ListEntry entry) {
             if (entry != null) {
-                currentView = viewPanel;
-                displayEntryAccess(entry);
+                displayEntryAccess(entry, viewPanel);
             }
         }
 
@@ -272,8 +235,7 @@ public class ListGui {
 
         //opens editing of the currently viewed entry
         public void notifyEdit(ListEntry entry) {
-            currentView = editPanel;
-            displayEntryAccess(entry);
+            displayEntryAccess(entry, editPanel);
         }
 
     }
@@ -282,9 +244,8 @@ public class ListGui {
     public class ListEditObserver {
 
         public void notifyAdd() {
-            currentView = editPanel;
             ListEntry entry = new ListEntry();
-            displayEntryAccess(entry);
+            displayEntryAccess(entry, editPanel);
         }
     }
 
