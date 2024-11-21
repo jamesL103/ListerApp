@@ -11,7 +11,11 @@ import java.io.IOException;
 import java.util.*;
 
 /**Class to allow manipulation of the data stored within Jlists displayed in the GUI.
- * The class provides methods to manipulate their ListModels when registered.
+ * The class provides methods to manipulate their ListModels when registered, and to
+ * have that data stored in a file.
+ * Any list in the gui must be registered in the manager before it's data can be changed
+ * and stored.
+ * A file will be created for every list if one does not already exist.
  *
  */
 public class ListManager {
@@ -97,10 +101,11 @@ public class ListManager {
 
     /**Removes an item in a list at specified index.
      *
-     * @param list list to remove from
+     * @param lstPanel list to remove from
      * @param index index of element to remove
      */
-    public void removeAt(JList<ListEntry> list, int index) {
+    public void removeAt(ScrollTaskList lstPanel, int index) {
+        JList<ListEntry> list = lstPanel.LIST;
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
         model.remove(index);
         autosave(list);
@@ -108,10 +113,11 @@ public class ListManager {
 
     /**Removes a specified item from a list.
      *
-     * @param list list to remove from
+     * @param lstPanel list to remove from
      * @param entry element to remove
      */
-    public void removeEntry(JList<ListEntry> list,ListEntry entry) {
+    public void removeEntry(ScrollTaskList lstPanel,ListEntry entry) {
+        JList<ListEntry> list = lstPanel.LIST;
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
         model.removeElement(entry);
         autosave(list);
@@ -165,9 +171,18 @@ public class ListManager {
 
     /**Saves the specified list to its file.
      *
+     * @param lstPanel the list to save
+     */
+    public void save(ScrollTaskList lstPanel) {
+        save(lstPanel.LIST);
+    }
+
+    /**Saves the specified list to its file.
+     * Internal helper that takes a JList as parameter
+     *
      * @param list the list to save
      */
-    public void save(JList<ListEntry> list) {
+    private void save(JList<ListEntry> list) {
         String pathname = LIST_DIR + "/" + LIST_MODELS.get(list).name;
         File fout = new File(pathname);
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;

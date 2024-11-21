@@ -17,6 +17,9 @@ public class EntryEditPanel extends EntryAccessPanel {
 
     private ListGui.EntryPanelObserver observer;
 
+    //determines if the panel is creating a new entry or editing a preexisting one
+    private boolean isCreatingNewEntry;
+
 
     public EntryEditPanel(ListEntry entry) {
         super(entry);
@@ -124,18 +127,26 @@ public class EntryEditPanel extends EntryAccessPanel {
     }
 
 
-
+    //makes the save button for the edit panel
+    //updates the fields of the current entry
     private JPanel makeButton() {
         JPanel panel = new JPanel();
         panel.setBackground(ListGui.BACKGROUND);
 
         JButton save = Util.newButton("Save");
-        save.addActionListener(new ActionListener() {
+        save.addActionListener(makeSaveListener());
+        panel.add(save);
+        return panel;
+    }
+
+    private ActionListener makeSaveListener() {
+        return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                toDisplay.setName(((JTextField)nameDisplay).getText());
-                toDisplay.setDescription(((JTextArea)descDisplay).getText());
+                toDisplay.setName(((JTextField) nameDisplay).getText());
+                toDisplay.setDescription(((JTextArea) descDisplay).getText());
                 setDate();
+                observer.notifySave(toDisplay, isCreatingNewEntry);
             }
 
             private void setDate() {
@@ -144,9 +155,17 @@ public class EntryEditPanel extends EntryAccessPanel {
                 cal.set(Calendar.MONTH, DATE_EDITOR.MONTH.getSelectedIndex());
                 cal.set(Calendar.YEAR, Integer.parseInt(DATE_EDITOR.YEAR.getText()));
             }
-        });
-        panel.add(save);
-        return panel;
+        };
+
     }
 
+    /**Sets whether the panel is creating a new entry or editing an
+     * existing one.
+     * true signifies a new entry, while false signifies editing.
+     *
+     * @param isNewEntry whether the panel is creating a new entry
+     */
+    public void setCreatingNewEntry(boolean isNewEntry) {
+        isCreatingNewEntry = isNewEntry;
+    }
 }

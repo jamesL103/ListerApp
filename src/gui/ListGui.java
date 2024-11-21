@@ -169,6 +169,7 @@ public class ListGui {
     }
 
     //displays the specified entry and its fields as a side panel of a specified type
+    //replaces the current display panel if one is visible
     private void displayEntryAccess(ListEntry entry, EntryAccessPanel panel) {
 
         PARENT.remove(currentView);
@@ -187,8 +188,9 @@ public class ListGui {
     }
 
     //completes an entry, moving it from to-do to completed
-    private void completeEntry() {
-
+    private void completeEntry(ListEntry entry) {
+        MANAGER.removeEntry(toDo, entry);
+        MANAGER.addTo(completed, entry);
     }
 
     //adds component to grid at index x and y
@@ -243,6 +245,16 @@ public class ListGui {
         //opens editing of the currently viewed entry
         public void notifyEdit(ListEntry entry) {
             displayEntryAccess(entry, editPanel);
+            editPanel.setCreatingNewEntry(false);
+        }
+
+        //saves the data of the entry being edited
+        public void notifySave(ListEntry entry, boolean newEntry) {
+            MANAGER.save(toDo);
+            displayEntryAccess(entry, viewPanel);
+            if (newEntry) {
+                MANAGER.addTo(toDo, entry);
+            }
         }
 
     }
@@ -253,9 +265,17 @@ public class ListGui {
         public void notifyAdd() {
             ListEntry entry = new ListEntry();
             displayEntryAccess(entry, editPanel);
+            editPanel.setCreatingNewEntry(true);
         }
 
         public void notifyComplete() {
+            ListEntry selection = toDo.LIST.getSelectedValue();
+            if (selection != null) {
+                completeEntry(selection);
+            }
+        }
+
+        public void notifyDelete() {
 
         }
     }

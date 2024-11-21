@@ -57,4 +57,8 @@ public class EntryControlBar extends JPanel {
         observer.notifyComplete();
     };
 
+    private final ActionListener EVENT_DELETE = (e) -> {
+        observer.notifyDelete();
+    };
+
 }
