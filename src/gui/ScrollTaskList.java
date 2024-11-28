@@ -44,6 +44,9 @@ public class ScrollTaskList extends JPanel {
         //add title
         addTitle();
 
+        //add the list length counter
+        addCounter();
+
         //create the Jlist
         LIST = new JList<>();
 //        LIST.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -64,24 +67,46 @@ public class ScrollTaskList extends JPanel {
         GBC.fill = GridBagConstraints.BOTH;
         GBC.weighty = 1.0;
 
-        Util.addToGb(this, SCROLLER, GBC, 0, 1);
+        Util.addToGb(this, SCROLLER, GBC, 0, 2);
     }
 
-    public void addTitle() {
+    private void addTitle() {
         //put title in a panel
         JPanel titlePanel = Util.newPanel(TITLE, new BorderLayout(),BorderLayout.CENTER);
 
-        titlePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-//        titlePanel.setPreferredSize(new Dimension(100,20));
+        titlePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));;
 
         //add title to graph
         GBC.gridwidth = GridBagConstraints.REMAINDER;
-        GBC.gridheight = GridBagConstraints.RELATIVE;
+        GBC.gridheight = 1;
         GBC.weightx = 1.0;
         GBC.weighty = 0.1;
         GBC.fill = GridBagConstraints.HORIZONTAL;
 
         Util.addToGb(this, TITLE, GBC, 0, 0);
+    }
+
+    //add the list length counter
+    private void addCounter() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JLabel counter = new JLabel();
+        counter.setHorizontalAlignment(SwingConstants.LEFT);
+        counter.setText("0 entries");
+        counter.setForeground(ListGui.TEXT);
+        panel.add(counter, BorderLayout.WEST);
+
+        panel.setBackground(ListGui.BACKGROUND);
+        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        GBC.weightx = 1.0;
+        GBC.weighty = 0.1;
+        GBC.fill = GridBagConstraints.HORIZONTAL;
+        GBC.gridwidth = GridBagConstraints.REMAINDER;
+        GBC.gridheight = 1;
+
+        Util.addToGb(this, panel, GBC, 0, 1);
     }
 
     //clears the selection of the list

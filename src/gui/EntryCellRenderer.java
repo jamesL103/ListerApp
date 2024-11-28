@@ -9,6 +9,7 @@ public class EntryCellRenderer extends JLabel implements ListCellRenderer<ListEn
 
 
     public EntryCellRenderer() {
+        super();
         setPreferredSize(new Dimension(60, 20));
     }
 
