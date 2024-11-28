@@ -181,6 +181,16 @@ public class ListGui {
 
         PARENT.add(panel, CONSTRAINTS_ENTRY);
         currentView.setEntry(entry);
+        PARENT.paintComponents(PARENT.getGraphics());
+    }
+
+    //close the panel currently displaying an entry
+    private void closeEntryPanel() {
+        PARENT.remove(currentView);
+        PARENT.paintComponents(PARENT.getGraphics());
+        layout.setConstraints(completed, CONSTRAINTS_L2_DEFAULT);
+        toDo.clearSelection();
+        completed.clearSelection();
     }
 
     //completes an entry, moving it from to-do to completed
@@ -190,8 +200,9 @@ public class ListGui {
     }
 
     //deletes an entry
-    private void deleteEntry() {
-
+    private void deleteEntry(ScrollTaskList list, ListEntry entry) {
+        MANAGER.removeEntry(list, entry);
+        closeEntryPanel();
     }
 
     //adds component to grid at index x and y
@@ -235,17 +246,14 @@ public class ListGui {
 
         //closes the entryViewPanel
         public void notifyClose() {
-            PARENT.remove(currentView);
-            PARENT.paintAll(PARENT.getGraphics());
-            layout.setConstraints(completed, CONSTRAINTS_L2_DEFAULT);
-            toDo.clearSelection();
-            completed.clearSelection();
+            closeEntryPanel();
         }
 
         //opens editing of the currently viewed entry
         public void notifyEdit(ListEntry entry) {
             displayEntryAccess(entry, editPanel);
             editPanel.setCreatingNewEntry(false);
+            PARENT.paintComponents(PARENT.getGraphics());
         }
 
         //saves the data of the entry being edited
@@ -257,6 +265,10 @@ public class ListGui {
             }
         }
 
+        public void notifyDelete(ListEntry entry) {
+            deleteEntry(activeList, entry);
+        }
+
     }
 
     //observer that tracks when buttons in the control bar are used
@@ -266,6 +278,7 @@ public class ListGui {
             ListEntry entry = new ListEntry();
             displayEntryAccess(entry, editPanel);
             editPanel.setCreatingNewEntry(true);
+            PARENT.paintComponents(PARENT.getGraphics());
         }
 
         public void notifyComplete() {
@@ -275,9 +288,6 @@ public class ListGui {
             }
         }
 
-        public void notifyDelete() {
-            deleteEntry();
-        }
     }
 
 }

@@ -77,6 +77,7 @@ public class EntryEditPanel extends EntryAccessPanel {
     private JTextArea makeDescription() {
         JTextArea desc = new JTextArea();
         desc.setLineWrap(true);
+        desc.setCaretColor(Color.WHITE);
         desc.setText("default");
 
         return desc;

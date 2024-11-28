@@ -39,12 +39,6 @@ public class EntryControlBar extends JPanel {
         complete.setText("Complete");
         complete.addActionListener(EVENT_COMPLETE);
         add(complete);
-
-        JButton delete = new JButton();
-        delete.setBackground(ListGui.COLOR_BUTTON);
-        delete.setForeground(ListGui.TEXT);
-        delete.setText("Delete Entry");
-        add(delete);
     }
 
     //event for creating a new entry
@@ -55,10 +49,6 @@ public class EntryControlBar extends JPanel {
     //event for completing and entry and moving it to the completed list
     private final ActionListener EVENT_COMPLETE = (e) -> {
         observer.notifyComplete();
-    };
-
-    private final ActionListener EVENT_DELETE = (e) -> {
-        observer.notifyDelete();
     };
 
 }

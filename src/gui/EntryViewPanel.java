@@ -64,6 +64,11 @@ public class EntryViewPanel extends EntryAccessPanel {
         edit.setFont(smallFont);
         panel.add(edit);
 
+        JButton delete = Util.newButton("Delete Entry");
+        delete.addActionListener(makeDeleteListener());
+        delete.setFont(smallFont);
+        panel.add(delete);
+
         return panel;
 
     }
@@ -78,6 +83,12 @@ public class EntryViewPanel extends EntryAccessPanel {
     private ActionListener makeEditListener() {
         return (e) -> {
             observer.notifyEdit(toDisplay);
+        };
+    }
+
+    private ActionListener makeDeleteListener() {
+        return (e) -> {
+            observer.notifyDelete(toDisplay);
         };
     }
 
