@@ -103,6 +103,8 @@ public class ListGui {
 
         loadLists();
 
+        toDo.updateCount();
+        completed.updateCount();
     }
 
     public void loadLists() {

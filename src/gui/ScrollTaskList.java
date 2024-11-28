@@ -16,6 +16,8 @@ public class ScrollTaskList extends JPanel {
 
     private final JLabel TITLE;
 
+    private final JLabel COUNTER;
+
     public final DefaultListModel<ListEntry> MODEL;
 
     private final ListGui.ListSelectionObserver OBSERVER;
@@ -45,6 +47,7 @@ public class ScrollTaskList extends JPanel {
         addTitle();
 
         //add the list length counter
+        COUNTER = new JLabel();
         addCounter();
 
         //create the Jlist
@@ -91,11 +94,11 @@ public class ScrollTaskList extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        JLabel counter = new JLabel();
-        counter.setHorizontalAlignment(SwingConstants.LEFT);
-        counter.setText("0 entries");
-        counter.setForeground(ListGui.TEXT);
-        panel.add(counter, BorderLayout.WEST);
+
+        COUNTER.setHorizontalAlignment(SwingConstants.LEFT);
+        COUNTER.setText("0 entries");
+        COUNTER.setForeground(ListGui.TEXT);
+        panel.add(COUNTER, BorderLayout.WEST);
 
         panel.setBackground(ListGui.BACKGROUND);
         panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -107,6 +110,13 @@ public class ScrollTaskList extends JPanel {
         GBC.gridheight = 1;
 
         Util.addToGb(this, panel, GBC, 0, 1);
+    }
+
+    /**Updates the displayed entry count to the length of the list.
+     *
+     */
+    public void updateCount() {
+        COUNTER.setText(MODEL.getSize() + " entries");
     }
 
     //clears the selection of the list
