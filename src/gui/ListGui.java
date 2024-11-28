@@ -25,13 +25,13 @@ public class ListGui {
     private ScrollTaskList toDo;
     private ScrollTaskList completed;
 
+    //the list with the current active selection
+    private ScrollTaskList activeList;
+
     //panels for accessing and editing entry fields
     private EntryAccessPanel currentView;
     private EntryViewPanel viewPanel;
     private EntryEditPanel editPanel;
-
-    //whether the entry viewer is visible
-    private boolean entryVisible = false;
 
     //default colors
     public static final Color BACKGROUND = new Color(24, 32, 54);
@@ -75,30 +75,28 @@ public class ListGui {
         gbc.fill = GridBagConstraints.BOTH;
 
         //to do list
-        ScrollTaskList todo = createScroll();
-        todo.setTitle("To-Do");
-        MANAGER.registerList(todo.LIST, "todo");
+        toDo = createScroll();
+        toDo.setTitle("To-Do");
+        MANAGER.registerList(toDo.LIST, "todo");
 
-        todo.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        toDo.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        toDo = todo;
+        activeList = toDo;
 
-        addTo(todo, 0, 0);
+        addTo(toDo, 0, 0);
 
         //completed list
 
-        ScrollTaskList completedTasks = createScroll();
-        completedTasks.setTitle("Completed");
-        MANAGER.registerList(completedTasks.LIST, "completed");
+        completed = createScroll();
+        completed.setTitle("Completed");
+        MANAGER.registerList(completed.LIST, "completed");
 
-        completedTasks.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-        completed = completedTasks;
+        completed.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         //update constraints for list 2
         gbc.gridwidth = GridBagConstraints.REMAINDER;
 
-        PARENT.add(completedTasks, CONSTRAINTS_L2_DEFAULT);
+        PARENT.add(completed, CONSTRAINTS_L2_DEFAULT);
 
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
@@ -182,15 +180,18 @@ public class ListGui {
 
 
         PARENT.add(panel, CONSTRAINTS_ENTRY);
-        entryVisible = true;
         currentView.setEntry(entry);
-        PARENT.paintComponents(PARENT.getGraphics());
     }
 
     //completes an entry, moving it from to-do to completed
     private void completeEntry(ListEntry entry) {
         MANAGER.removeEntry(toDo, entry);
         MANAGER.addTo(completed, entry);
+    }
+
+    //deletes an entry
+    private void deleteEntry() {
+
     }
 
     //adds component to grid at index x and y
@@ -219,11 +220,11 @@ public class ListGui {
     //observer that notifies gui when list entry is selected from list
     public class ListSelectionObserver {
 
-        //called when a ListEntry is selected in the JList
-        //notifies gui to display and update access panel
-        public void notifySelection(ListEntry entry) {
+        //called when list selection is updated
+        public void notifySelection(ListEntry entry, ScrollTaskList caller) {
             if (entry != null) {
                 displayEntryAccess(entry, viewPanel);
+                activeList = caller;
             }
         }
 
@@ -235,7 +236,6 @@ public class ListGui {
         //closes the entryViewPanel
         public void notifyClose() {
             PARENT.remove(currentView);
-            entryVisible = false;
             PARENT.paintAll(PARENT.getGraphics());
             layout.setConstraints(completed, CONSTRAINTS_L2_DEFAULT);
             toDo.clearSelection();
@@ -276,7 +276,7 @@ public class ListGui {
         }
 
         public void notifyDelete() {
-
+            deleteEntry();
         }
     }
 

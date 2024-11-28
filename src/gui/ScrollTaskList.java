@@ -46,7 +46,7 @@ public class ScrollTaskList extends JPanel {
 
         //create the Jlist
         LIST = new JList<>();
-        LIST.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//        LIST.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         LIST.addListSelectionListener(makeAccessListener());
         LIST.setCellRenderer(new EntryCellRenderer());
         MODEL = new DefaultListModel<>();
@@ -115,13 +115,15 @@ public class ScrollTaskList extends JPanel {
         TITLE.setText(title);
     }
 
-    //creates an access listener that sets the currently selected
-    //ListEntry
+    //creates an access listener
+    //notifies when a new entry has been selected
     private ListSelectionListener makeAccessListener() {
         return new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                OBSERVER.notifySelection(LIST.getSelectedValue());
+                if (!(e.getValueIsAdjusting())) {
+                    OBSERVER.notifySelection(LIST.getSelectedValue(), ScrollTaskList.this);
+                }
             }
         };
     }

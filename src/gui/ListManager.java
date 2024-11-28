@@ -23,15 +23,23 @@ public class ListManager {
     //determines if lists are saved to file after every change
     private final boolean AUTOSAVE = true;
 
-    //private class to store a DefaultListModel and a string name of a list
+    //private class to store a DefaultListModel, a string name of a list, and an ID number
     private static class ListRec {
         public static int count = 0;
         public DefaultListModel<ListEntry> model;
         public String name;
+        public final int ID;
 
         public ListRec(DefaultListModel<ListEntry> mod, String n) {
             model = mod;
             name = n;
+            ID = count++;
+        }
+
+        public ListRec(DefaultListModel<ListEntry> m) {
+            model = m;
+            ID = count++;
+            name = "list" + ID;
         }
     }
 
@@ -50,7 +58,7 @@ public class ListManager {
      * @param list the JList to register
      */
     public void registerList(JList<ListEntry> list) {
-        LIST_MODELS.put(list, new ListRec((DefaultListModel<ListEntry>) list.getModel(), "list" + ListRec.count++));
+        LIST_MODELS.put(list, new ListRec((DefaultListModel<ListEntry>) list.getModel()));
     }
 
     /**Registers the specified JList to the list of managed lists.
