@@ -19,6 +19,7 @@ public class EntryCellRenderer extends JLabel implements ListCellRenderer<ListEn
         entry = entry + "  ----Due: " + value.getStringDate();
         setText(entry);
         setFont(list.getFont());
+        setBorder(BorderFactory.createLineBorder(ListGui.COLOR_BG_ACCENT));
         if (isSelected) {
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());
