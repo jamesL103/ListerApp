@@ -22,7 +22,6 @@ public class ScrollTaskList extends JPanel {
 
     private final ListGui.ListSelectionObserver OBSERVER;
 
-    private final GridBagLayout LAYOUT;
     private final GridBagConstraints GBC;
 
 
@@ -33,9 +32,8 @@ public class ScrollTaskList extends JPanel {
         OBSERVER = observer;
 
         //set layout
-        LAYOUT = new GridBagLayout();
         GBC = new GridBagConstraints();
-        setLayout(LAYOUT);
+        setLayout(new GridBagLayout());
 
 
         //set title
@@ -77,7 +75,7 @@ public class ScrollTaskList extends JPanel {
         //put title in a panel
         JPanel titlePanel = Util.newPanel(TITLE, new BorderLayout(),BorderLayout.CENTER);
 
-        titlePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));;
+        titlePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         //add title to graph
         GBC.gridwidth = GridBagConstraints.REMAINDER;
@@ -153,12 +151,9 @@ public class ScrollTaskList extends JPanel {
     //creates an access listener
     //notifies when a new entry has been selected
     private ListSelectionListener makeAccessListener() {
-        return new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!(e.getValueIsAdjusting())) {
-                    OBSERVER.notifySelection(LIST.getSelectedValue(), ScrollTaskList.this);
-                }
+        return e -> {
+            if (!(e.getValueIsAdjusting())) {
+                OBSERVER.notifySelection(LIST.getSelectedValue(), ScrollTaskList.this);
             }
         };
     }

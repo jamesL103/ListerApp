@@ -18,7 +18,9 @@ public class ListGui {
 
     private final GridBagLayout layout;
 
-    //manages the data stored in all the lists
+    /**manages the data stored in all the lists
+     * 
+     */
     private final ListManager MANAGER;
 
     //components of the gui
@@ -103,6 +105,7 @@ public class ListGui {
 
         loadLists();
 
+        //set the counters of the lists
         toDo.updateCount();
         completed.updateCount();
     }

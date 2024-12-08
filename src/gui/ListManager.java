@@ -25,21 +25,28 @@ public class ListManager {
 
     //private class to store a DefaultListModel, a string name of a list, and an ID number
     private static class ListRec {
-        public static int count = 0;
+        private static int count = 0;
+        private int listLength;
         public DefaultListModel<ListEntry> model;
         public String name;
         public final int ID;
 
-        public ListRec(DefaultListModel<ListEntry> mod, String n) {
-            model = mod;
+        public ListRec(DefaultListModel<ListEntry> m, String n) {
+            model = m;
             name = n;
+            listLength = m.getSize();
             ID = count++;
         }
 
         public ListRec(DefaultListModel<ListEntry> m) {
             model = m;
             ID = count++;
+            listLength = m.getSize();
             name = "list" + ID;
+        }
+
+        public int getListSize() {
+            return listLength;
         }
     }
 
@@ -82,6 +89,14 @@ public class ListManager {
         }
     }
 
+    /**Updates the entry count display for the specified list.
+     * Called automatically when changes to a list are made.
+     * @param list the list to update the count of.
+     */
+    public void updateListCount(ScrollTaskList list) {
+        list.updateCount();
+    }
+
     /**Adds the specified entry to the end of the specified list.
      *
      * @param lstPanel the list to add to
@@ -91,6 +106,7 @@ public class ListManager {
         JList<ListEntry> list = lstPanel.LIST;
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
         model.addElement(entry);
+        updateListCount(lstPanel);
         autosave(list);
     }
 
@@ -104,6 +120,7 @@ public class ListManager {
         JList<ListEntry> list = lstPanel.LIST;
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
         model.add(index, entry);
+        updateListCount(lstPanel);
         autosave(list);
     }
 
@@ -116,6 +133,7 @@ public class ListManager {
         JList<ListEntry> list = lstPanel.LIST;
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
         model.remove(index);
+        updateListCount(lstPanel);
         autosave(list);
     }
 
@@ -128,6 +146,7 @@ public class ListManager {
         JList<ListEntry> list = lstPanel.LIST;
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
         model.removeElement(entry);
+        updateListCount(lstPanel);
         autosave(list);
     }
 
