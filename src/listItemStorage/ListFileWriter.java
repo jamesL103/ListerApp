@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 
 /**Class to write a list model to a file.
@@ -15,6 +16,7 @@ import java.util.Calendar;
  */
 public class ListFileWriter {
 
+    private static final DecimalFormat TWO_DIGIT = new DecimalFormat("00");
 
     private File fin;
 
@@ -46,8 +48,8 @@ public class ListFileWriter {
     private void writeEntry(ListEntry entry, FileWriter writer) throws IOException{
         writer.write((entry.getName() +","));
         writer.write(entry.getDescription() + ",");
-        String date = "" + entry.getDate().get(Calendar.DATE) + "/"
-                + (entry.getDate().get(Calendar.MONTH) + 1) + "/" +
+        String date = "" + TWO_DIGIT.format(entry.getDate().get(Calendar.DATE)) + "/"
+                + TWO_DIGIT.format(entry.getDate().get(Calendar.MONTH) + 1) + "/" +
                 entry.getDate().get(Calendar.YEAR);
         writer.write(date + "\n");
     }
