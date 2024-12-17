@@ -88,7 +88,10 @@ public class EntryViewPanel extends EntryAccessPanel {
 
     private ActionListener makeDeleteListener() {
         return (e) -> {
-            observer.notifyDelete(toDisplay);
+            int delete = JOptionPane.showOptionDialog(null, "Delete this entry? This action cannot be undone!", "Delete Entry", JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE, null, null, null);
+            if (delete == JOptionPane.OK_OPTION) {
+                observer.notifyDelete(toDisplay);
+            }
         };
     }
 
