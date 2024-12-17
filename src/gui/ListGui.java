@@ -101,7 +101,7 @@ public class ListGui {
 
     //loads all lists in the manager from their files
     public void loadLists() {
-        MANAGER.initAll();
+        MANAGER.loadAllLists();
     }
 
     //create and add control bar
@@ -183,7 +183,7 @@ public class ListGui {
 
     //displays the specified entry and its fields as a side panel of a specified type
     //replaces the current display panel if one is visible
-    private void displayEntryAccess(ListEntry entry, EntryAccessPanel panel) {
+    private void displayEntry(ListEntry entry, EntryAccessPanel panel) {
 
         PARENT.remove(currentView);
         currentView = panel;
@@ -196,7 +196,7 @@ public class ListGui {
 
         PARENT.add(panel, CONSTRAINTS_ENTRY);
         currentView.setEntry(entry);
-        PARENT.paintComponents(PARENT.getGraphics());
+//        PARENT.paintComponents(PARENT.getGraphics());
     }
 
     //close the panel currently displaying an entry
@@ -235,7 +235,7 @@ public class ListGui {
         //called when list selection is updated
         public void notifySelection(ListEntry entry, ScrollTaskList caller) {
             if (entry != null) {
-                displayEntryAccess(entry, viewPanel);
+                displayEntry(entry, viewPanel);
                 activeList = caller;
             }
         }
@@ -252,7 +252,7 @@ public class ListGui {
 
         //opens editing of the currently viewed entry
         public void notifyEdit(ListEntry entry) {
-            displayEntryAccess(entry, editPanel);
+            displayEntry(entry, editPanel);
             editPanel.setCreatingNewEntry(false);
             PARENT.paintComponents(PARENT.getGraphics());
         }
@@ -260,7 +260,7 @@ public class ListGui {
         //saves the data of the entry being edited
         public void notifySave(ListEntry entry, boolean newEntry) {
             MANAGER.save(toDo);
-            displayEntryAccess(entry, viewPanel);
+            displayEntry(entry, viewPanel);
             if (newEntry) {
                 MANAGER.addTo(toDo, entry);
             }
@@ -277,7 +277,7 @@ public class ListGui {
 
         public void notifyAdd() {
             ListEntry entry = new ListEntry();
-            displayEntryAccess(entry, editPanel);
+            displayEntry(entry, editPanel);
             editPanel.setCreatingNewEntry(true);
             PARENT.paintComponents(PARENT.getGraphics());
         }

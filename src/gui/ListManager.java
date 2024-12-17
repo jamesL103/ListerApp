@@ -24,26 +24,26 @@ public class ListManager {
     private final boolean AUTOSAVE = true;
 
     //private class to store a DefaultListModel, a string name of a list, and an ID number
-    private static class ListRec {
+    private static class List_t {
         private static int count = 0;
         public DefaultListModel<ListEntry> model;
         public String name;
         public final int ID;
 
-        public ListRec(DefaultListModel<ListEntry> m, String n) {
+        public List_t(DefaultListModel<ListEntry> m, String n) {
             model = m;
             name = n;
             ID = count++;
         }
 
-        public ListRec(DefaultListModel<ListEntry> m) {
+        public List_t(DefaultListModel<ListEntry> m) {
             model = m;
             ID = count++;
             name = "list" + ID;
         }
     }
 
-    private final Map<JList<ListEntry>, ListRec> LIST_MODELS;
+    private final Map<JList<ListEntry>, List_t> LIST_MODELS;
 
     private final String LIST_DIR = "lists";
 
@@ -58,7 +58,7 @@ public class ListManager {
      * @param list the JList to register
      */
     public void registerList(JList<ListEntry> list) {
-        LIST_MODELS.put(list, new ListRec((DefaultListModel<ListEntry>) list.getModel()));
+        LIST_MODELS.put(list, new List_t((DefaultListModel<ListEntry>) list.getModel()));
     }
 
     /**Registers the specified JList to the list of managed lists.
@@ -69,7 +69,7 @@ public class ListManager {
      * @param name the name of the list
      */
     public void registerList(JList<ListEntry> list, String name) {
-        LIST_MODELS.put(list, new ListRec((DefaultListModel<ListEntry>) list.getModel(), name));
+        LIST_MODELS.put(list, new List_t((DefaultListModel<ListEntry>) list.getModel(), name));
     }
 
     /**Registers all lists in the specified collection.
@@ -150,7 +150,7 @@ public class ListManager {
      *
      * @param list the list to initialize
      */
-    public void initList(JList<ListEntry> list) {
+    public void loadListFromFile(JList<ListEntry> list) {
         String filePath = LIST_DIR + "/" + LIST_MODELS.get(list).name;
         try {
             ListFileReader read = new ListFileReader(new File(filePath));
@@ -176,9 +176,9 @@ public class ListManager {
      * and the list will be left empty.
      *
      */
-    public void initAll() {
+    public void loadAllLists() {
         for (JList<ListEntry> list : LIST_MODELS.keySet()) {
-            initList(list);
+            loadListFromFile(list);
         }
     }
 
