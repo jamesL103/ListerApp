@@ -26,7 +26,6 @@ public class ListManager {
     //private class to store a DefaultListModel, a string name of a list, and an ID number
     private static class ListRec {
         private static int count = 0;
-        private int listLength;
         public DefaultListModel<ListEntry> model;
         public String name;
         public final int ID;
@@ -34,19 +33,13 @@ public class ListManager {
         public ListRec(DefaultListModel<ListEntry> m, String n) {
             model = m;
             name = n;
-            listLength = m.getSize();
             ID = count++;
         }
 
         public ListRec(DefaultListModel<ListEntry> m) {
             model = m;
             ID = count++;
-            listLength = m.getSize();
             name = "list" + ID;
-        }
-
-        public int getListSize() {
-            return listLength;
         }
     }
 

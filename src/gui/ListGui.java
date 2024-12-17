@@ -11,10 +11,11 @@ public class ListGui {
     private final JFrame PARENT;
 
     //GridBagLayout Constraints
-    private final GridBagConstraints gbc;
-    private final GridBagConstraints CONSTRAINTS_ENTRY = new GridBagConstraints();
-    private final GridBagConstraints CONSTRAINTS_L2_DEFAULT = createDefList2Constraints();
-    private final GridBagConstraints CONSTRAINTS_L2_SMALL = createSmallList2Constraints();
+    private static final GridBagConstraints CONSTRAINTS_ENTRY = new GridBagConstraints();
+    private static final GridBagConstraints CONSTRAINTS_L1_DEFAULT = createList1DefConstraints();
+    private static final GridBagConstraints CONSTRAINTS_L2_DEFAULT = createDefList2Constraints();
+    private static final GridBagConstraints CONSTRAINTS_L2_SMALL = createSmallList2Constraints();
+    private static final GridBagConstraints CONSTRAINTS_CONTROL_BAR = createControlBarConstraints();
 
     private final GridBagLayout layout;
 
@@ -44,6 +45,7 @@ public class ListGui {
 
     //fonts
     public static final Font TITLE = new Font("arial", Font.PLAIN, 24);
+    public static final Font SMALL_TEXT = new Font("arial", Font.PLAIN, 12);
 
     //create the gui for the list app
     public ListGui() {
@@ -51,7 +53,6 @@ public class ListGui {
         PARENT.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         PARENT.setSize(new Dimension(800, 500));
         layout = new GridBagLayout();
-        gbc = new GridBagConstraints();
 
         PARENT.setLayout(layout);
         PARENT.getContentPane().setBackground(BACKGROUND);
@@ -63,18 +64,12 @@ public class ListGui {
         MANAGER = new ListManager();
 
         addLists();
-        addButtons();
+        addControlBar();
 
         PARENT.setVisible(true);
     }
 
     private void addLists() {
-        //list component constraints
-        gbc.gridwidth = 1;
-        gbc.weightx = 0.5;
-        gbc.weighty = 1.0;
-        gbc.gridheight = GridBagConstraints.RELATIVE;
-        gbc.fill = GridBagConstraints.BOTH;
 
         //to do list
         toDo = createScroll();
@@ -85,23 +80,17 @@ public class ListGui {
 
         activeList = toDo;
 
-        addTo(toDo, 0, 0);
+        PARENT.add(toDo, CONSTRAINTS_L1_DEFAULT);
+
 
         //completed list
-
         completed = createScroll();
         completed.setTitle("Completed");
         MANAGER.registerList(completed.LIST, "completed");
 
         completed.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        //update constraints for list 2
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-
         PARENT.add(completed, CONSTRAINTS_L2_DEFAULT);
-
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
 
         loadLists();
 
@@ -110,20 +99,15 @@ public class ListGui {
         completed.updateCount();
     }
 
+    //loads all lists in the manager from their files
     public void loadLists() {
         MANAGER.initAll();
     }
 
-    //create and add button bar
-    private void addButtons() {
+    //create and add control bar
+    private void addControlBar() {
         EntryControlBar bar = new EntryControlBar(new ControlBarObserver());
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth= GridBagConstraints.REMAINDER;
-        gbc.gridheight = 1;
-        gbc.ipady = 0;
-        gbc.weightx = 0.0;
-        gbc.weighty = 1.0;
-        addTo(bar, 0, 1);
+        PARENT.add(bar, CONSTRAINTS_CONTROL_BAR);
     }
 
     //creates the EntryViewPanel and sets its constraints in the layout
@@ -145,17 +129,29 @@ public class ListGui {
         editPanel.setObserver(new EntryPanelObserver());
     }
 
+    //create the layout constraints for list 1
+    private static GridBagConstraints createList1DefConstraints() {
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 0.5;
+        c.weighty = 1.0;
+        c.gridheight = GridBagConstraints.RELATIVE;
+        c.fill = GridBagConstraints.BOTH;
+        return c;
+    }
+
     //initialize the default layout constraints for the second list
     private static GridBagConstraints createDefList2Constraints() {
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.BOTH;
-        constraints.gridx = 1;
-        constraints.gridy = 0;
-        constraints.gridwidth = GridBagConstraints.REMAINDER;
-        constraints.gridheight = GridBagConstraints.RELATIVE;
-        constraints.weightx = 0.5;
-        constraints.weighty = 1.0;
-        return constraints;
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = 1;
+        c.gridy = 0;
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.gridheight = GridBagConstraints.RELATIVE;
+        c.weightx = 0.5;
+        c.weighty = 1.0;
+        return c;
     }
 
     //initialize the minimized layout constraints for the second list
@@ -169,6 +165,20 @@ public class ListGui {
         constraints.gridheight = GridBagConstraints.RELATIVE;
         constraints.fill = GridBagConstraints.BOTH;
         return constraints;
+    }
+
+    //create the layout constraints for the control bar
+    private static GridBagConstraints createControlBarConstraints() {
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth= GridBagConstraints.REMAINDER;
+        c.gridheight = 1;
+        c.ipady = 0;
+        c.weightx = 0.0;
+        c.weighty = 1.0;
+        return c;
     }
 
     //displays the specified entry and its fields as a side panel of a specified type
@@ -209,20 +219,6 @@ public class ListGui {
         MANAGER.removeEntry(list, entry);
         closeEntryPanel();
     }
-
-    //adds component to grid at index x and y
-    //resets grid x and grid y back to original values
-    //does NOT reset GridBagLayout constraints
-    private void addTo(Component c, int x, int y) {
-        int origx = gbc.gridx;
-        int origy = gbc.gridy;
-        gbc.gridx = x;
-        gbc.gridy = y;
-        PARENT.add(c, gbc);
-        gbc.gridx = origx;
-        gbc.gridy = origy;
-    }
-
 
     //helper to create Scroll task list with correct colors
     private ScrollTaskList createScroll() {
