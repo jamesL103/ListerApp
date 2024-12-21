@@ -25,8 +25,8 @@ public class ListGui {
     private final ListManager MANAGER;
 
     //components of the gui
-    private ScrollTaskList toDo;
-    private ScrollTaskList completed;
+    private final ScrollTaskList LIST_TODO = createScroll();
+    private final ScrollTaskList LIST_COMPLETED = createScroll();
 
     //the list with the current active selection
     private ScrollTaskList activeList;
@@ -69,34 +69,33 @@ public class ListGui {
         PARENT.setVisible(true);
     }
 
+    //initialize list fields and add them to the gui
     private void addLists() {
 
         //to do list
-        toDo = createScroll();
-        toDo.setTitle("To-Do");
-        MANAGER.registerList(toDo.LIST, "todo");
+        LIST_TODO.setTitle("To-Do");
+        MANAGER.registerList(LIST_TODO.LIST, "todo");
 
-        toDo.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        LIST_TODO.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        activeList = toDo;
+        activeList = LIST_TODO;
 
-        PARENT.add(toDo, CONSTRAINTS_L1_DEFAULT);
+        PARENT.add(LIST_TODO, CONSTRAINTS_L1_DEFAULT);
 
 
         //completed list
-        completed = createScroll();
-        completed.setTitle("Completed");
-        MANAGER.registerList(completed.LIST, "completed");
+        LIST_COMPLETED.setTitle("Completed");
+        MANAGER.registerList(LIST_COMPLETED.LIST, "completed");
 
-        completed.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        LIST_COMPLETED.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        PARENT.add(completed, CONSTRAINTS_L2_DEFAULT);
+        PARENT.add(LIST_COMPLETED, CONSTRAINTS_L2_DEFAULT);
 
         loadLists();
 
         //set the counters of the lists
-        toDo.updateCount();
-        completed.updateCount();
+        LIST_TODO.updateCount();
+        LIST_COMPLETED.updateCount();
     }
 
     //loads all lists in the manager from their files
@@ -195,7 +194,7 @@ public class ListGui {
         currentView = panel;
 
         //change layout constraints for completed list
-        layout.setConstraints(completed, CONSTRAINTS_L2_SMALL);
+        layout.setConstraints(LIST_COMPLETED, CONSTRAINTS_L2_SMALL);
 
         layout.setConstraints(currentView, CONSTRAINTS_ENTRY);
 
@@ -209,15 +208,14 @@ public class ListGui {
     private void closeEntryPanel() {
         PARENT.remove(currentView);
         PARENT.paintComponents(PARENT.getGraphics());
-        layout.setConstraints(completed, CONSTRAINTS_L2_DEFAULT);
-        toDo.clearSelection();
-        completed.clearSelection();
+        layout.setConstraints(LIST_COMPLETED, CONSTRAINTS_L2_DEFAULT);
+        LIST_TODO.clearSelection();
+        LIST_COMPLETED.clearSelection();
     }
 
     //completes an entry, moving it from to-do to completed
     private void completeEntry(ListEntry entry) {
-        MANAGER.removeEntry(toDo, entry);
-        MANAGER.addTo(completed, entry);
+        MANAGER.moveEntry(LIST_TODO, LIST_COMPLETED, entry);
     }
 
     //deletes an entry
@@ -265,10 +263,10 @@ public class ListGui {
 
         //saves the data of the entry being edited
         public void notifySave(ListEntry entry, boolean newEntry) {
-            MANAGER.save(toDo);
+            MANAGER.save(LIST_TODO);
             displayEntry(entry, viewPanel);
             if (newEntry) {
-                MANAGER.addTo(toDo, entry);
+                MANAGER.addTo(LIST_TODO, entry);
             }
         }
 
@@ -289,7 +287,7 @@ public class ListGui {
         }
 
         public void notifyComplete() {
-            ListEntry selection = toDo.LIST.getSelectedValue();
+            ListEntry selection = LIST_TODO.LIST.getSelectedValue();
             if (selection != null) {
                 completeEntry(selection);
             }

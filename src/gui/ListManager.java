@@ -45,9 +45,10 @@ public class ListManager {
 
     private final Map<JList<ListEntry>, List_t> LIST_MODELS;
 
-    private final String LIST_DIR = "lists";
+    private final String DIR_LIST;
 
     public ListManager() {
+        DIR_LIST = System.getProperty("user.dir") + "/lists";
         LIST_MODELS = new LinkedHashMap<>();
     }
 
@@ -143,6 +144,17 @@ public class ListManager {
         autosave(list);
     }
 
+    /**Moves an entry from one list to another.
+     *
+     * @param source the original list
+     * @param target the list to move the entry to
+     * @param entry the entry to move
+     */
+    public void moveEntry(ScrollTaskList source, ScrollTaskList target, ListEntry entry) {
+        removeEntry(source, entry);
+        addTo(target, entry);
+    }
+
     /**Initializes the elements in the specified gui JList to be displayed from a file.
      * Will read from the file that was registered alongside the list.
      * If the specified file does not exist, a blank file will be created and
@@ -151,7 +163,7 @@ public class ListManager {
      * @param list the list to initialize
      */
     public void loadListFromFile(JList<ListEntry> list) {
-        String filePath = LIST_DIR + "/" + LIST_MODELS.get(list).name;
+        String filePath = DIR_LIST + "/" + LIST_MODELS.get(list).name;
         try {
             ListFileReader read = new ListFileReader(new File(filePath));
             List<ListEntry> lst = read.loadFromFile();
@@ -203,7 +215,7 @@ public class ListManager {
      * @param list the list to save
      */
     private void save(JList<ListEntry> list) {
-        String pathname = LIST_DIR + "/" + LIST_MODELS.get(list).name;
+        String pathname = DIR_LIST + "/" + LIST_MODELS.get(list).name;
         File fout = new File(pathname);
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
         try {

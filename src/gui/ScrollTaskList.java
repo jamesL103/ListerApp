@@ -92,13 +92,12 @@ public class ScrollTaskList extends JPanel {
         panel.setLayout(new BorderLayout());
 
 
-        COUNTER.setHorizontalAlignment(SwingConstants.LEFT);
+        COUNTER.setHorizontalAlignment(SwingConstants.RIGHT);
         COUNTER.setText("0 entries");
         COUNTER.setForeground(ListGui.TEXT);
-        panel.add(COUNTER, BorderLayout.WEST);
+        panel.add(COUNTER, BorderLayout.EAST);
 
         panel.setBackground(ListGui.BACKGROUND);
-        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         GBC.weightx = 1.0;
         GBC.weighty = 0.1;
