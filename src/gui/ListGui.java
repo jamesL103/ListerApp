@@ -11,7 +11,7 @@ public class ListGui {
     private final JFrame PARENT;
 
     //GridBagLayout Constraints
-    private static final GridBagConstraints CONSTRAINTS_ENTRY = new GridBagConstraints();
+    private static final GridBagConstraints CONSTRAINTS_ENTRY = createEntryViewConstraints();
     private static final GridBagConstraints CONSTRAINTS_L1_DEFAULT = createList1DefConstraints();
     private static final GridBagConstraints CONSTRAINTS_L2_DEFAULT = createDefList2Constraints();
     private static final GridBagConstraints CONSTRAINTS_L2_SMALL = createSmallList2Constraints();
@@ -114,13 +114,6 @@ public class ListGui {
     private void initViewPanel() {
         viewPanel = new EntryViewPanel(new ListEntry("null"));
         viewPanel.addObserver(new EntryPanelObserver());
-
-        CONSTRAINTS_ENTRY.gridwidth = GridBagConstraints.REMAINDER;
-        CONSTRAINTS_ENTRY.fill = GridBagConstraints.VERTICAL;
-        CONSTRAINTS_ENTRY.gridx = 3;
-        CONSTRAINTS_ENTRY.gridy = 0;
-        CONSTRAINTS_ENTRY.weightx = 0.25;
-        CONSTRAINTS_ENTRY.weighty = 0.5;
     }
 
     //creates the EntryEditPanel
@@ -129,6 +122,19 @@ public class ListGui {
         editPanel.setObserver(new EntryPanelObserver());
     }
 
+    //create layout constraints for entry viewer
+    private static GridBagConstraints createEntryViewConstraints() {
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.fill = GridBagConstraints.VERTICAL;
+        c.gridx = 3;
+        c.gridy = 0;
+        c.weightx = 0.25;
+        c.weighty = 0.5;
+
+        return c;
+    }
+    
     //create the layout constraints for list 1
     private static GridBagConstraints createList1DefConstraints() {
         GridBagConstraints c = new GridBagConstraints();
