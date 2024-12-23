@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 
-public class ScrollTaskList extends JPanel {
+public class ScrollListPanel extends JPanel {
 
     private final JScrollPane SCROLLER;
 
@@ -25,7 +25,7 @@ public class ScrollTaskList extends JPanel {
 
 
 
-    public ScrollTaskList(ListGui.ListSelectionObserver observer) {
+    public ScrollListPanel(ListGui.ListSelectionObserver observer) {
         super();
 
         OBSERVER = observer;
@@ -151,7 +151,7 @@ public class ScrollTaskList extends JPanel {
     private ListSelectionListener makeAccessListener() {
         return e -> {
             if (!(e.getValueIsAdjusting())) {
-                OBSERVER.notifySelection(LIST.getSelectedValue(), ScrollTaskList.this);
+                OBSERVER.notifySelection(LIST.getSelectedValue(), ScrollListPanel.this);
             }
         };
     }

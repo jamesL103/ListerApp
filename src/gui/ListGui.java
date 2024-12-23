@@ -25,11 +25,11 @@ public class ListGui {
     private final ListManager MANAGER;
 
     //components of the gui
-    private final ScrollTaskList LIST_TODO = createScroll();
-    private final ScrollTaskList LIST_COMPLETED = createScroll();
+    private final ScrollListPanel LIST_TODO = createScroll();
+    private final ScrollListPanel LIST_COMPLETED = createScroll();
 
     //the list with the current active selection
-    private ScrollTaskList activeList;
+    private ScrollListPanel activeList;
 
     //panels for accessing and editing entry fields
     private EntryAccessPanel currentView;
@@ -199,7 +199,6 @@ public class ListGui {
 
         PARENT.add(panel, CONSTRAINTS_ENTRY);
         currentView.setEntry(entry);
-//        PARENT.paintComponents(PARENT.getGraphics());
     }
 
     //close the panel currently displaying an entry
@@ -217,25 +216,25 @@ public class ListGui {
     }
 
     //deletes an entry
-    private void deleteEntry(ScrollTaskList list, ListEntry entry) {
+    private void deleteEntry(ScrollListPanel list, ListEntry entry) {
         MANAGER.removeEntry(list, entry);
         closeEntryPanel();
     }
 
     //helper to create Scroll task list with correct colors
-    private ScrollTaskList createScroll() {
-        ScrollTaskList scroll = new ScrollTaskList(new ListSelectionObserver());
+    private ScrollListPanel createScroll() {
+        ScrollListPanel scroll = new ScrollListPanel(new ListSelectionObserver());
         scroll.setBg(COLOR_BACKGROUND);
         scroll.setFg(COLOR_TEXT);
         return scroll;
     }
 
 
-    //observer that notifies gui when list entry is selected from list
+    //observer for ScrollListPanel notifies gui when list entry is selected from list
     public class ListSelectionObserver {
 
         //called when list selection is updated
-        public void notifySelection(ListEntry entry, ScrollTaskList caller) {
+        public void notifySelection(ListEntry entry, ScrollListPanel caller) {
             if (entry != null) {
                 displayEntry(entry, VIEW_PANEL);
                 activeList = caller;
@@ -244,7 +243,7 @@ public class ListGui {
 
     }
 
-    //observer that handles events with any entry panel
+    //observer for EntryAccessPanels that handles events with any entry panel
     public class EntryPanelObserver {
 
         //closes the entryViewPanel
@@ -274,7 +273,7 @@ public class ListGui {
 
     }
 
-    //observer that tracks when buttons in the control bar are used
+    //observer for EntryControlBar that tracks when buttons in the control bar are used
     public class ControlBarObserver {
 
         public void notifyAdd() {

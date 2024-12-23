@@ -87,7 +87,7 @@ public class ListManager {
      * Called automatically when changes to a list are made.
      * @param list the list to update the count of.
      */
-    public void updateListCount(ScrollTaskList list) {
+    public void updateListCount(ScrollListPanel list) {
         list.updateCount();
     }
 
@@ -96,7 +96,7 @@ public class ListManager {
      * @param lstPanel the list to add to
      * @param entry the entry to add
      */
-    public void addTo(ScrollTaskList lstPanel, ListEntry entry) {
+    public void addTo(ScrollListPanel lstPanel, ListEntry entry) {
         JList<ListEntry> list = lstPanel.LIST;
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
         model.addElement(entry);
@@ -110,7 +110,7 @@ public class ListManager {
      * @param entry the item to add
      * @param index the index to insert at
      */
-    public void addTo(ScrollTaskList lstPanel, ListEntry entry, int index) {
+    public void addTo(ScrollListPanel lstPanel, ListEntry entry, int index) {
         JList<ListEntry> list = lstPanel.LIST;
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
         model.add(index, entry);
@@ -123,7 +123,7 @@ public class ListManager {
      * @param lstPanel list to remove from
      * @param index index of element to remove
      */
-    public void removeAt(ScrollTaskList lstPanel, int index) {
+    public void removeAt(ScrollListPanel lstPanel, int index) {
         JList<ListEntry> list = lstPanel.LIST;
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
         model.remove(index);
@@ -136,7 +136,7 @@ public class ListManager {
      * @param lstPanel list to remove from
      * @param entry element to remove
      */
-    public void removeEntry(ScrollTaskList lstPanel,ListEntry entry) {
+    public void removeEntry(ScrollListPanel lstPanel, ListEntry entry) {
         JList<ListEntry> list = lstPanel.LIST;
         DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
         model.removeElement(entry);
@@ -150,7 +150,7 @@ public class ListManager {
      * @param target the list to move the entry to
      * @param entry the entry to move
      */
-    public void moveEntry(ScrollTaskList source, ScrollTaskList target, ListEntry entry) {
+    public void moveEntry(ScrollListPanel source, ScrollListPanel target, ListEntry entry) {
         removeEntry(source, entry);
         addTo(target, entry);
     }
@@ -205,7 +205,7 @@ public class ListManager {
      *
      * @param lstPanel the list to save
      */
-    public void save(ScrollTaskList lstPanel) {
+    public void save(ScrollListPanel lstPanel) {
         save(lstPanel.LIST);
     }
 
