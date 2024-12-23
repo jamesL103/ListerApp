@@ -71,7 +71,7 @@ public abstract class EntryAccessPanel extends JPanel {
         gbc.gridwidth = 1;
         gbc.weightx = 0.5;
         gbc.weighty = 0.1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.BOTH;
         addComponent(comp, 0, 0);
     }
 

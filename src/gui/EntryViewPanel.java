@@ -29,13 +29,23 @@ public class EntryViewPanel extends EntryAccessPanel {
         updateFields();
     }
 
-    private JLabel makeName() {
-        JLabel name = Util.newLabel();
+    private JScrollPane makeName() {
+        JScrollPane title = new JScrollPane(Util.newLabel());
+        title.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        title.getViewport().setSize(1, 50);
+
+        JLabel name = new JLabel();
         name.setFont(ListGui.TITLE);
         name.setText("default");
-        name.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        return name;
+
+        name.setForeground(ListGui.TEXT);
+
+        title.getViewport().setBackground(ListGui.COLOR_BG_ACCENT);
+        title.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        title.setViewportView(name);
+
+        return title;
     }
 
     private JTextArea makeDescription() {
@@ -104,7 +114,7 @@ public class EntryViewPanel extends EntryAccessPanel {
 
     @Override
     public void updateFields() {
-        ((JLabel)nameDisplay).setText(toDisplay.getName());
+        ((JLabel)((JScrollPane)nameDisplay).getViewport().getView()).setText(toDisplay.getName());
         ((JTextComponent)descDisplay).setText(toDisplay.getDescription());
         ((JLabel)dateDisplay).setText("Due: " + toDisplay.getStringDate());
     }
