@@ -39,7 +39,7 @@ public abstract class EntryAccessPanel extends JPanel {
         layout = new GridBagLayout();
         gbc = new GridBagConstraints();
 
-        setBackground(ListGui.BACKGROUND);
+        setBackground(ListGui.COLOR_BACKGROUND);
 
         setLayout(layout);
         addExitButton();
@@ -65,7 +65,7 @@ public abstract class EntryAccessPanel extends JPanel {
         comp.setBorder(BorderFactory.createLineBorder(ListGui.COLOR_BORDER));
 
         comp.setBackground(ListGui.COLOR_BG_ACCENT);
-        comp.setForeground(ListGui.TEXT);
+        comp.setForeground(ListGui.COLOR_TEXT);
 
         //gbc constraints
         gbc.gridwidth = 1;
@@ -88,7 +88,7 @@ public abstract class EntryAccessPanel extends JPanel {
 
         descDisplay = comp;
         comp.setBackground(ListGui.COLOR_BG_ACCENT);
-        comp.setForeground(ListGui.TEXT);
+        comp.setForeground(ListGui.COLOR_TEXT);
 
         JScrollPane descPane = new JScrollPane();
         descPane.setViewportView(comp);
@@ -107,7 +107,7 @@ public abstract class EntryAccessPanel extends JPanel {
         comp.setFont(smallFont);
 
         comp.setBackground(ListGui.COLOR_BG_ACCENT);
-        comp.setForeground(ListGui.TEXT);
+        comp.setForeground(ListGui.COLOR_TEXT);
 
         gbc.weighty = 0.1;
         gbc.fill = GridBagConstraints.HORIZONTAL;

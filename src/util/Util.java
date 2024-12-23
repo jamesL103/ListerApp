@@ -78,8 +78,8 @@ public class Util {
      */
     public static JPanel newPanel(Component c, LayoutManager layout, Object layoutRules) {
         JPanel panel = new JPanel();
-        panel.setBackground(ListGui.BACKGROUND);
-        panel.setForeground(ListGui.TEXT);
+        panel.setBackground(ListGui.COLOR_BACKGROUND);
+        panel.setForeground(ListGui.COLOR_TEXT);
         if (layout != null) {
             panel.setLayout(layout);
         }
@@ -94,14 +94,14 @@ public class Util {
     //helper to create new label with correct colors
     public static JLabel newLabel(String text) {
         JLabel label = new JLabel(text);
-        label.setForeground(ListGui.TEXT);
+        label.setForeground(ListGui.COLOR_TEXT);
         return label;
     }
 
     //helper to create new label with correct colors
     public static JLabel newLabel() {
         JLabel label = new JLabel();
-        label.setForeground(ListGui.TEXT);
+        label.setForeground(ListGui.COLOR_TEXT);
         return label;
     }
 
@@ -109,7 +109,7 @@ public class Util {
     public static JButton newButton(String text) {
         JButton button = new JButton(text);
         button.setBackground(ListGui.COLOR_BUTTON);
-        button.setForeground(ListGui.TEXT);
+        button.setForeground(ListGui.COLOR_TEXT);
         return button;
     }
 

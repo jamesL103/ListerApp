@@ -9,6 +9,9 @@ import java.util.Locale;
  */
 public class ListEntry {
 
+    //the default, blank ListEntry
+    public static final ListEntry DEFAULT_ENTRY = new ListEntry("Default");
+
     //count for creating default names
     private static int entryCount = 1;
 

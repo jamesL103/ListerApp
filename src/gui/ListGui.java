@@ -33,14 +33,14 @@ public class ListGui {
 
     //panels for accessing and editing entry fields
     private EntryAccessPanel currentView;
-    private EntryViewPanel viewPanel;
-    private EntryEditPanel editPanel;
+    private final EntryViewPanel VIEW_PANEL = new EntryViewPanel(ListEntry.DEFAULT_ENTRY);
+    private final EntryEditPanel EDIT_PANEL = new EntryEditPanel(ListEntry.DEFAULT_ENTRY);
 
     //default colors
-    public static final Color BACKGROUND = new Color(24, 32, 54);
+    public static final Color COLOR_BACKGROUND = new Color(24, 32, 54);
     public static final Color COLOR_BG_ACCENT = new Color(54, 60, 81);
     public static final Color COLOR_BORDER = new Color(101, 101, 101);
-    public static final Color TEXT = new Color(255, 255, 255);
+    public static final Color COLOR_TEXT = new Color(255, 255, 255);
     public static final Color COLOR_BUTTON = new Color(116, 160, 255);
 
     //fonts
@@ -55,11 +55,11 @@ public class ListGui {
         layout = new GridBagLayout();
 
         PARENT.setLayout(layout);
-        PARENT.getContentPane().setBackground(BACKGROUND);
+        PARENT.getContentPane().setBackground(COLOR_BACKGROUND);
 
         initViewPanel();
         initEditPanel();
-        currentView = viewPanel;
+        currentView = VIEW_PANEL;
 
         MANAGER = new ListManager();
 
@@ -109,16 +109,14 @@ public class ListGui {
         PARENT.add(bar, CONSTRAINTS_CONTROL_BAR);
     }
 
-    //creates the EntryViewPanel and sets its constraints in the layout
+    //creates the EntryViewPanel
     private void initViewPanel() {
-        viewPanel = new EntryViewPanel(new ListEntry("null"));
-        viewPanel.addObserver(new EntryPanelObserver());
+        VIEW_PANEL.addObserver(new EntryPanelObserver());
     }
 
     //creates the EntryEditPanel
     private void initEditPanel() {
-        editPanel = new EntryEditPanel(new ListEntry("null"));
-        editPanel.setObserver(new EntryPanelObserver());
+        EDIT_PANEL.setObserver(new EntryPanelObserver());
     }
 
     //create layout constraints for entry viewer
@@ -227,8 +225,8 @@ public class ListGui {
     //helper to create Scroll task list with correct colors
     private ScrollTaskList createScroll() {
         ScrollTaskList scroll = new ScrollTaskList(new ListSelectionObserver());
-        scroll.setBg(BACKGROUND);
-        scroll.setFg(TEXT);
+        scroll.setBg(COLOR_BACKGROUND);
+        scroll.setFg(COLOR_TEXT);
         return scroll;
     }
 
@@ -239,7 +237,7 @@ public class ListGui {
         //called when list selection is updated
         public void notifySelection(ListEntry entry, ScrollTaskList caller) {
             if (entry != null) {
-                displayEntry(entry, viewPanel);
+                displayEntry(entry, VIEW_PANEL);
                 activeList = caller;
             }
         }
@@ -256,15 +254,15 @@ public class ListGui {
 
         //opens editing of the currently viewed entry
         public void notifyEdit(ListEntry entry) {
-            displayEntry(entry, editPanel);
-            editPanel.setCreatingNewEntry(false);
+            displayEntry(entry, EDIT_PANEL);
+            EDIT_PANEL.setCreatingNewEntry(false);
             PARENT.paintComponents(PARENT.getGraphics());
         }
 
         //saves the data of the entry being edited
         public void notifySave(ListEntry entry, boolean newEntry) {
             MANAGER.save(LIST_TODO);
-            displayEntry(entry, viewPanel);
+            displayEntry(entry, VIEW_PANEL);
             if (newEntry) {
                 MANAGER.addTo(LIST_TODO, entry);
             }
@@ -281,8 +279,8 @@ public class ListGui {
 
         public void notifyAdd() {
             ListEntry entry = new ListEntry();
-            displayEntry(entry, editPanel);
-            editPanel.setCreatingNewEntry(true);
+            displayEntry(entry, EDIT_PANEL);
+            EDIT_PANEL.setCreatingNewEntry(true);
             PARENT.paintComponents(PARENT.getGraphics());
         }
 

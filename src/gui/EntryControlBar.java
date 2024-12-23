@@ -28,14 +28,14 @@ public class EntryControlBar extends JPanel {
     private void addButtons() {
         JButton add = new JButton();
         add.setBackground(ListGui.COLOR_BUTTON);
-        add.setForeground(ListGui.TEXT);
+        add.setForeground(ListGui.COLOR_TEXT);
         add.setText("Create New Entry");
         add.addActionListener(EVENT_ADD);
         add(add);
 
         JButton complete = new JButton();
         complete.setBackground(ListGui.COLOR_BUTTON);
-        complete.setForeground(ListGui.TEXT);
+        complete.setForeground(ListGui.COLOR_TEXT);
         complete.setText("Complete");
         complete.addActionListener(EVENT_COMPLETE);
         add(complete);

@@ -39,7 +39,7 @@ public class EntryViewPanel extends EntryAccessPanel {
         name.setText("default");
 
 
-        name.setForeground(ListGui.TEXT);
+        name.setForeground(ListGui.COLOR_TEXT);
 
         title.getViewport().setBackground(ListGui.COLOR_BG_ACCENT);
         title.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -67,7 +67,7 @@ public class EntryViewPanel extends EntryAccessPanel {
 
     private JPanel makeButtons() {
         JPanel panel = new JPanel();
-        panel.setBackground(ListGui.BACKGROUND);
+        panel.setBackground(ListGui.COLOR_BACKGROUND);
 
         JButton edit = Util.newButton("Edit");
         edit.addActionListener(makeEditListener());

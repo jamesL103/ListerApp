@@ -39,7 +39,7 @@ public class ScrollTaskList extends JPanel {
         TITLE = new JLabel();
         TITLE.setHorizontalAlignment(JLabel.CENTER);
         TITLE.setFont(ListGui.TITLE);
-        TITLE.setForeground(ListGui.TEXT);
+        TITLE.setForeground(ListGui.COLOR_TEXT);
         //add title
         addTitle();
 
@@ -94,10 +94,10 @@ public class ScrollTaskList extends JPanel {
 
         COUNTER.setHorizontalAlignment(SwingConstants.RIGHT);
         COUNTER.setText("0 entries");
-        COUNTER.setForeground(ListGui.TEXT);
+        COUNTER.setForeground(ListGui.COLOR_TEXT);
         panel.add(COUNTER, BorderLayout.EAST);
 
-        panel.setBackground(ListGui.BACKGROUND);
+        panel.setBackground(ListGui.COLOR_BACKGROUND);
 
         GBC.weightx = 1.0;
         GBC.weighty = 0.1;

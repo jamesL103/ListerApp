@@ -66,7 +66,7 @@ public class EntryEditPanel extends EntryAccessPanel {
 
     private JTextField makeName() {
         JTextField name = new JTextField();
-        name.setCaretColor(ListGui.TEXT);
+        name.setCaretColor(ListGui.COLOR_TEXT);
         name.setText("default");
         name.setFont(ListGui.TITLE);
         name.setHorizontalAlignment(JLabel.LEFT);
@@ -132,7 +132,7 @@ public class EntryEditPanel extends EntryAccessPanel {
     //updates the fields of the current entry
     private JPanel makeButton() {
         JPanel panel = new JPanel();
-        panel.setBackground(ListGui.BACKGROUND);
+        panel.setBackground(ListGui.COLOR_BACKGROUND);
 
         JButton save = Util.newButton("Save");
         save.addActionListener(makeSaveListener());
