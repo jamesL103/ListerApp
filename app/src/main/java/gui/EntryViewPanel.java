@@ -60,8 +60,8 @@ public class EntryViewPanel extends EntryAccessPanel {
 
     private JLabel makeDate() {
         JLabel date = new JLabel();
+        date.setFont(ListGui.SMALL_TEXT);
         date.setText("Due: " + toDisplay.getStringDate());
-
         return date;
     }
 

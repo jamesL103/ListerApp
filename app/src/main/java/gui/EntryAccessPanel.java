@@ -71,7 +71,7 @@ public abstract class EntryAccessPanel extends JPanel {
         gbc.gridwidth = 1;
         gbc.weightx = 0.5;
         gbc.weighty = 0.1;
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         addComponent(comp, 0, 0);
     }
 
@@ -94,8 +94,8 @@ public abstract class EntryAccessPanel extends JPanel {
         descPane.setViewportView(comp);
         descPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-        gbc.weighty = 0.5;
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.weighty = 1.0;
+        gbc.gridwidth = 1;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
 

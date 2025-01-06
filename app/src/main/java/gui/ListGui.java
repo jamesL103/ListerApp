@@ -123,11 +123,12 @@ public class ListGui {
     private static GridBagConstraints createEntryViewConstraints() {
         GridBagConstraints c = new GridBagConstraints();
         c.gridwidth = GridBagConstraints.REMAINDER;
-        c.fill = GridBagConstraints.VERTICAL;
+        c.fill = GridBagConstraints.BOTH;
         c.gridx = 3;
         c.gridy = 0;
         c.weightx = 0.25;
         c.weighty = 0.5;
+        c.insets = new Insets(0,20, 0, 20);
 
         return c;
     }
@@ -199,6 +200,8 @@ public class ListGui {
 
         PARENT.add(panel, CONSTRAINTS_ENTRY);
         currentView.setEntry(entry);
+
+        PARENT.paintComponents(PARENT.getGraphics());
     }
 
     //close the panel currently displaying an entry
@@ -206,6 +209,7 @@ public class ListGui {
         PARENT.remove(currentView);
         PARENT.paintComponents(PARENT.getGraphics());
         layout.setConstraints(LIST_COMPLETED, CONSTRAINTS_L2_DEFAULT);
+        layout.setConstraints(LIST_TODO, CONSTRAINTS_L1_DEFAULT);
         LIST_TODO.clearSelection();
         LIST_COMPLETED.clearSelection();
     }
