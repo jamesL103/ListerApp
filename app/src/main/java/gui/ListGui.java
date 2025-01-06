@@ -142,6 +142,7 @@ public class ListGui {
         c.weighty = 1.0;
         c.gridheight = GridBagConstraints.RELATIVE;
         c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(0, 0, 0, 20);
         return c;
     }
 
@@ -259,7 +260,6 @@ public class ListGui {
         public void notifyEdit(ListEntry entry) {
             displayEntry(entry, EDIT_PANEL);
             EDIT_PANEL.setCreatingNewEntry(false);
-            PARENT.paintComponents(PARENT.getGraphics());
         }
 
         //saves the data of the entry being edited
@@ -269,6 +269,11 @@ public class ListGui {
             if (newEntry) {
                 MANAGER.addTo(LIST_TODO, entry);
             }
+        }
+
+        //cancels editing of an entry
+        public void notifyCancel(ListEntry entry) {
+            displayEntry(entry, VIEW_PANEL);
         }
 
         public void notifyDelete(ListEntry entry) {

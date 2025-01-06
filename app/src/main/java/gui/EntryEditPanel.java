@@ -33,7 +33,7 @@ public class EntryEditPanel extends EntryAccessPanel {
     public void initialize() {
         addNameAccessor(makeName());
         addDescAccessor(makeDescription());
-        addButtons(makeButton());
+        addButtons(makeButtons());
 
         updateFields();
     }
@@ -130,16 +130,22 @@ public class EntryEditPanel extends EntryAccessPanel {
 
     //makes the save button for the edit panel
     //updates the fields of the current entry
-    private JPanel makeButton() {
+    private JPanel makeButtons() {
         JPanel panel = new JPanel();
         panel.setBackground(ListGui.COLOR_BACKGROUND);
 
         JButton save = Util.newButton("Save");
         save.addActionListener(makeSaveListener());
         panel.add(save);
+
+        JButton cancel = Util.newButton("Cancel");
+        cancel.addActionListener(makeCancelListener());
+        panel.add(cancel);
+
         return panel;
     }
 
+    //Listener for the save button
     private ActionListener makeSaveListener() {
         return new ActionListener() {
             @Override
@@ -158,6 +164,12 @@ public class EntryEditPanel extends EntryAccessPanel {
             }
         };
 
+    }
+
+    private ActionListener makeCancelListener() {
+        return e -> {
+            observer.notifyCancel(toDisplay);
+        };
     }
 
     /**Sets whether the panel is creating a new entry or editing an
