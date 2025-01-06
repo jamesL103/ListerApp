@@ -66,11 +66,11 @@ public class EntryEditPanel extends EntryAccessPanel {
 
     private JTextField makeName() {
         JTextField name = new JTextField();
+        name.setBorder(BorderFactory.createLineBorder(ListGui.COLOR_BORDER));
         name.setCaretColor(ListGui.COLOR_TEXT);
         name.setText("default");
         name.setFont(ListGui.TITLE);
         name.setHorizontalAlignment(JLabel.LEFT);
-        name.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         return name;
     }
 

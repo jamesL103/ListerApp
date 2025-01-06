@@ -33,6 +33,7 @@ public class EntryViewPanel extends EntryAccessPanel {
         JScrollPane title = new JScrollPane(Util.newLabel());
         title.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         title.getViewport().setSize(1, 50);
+        title.setBorder(null);
 
         JLabel name = new JLabel();
         name.setFont(ListGui.TITLE);
@@ -42,8 +43,8 @@ public class EntryViewPanel extends EntryAccessPanel {
         name.setForeground(ListGui.COLOR_TEXT);
 
         title.getViewport().setBackground(ListGui.COLOR_BG_ACCENT);
-        title.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         title.setViewportView(name);
+        title.setPreferredSize(new Dimension(name.getWidth(), name.getHeight() + 40));
 
         return title;
     }
