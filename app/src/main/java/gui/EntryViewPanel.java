@@ -36,7 +36,7 @@ public class EntryViewPanel extends EntryAccessPanel {
         title.setBorder(null);
 
         JLabel name = new JLabel();
-        name.setFont(ListGui.TITLE);
+        name.setFont(ListGui.FONT_TITLE);
         name.setText("default");
 
 
@@ -61,7 +61,7 @@ public class EntryViewPanel extends EntryAccessPanel {
 
     private JLabel makeDate() {
         JLabel date = new JLabel();
-        date.setFont(ListGui.SMALL_TEXT);
+        date.setFont(ListGui.FONT_SMALL_TEXT);
         date.setText("Due: " + toDisplay.getStringDate());
         return date;
     }

@@ -69,7 +69,7 @@ public class EntryEditPanel extends EntryAccessPanel {
         name.setBorder(BorderFactory.createLineBorder(ListGui.COLOR_BORDER));
         name.setCaretColor(ListGui.COLOR_TEXT);
         name.setText("default");
-        name.setFont(ListGui.TITLE);
+        name.setFont(ListGui.FONT_TITLE);
         name.setHorizontalAlignment(JLabel.LEFT);
         return name;
     }

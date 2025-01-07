@@ -44,8 +44,8 @@ public class ListGui {
     public static final Color COLOR_BUTTON = new Color(116, 160, 255);
 
     //fonts
-    public static final Font TITLE = new Font("arial", Font.PLAIN, 24);
-    public static final Font SMALL_TEXT = new Font("arial", Font.PLAIN, 12);
+    public static final Font FONT_TITLE = new Font("arial", Font.PLAIN, 24);
+    public static final Font FONT_SMALL_TEXT = new Font("arial", Font.PLAIN, 12);
 
     //create the gui for the list app
     public ListGui() {

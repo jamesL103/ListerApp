@@ -13,6 +13,8 @@ public class ScrollListPanel extends JPanel {
 
     public final JList<ListEntry> LIST;
 
+    private final JPanel TOP_PANEL;
+
     private final JLabel TITLE;
 
     private final JLabel COUNTER;
@@ -36,16 +38,19 @@ public class ScrollListPanel extends JPanel {
 
 
         //set title
-        TITLE = new JLabel();
-        TITLE.setHorizontalAlignment(JLabel.CENTER);
-        TITLE.setFont(ListGui.TITLE);
-        TITLE.setForeground(ListGui.COLOR_TEXT);
-        //add title
+        TOP_PANEL = new JPanel();
+        TITLE = Util.newLabel();
+        TITLE.setFont(ListGui.FONT_TITLE);
+        TITLE.setHorizontalAlignment(SwingConstants.CENTER);
+
+        //add title to the top panel
         addTitle();
 
-        //add the list length counter
+        //add the list length counter to the top panel
         COUNTER = new JLabel();
         addCounter();
+        
+        add(TOP_PANEL, makeTopPanelConstraints());
 
         //create the Jlist
         LIST = new JList<>();
@@ -67,45 +72,40 @@ public class ScrollListPanel extends JPanel {
         GBC.fill = GridBagConstraints.BOTH;
         GBC.weighty = 1.0;
 
-        Util.addToGb(this, SCROLLER, GBC, 0, 2);
+        Util.addToGb(this, SCROLLER, GBC, 0, 1);
     }
 
     private void addTitle() {
         //put title in a panel
-        JPanel titlePanel = Util.newPanel(TITLE, new BorderLayout(),BorderLayout.CENTER);
+        TOP_PANEL.setLayout(new BorderLayout());
 
-        titlePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        TOP_PANEL.add(TITLE, BorderLayout.NORTH);
 
-        //add title to graph
-        GBC.gridwidth = GridBagConstraints.REMAINDER;
-        GBC.gridheight = 1;
-        GBC.weightx = 1.0;
-        GBC.weighty = 0.1;
-        GBC.fill = GridBagConstraints.HORIZONTAL;
-
-        Util.addToGb(this, TITLE, GBC, 0, 0);
+        TOP_PANEL.setBorder(BorderFactory.createLineBorder(ListGui.COLOR_BORDER));
+        TOP_PANEL.setBackground(ListGui.COLOR_BG_ACCENT);
     }
 
     //add the list length counter
     private void addCounter() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-
-
         COUNTER.setHorizontalAlignment(SwingConstants.RIGHT);
         COUNTER.setText("0 entries");
         COUNTER.setForeground(ListGui.COLOR_TEXT);
-        panel.add(COUNTER, BorderLayout.EAST);
+        TOP_PANEL.add(COUNTER, BorderLayout.SOUTH);
+    }
+    
+    //initializes the GridBagConstraints for the top panel
+    private static GridBagConstraints makeTopPanelConstraints() {
+        GridBagConstraints c = new GridBagConstraints();
 
-        panel.setBackground(ListGui.COLOR_BACKGROUND);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.gridheight = 1;
+        c.weightx = 1.0;
+        c.weighty = 0.2;
+        c.fill = GridBagConstraints.HORIZONTAL;
 
-        GBC.weightx = 1.0;
-        GBC.weighty = 0.1;
-        GBC.fill = GridBagConstraints.HORIZONTAL;
-        GBC.gridwidth = GridBagConstraints.REMAINDER;
-        GBC.gridheight = 1;
-
-        Util.addToGb(this, panel, GBC, 0, 1);
+        return c;
     }
 
     /**Updates the displayed entry count to the length of the list.

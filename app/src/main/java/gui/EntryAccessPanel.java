@@ -61,7 +61,7 @@ public abstract class EntryAccessPanel extends JPanel {
      */
     protected void addNameAccessor(JComponent comp) {
         nameDisplay = comp;
-        comp.setFont(ListGui.TITLE);
+        comp.setFont(ListGui.FONT_TITLE);
 
         comp.setBackground(ListGui.COLOR_BG_ACCENT);
         comp.setForeground(ListGui.COLOR_TEXT);
