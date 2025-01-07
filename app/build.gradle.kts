@@ -44,7 +44,7 @@ tasks.named<Test>("test") {
 
 tasks.jar {
     manifest {
-        attributes["Main-Class"] = application.mainClass;
+        attributes["Main-Class"] = application.mainClass
     }
 }
 
