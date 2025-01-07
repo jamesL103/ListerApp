@@ -10,4 +10,4 @@ This project is still in progress and has many more features that need to be imp
 
 - Online information storage
 - Nicer looking UI
-- GUse of Gradle build system
+- Better organization of tasks
