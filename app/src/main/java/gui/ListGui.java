@@ -76,7 +76,6 @@ public class ListGui {
         LIST_TODO.setTitle("To-Do");
         MANAGER.registerList(LIST_TODO.LIST, "todo");
 
-        LIST_TODO.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         activeList = LIST_TODO;
 
@@ -86,8 +85,6 @@ public class ListGui {
         //completed list
         LIST_COMPLETED.setTitle("Completed");
         MANAGER.registerList(LIST_COMPLETED.LIST, "completed");
-
-        LIST_COMPLETED.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         PARENT.add(LIST_COMPLETED, CONSTRAINTS_L2_DEFAULT);
 
@@ -122,12 +119,12 @@ public class ListGui {
     //create layout constraints for entry viewer
     private static GridBagConstraints createEntryViewConstraints() {
         GridBagConstraints c = new GridBagConstraints();
-        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.gridwidth = 1;
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 3;
         c.gridy = 0;
-        c.weightx = 0.25;
-        c.weighty = 0.5;
+        c.weightx = 0.5;
+        c.weighty = 1.0;
         c.insets = new Insets(0,20, 0, 20);
 
         return c;
@@ -140,6 +137,7 @@ public class ListGui {
         c.gridy = 0;
         c.weightx = 0.5;
         c.weighty = 1.0;
+        c.gridwidth = 1;
         c.gridheight = GridBagConstraints.RELATIVE;
         c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(0, 0, 0, 20);
@@ -152,7 +150,7 @@ public class ListGui {
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 1;
         c.gridy = 0;
-        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.gridwidth = 1;
         c.gridheight = GridBagConstraints.RELATIVE;
         c.weightx = 0.5;
         c.weighty = 1.0;
@@ -164,9 +162,9 @@ public class ListGui {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridx = 1;
         constraints.gridy = 0;
-        constraints.weightx = 0.25;
+        constraints.weightx = 0.5;
         constraints.weighty = 1.0;
-        constraints.gridwidth = GridBagConstraints.RELATIVE;
+        constraints.gridwidth = 1;
         constraints.gridheight = GridBagConstraints.RELATIVE;
         constraints.fill = GridBagConstraints.BOTH;
         return constraints;
