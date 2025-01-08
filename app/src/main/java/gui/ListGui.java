@@ -42,6 +42,7 @@ public class ListGui {
     public static final Color COLOR_BORDER = new Color(101, 101, 101);
     public static final Color COLOR_TEXT = new Color(255, 255, 255);
     public static final Color COLOR_BUTTON = new Color(116, 160, 255);
+    public static final Color COLOR_TEXT_ACCENT = new Color(172, 172, 172);
 
     //fonts
     public static final Font FONT_TITLE = new Font("arial", Font.PLAIN, 24);
