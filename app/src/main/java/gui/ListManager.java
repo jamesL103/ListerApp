@@ -28,24 +28,21 @@ public class ListManager {
     //private class to store a DefaultListModel, a string name of a list, and an ID number
     private static class List_t {
         private static int count = 0;
-        public DefaultListModel<ListEntry> model;
         public String name;
         public final int ID;
 
-        public List_t(DefaultListModel<ListEntry> m, String n) {
-            model = m;
+        public List_t(String n) {
             name = n;
             ID = count++;
         }
 
-        public List_t(DefaultListModel<ListEntry> m) {
-            model = m;
+        public List_t() {
             ID = count++;
             name = "list" + ID;
         }
     }
 
-    private final Map<JList<ListEntry>, List_t> LIST_MODELS;
+    private final Map<ScrollListPanel, List_t> LIST_MODELS;
 
     private final String DIR_LIST;
 
@@ -68,8 +65,8 @@ public class ListManager {
      *
      * @param list the JList to register
      */
-    public void registerList(JList<ListEntry> list) {
-        LIST_MODELS.put(list, new List_t((DefaultListModel<ListEntry>) list.getModel()));
+    public void registerList(ScrollListPanel list) {
+        LIST_MODELS.put(list, new List_t());
     }
 
     /**Registers the specified JList to the list of managed lists.
@@ -79,19 +76,10 @@ public class ListManager {
      * @param list the JList to register
      * @param name the name of the list
      */
-    public void registerList(JList<ListEntry> list, String name) {
-        LIST_MODELS.put(list, new List_t((DefaultListModel<ListEntry>) list.getModel(), name));
+    public void registerList(ScrollListPanel list, String name) {
+        LIST_MODELS.put(list, new List_t(name));
     }
 
-    /**Registers all lists in the specified collection.
-     *
-     * @param lists the lists to register.
-     */
-    public void registerAll(Collection<JList<ListEntry>> lists) {
-        for (JList<ListEntry> l: lists) {
-            registerList(l);
-        }
-    }
 
     /**Updates the entry count display for the specified list.
      * Called automatically when changes to a list are made.
@@ -107,11 +95,7 @@ public class ListManager {
      * @param entry the entry to add
      */
     public void addTo(ScrollListPanel lstPanel, ListEntry entry) {
-        JList<ListEntry> list = lstPanel.LIST;
-        DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
-        model.addElement(entry);
-        updateListCount(lstPanel);
-        autosave(list);
+       addTo(lstPanel, entry, lstPanel.MODEL.getSize());
     }
 
     /**Inserts the specified item at the specified index of the specified list.
@@ -121,11 +105,10 @@ public class ListManager {
      * @param index the index to insert at
      */
     public void addTo(ScrollListPanel lstPanel, ListEntry entry, int index) {
-        JList<ListEntry> list = lstPanel.LIST;
-        DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
+        DefaultListModel<ListEntry> model = lstPanel.MODEL;
         model.add(index, entry);
         updateListCount(lstPanel);
-        autosave(list);
+        autosave(lstPanel);
     }
 
     /**Removes an item in a list at specified index.
@@ -134,11 +117,10 @@ public class ListManager {
      * @param index index of element to remove
      */
     public void removeAt(ScrollListPanel lstPanel, int index) {
-        JList<ListEntry> list = lstPanel.LIST;
-        DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
+        DefaultListModel<ListEntry> model = lstPanel.MODEL;
         model.remove(index);
         updateListCount(lstPanel);
-        autosave(list);
+        autosave(lstPanel);
     }
 
     /**Removes a specified item from a list.
@@ -147,11 +129,10 @@ public class ListManager {
      * @param entry element to remove
      */
     public void removeEntry(ScrollListPanel lstPanel, ListEntry entry) {
-        JList<ListEntry> list = lstPanel.LIST;
-        DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
+        DefaultListModel<ListEntry> model = lstPanel.MODEL;
         model.removeElement(entry);
         updateListCount(lstPanel);
-        autosave(list);
+        autosave(lstPanel);
     }
 
     /**Moves an entry from one list to another.
@@ -172,12 +153,12 @@ public class ListManager {
      *
      * @param list the list to initialize
      */
-    public void loadListFromFile(JList<ListEntry> list) {
+    public void loadListFromFile(ScrollListPanel list) {
         String filePath = DIR_LIST + "/" + LIST_MODELS.get(list).name;
         try {
             ListFileReader read = new ListFileReader(new File(filePath));
             List<ListEntry> lst = read.loadFromFile();
-            DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
+            DefaultListModel<ListEntry> model = list.MODEL;
             for (ListEntry entry: lst) {
                 model.addElement(entry);
             }
@@ -199,13 +180,13 @@ public class ListManager {
      *
      */
     public void loadAllLists() {
-        for (JList<ListEntry> list : LIST_MODELS.keySet()) {
+        for (ScrollListPanel list : LIST_MODELS.keySet()) {
             loadListFromFile(list);
         }
     }
 
     //if AUTOSAVE is true, will write the list that is updated to its file
-    private void autosave(JList<ListEntry> list) {
+    private void autosave(ScrollListPanel list) {
         if (AUTOSAVE) {
             save(list);
         }
@@ -213,21 +194,12 @@ public class ListManager {
 
     /**Saves the specified list to its file.
      *
-     * @param lstPanel the list to save
-     */
-    public void save(ScrollListPanel lstPanel) {
-        save(lstPanel.LIST);
-    }
-
-    /**Saves the specified list to its file.
-     * Internal helper that takes a JList as parameter
-     *
      * @param list the list to save
      */
-    private void save(JList<ListEntry> list) {
+    public void save(ScrollListPanel list) {
         String pathname = DIR_LIST + "/" + LIST_MODELS.get(list).name;
         File fout = new File(pathname);
-        DefaultListModel<ListEntry> model = LIST_MODELS.get(list).model;
+        DefaultListModel<ListEntry> model = list.MODEL;
         try {
             ListFileWriter write = new ListFileWriter(fout, model);
             write.writeList();

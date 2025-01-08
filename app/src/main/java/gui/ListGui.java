@@ -75,7 +75,7 @@ public class ListGui {
 
         //to do list
         LIST_TODO.setTitle("To-Do");
-        MANAGER.registerList(LIST_TODO.LIST, "todo");
+        MANAGER.registerList(LIST_TODO, "todo");
 
 
         activeList = LIST_TODO;
@@ -85,7 +85,7 @@ public class ListGui {
 
         //completed list
         LIST_COMPLETED.setTitle("Completed");
-        MANAGER.registerList(LIST_COMPLETED.LIST, "completed");
+        MANAGER.registerList(LIST_COMPLETED, "completed");
 
         PARENT.add(LIST_COMPLETED, CONSTRAINTS_L2_DEFAULT);
 
