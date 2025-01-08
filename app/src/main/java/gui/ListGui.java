@@ -257,6 +257,7 @@ public class ListGui {
 
         //opens editing of the currently viewed entry
         public void notifyEdit(ListEntry entry) {
+            //todo sort lists after date is edited
             displayEntry(entry, EDIT_PANEL);
             EDIT_PANEL.setCreatingNewEntry(false);
         }
@@ -266,7 +267,7 @@ public class ListGui {
             MANAGER.save(LIST_TODO);
             displayEntry(entry, VIEW_PANEL);
             if (newEntry) {
-                MANAGER.addTo(LIST_TODO, entry);
+                MANAGER.addSorted(LIST_TODO, entry);
             }
         }
 

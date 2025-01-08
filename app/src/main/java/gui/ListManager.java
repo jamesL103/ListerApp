@@ -89,6 +89,34 @@ public class ListManager {
         list.updateCount();
     }
 
+    /**Adds the specified entry into a list sorted in ascending order of the entries' due dates.
+     * The entry will be inserted at the appropriate index.
+     *
+     * @param lstPanel the list to insert into
+     * @param entry the entry to insert
+     */
+    public void addSorted(ScrollListPanel lstPanel, ListEntry entry) {
+        DefaultListModel<ListEntry> model = lstPanel.MODEL;
+        int middle_index = model.getSize()/2;
+        //check if the inserted entry has an earlier date than the entry in the middle of the list
+        //from the start of the list, find the first element greater than the entry
+        if (entry.getDate().compareTo(model.get(middle_index).getDate()) < 0) {
+            for (int i = 0; i < model.getSize(); i ++) {
+                if (entry.getDate().compareTo(model.get(i).getDate()) <= 0) {
+                    model.insertElementAt(entry, i);
+                    return;
+                }
+            }
+        } else { //otherwise start from the end of the list and work backwards
+            for (int i = model.getSize() - 1; i >= 0; i --) {
+                if (entry.getDate().compareTo(model.get(i).getDate()) >= 0) {
+                    model.insertElementAt(entry, i + 1);
+                    return;
+                }
+            }
+        }
+    }
+
     /**Adds the specified entry to the end of the specified list.
      *
      * @param lstPanel the list to add to
