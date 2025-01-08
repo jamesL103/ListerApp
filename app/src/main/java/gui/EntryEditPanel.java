@@ -19,6 +19,8 @@ public class EntryEditPanel extends EntryAccessPanel {
 
     //determines if the panel is creating a new entry or editing a preexisting one
     private boolean isCreatingNewEntry;
+    //original date of the entry before being edited
+    private Calendar originalDate;
 
 
     public EntryEditPanel(ListEntry entry) {
@@ -26,7 +28,7 @@ public class EntryEditPanel extends EntryAccessPanel {
         DATE_EDITOR = new DatePanel();
 
         addDateAccessor(DATE_EDITOR);
-        updateDate();
+        setPanelDate();
     }
 
     @Override
@@ -51,13 +53,21 @@ public class EntryEditPanel extends EntryAccessPanel {
         };
     }
 
+    //sets the fields of the panel and records the original date
+    @Override
+    public void setEntry(ListEntry entry) {
+        super.setEntry(entry);
+        setPanelDate();
+        originalDate = (Calendar) (entry.getDate().clone());
+    }
+
     //sets the panel's observer
     public void setObserver(ListGui.EntryPanelObserver ob) {
         observer = ob;
     }
 
     //set all fields in the date panel based on the entry
-    private void updateDate() {
+    private void setPanelDate() {
         Calendar cal = toDisplay.getDate();
         DATE_EDITOR.MONTH.setSelectedIndex(cal.get(Calendar.MONTH));
         DATE_EDITOR.DATE.setText(String.valueOf(cal.get(Calendar.DATE)));
@@ -153,7 +163,14 @@ public class EntryEditPanel extends EntryAccessPanel {
                 toDisplay.setName(((JTextField) nameDisplay).getText());
                 toDisplay.setDescription(((JTextArea) descDisplay).getText());
                 setDate();
-                observer.notifySave(toDisplay, isCreatingNewEntry);
+
+                if (isCreatingNewEntry) {
+                    observer.notifySave(toDisplay, true, false);
+                } else {
+                    //check if the date was changed
+                    boolean dateChanged = !originalDate.equals(toDisplay.getDate());
+                    observer.notifySave(toDisplay, false, dateChanged);
+                }
             }
 
             private void setDate() {

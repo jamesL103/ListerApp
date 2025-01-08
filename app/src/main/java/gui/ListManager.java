@@ -163,6 +163,17 @@ public class ListManager {
         autosave(lstPanel);
     }
 
+    /** Moves and sorts the specified entry to the correct spot in the list.
+     * The list must contain the entry when calling this method.
+     *
+     * @param lstPanel the list containing the entry
+     * @param entry the entry to sort
+     */
+    public void sortEntry(ScrollListPanel lstPanel, ListEntry entry) {
+         lstPanel.MODEL.removeElement(entry);
+         addSorted(lstPanel, entry);
+    }
+
     /**Moves an entry from one list to another.
      *
      * @param source the original list

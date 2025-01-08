@@ -262,13 +262,15 @@ public class ListGui {
             EDIT_PANEL.setCreatingNewEntry(false);
         }
 
-        //saves the data of the entry being edited
-        public void notifySave(ListEntry entry, boolean newEntry) {
-            MANAGER.save(LIST_TODO);
+        //notifies that the edited entry is being saved
+        public void notifySave(ListEntry entry, boolean newEntry, boolean dateEdited) {
             displayEntry(entry, VIEW_PANEL);
             if (newEntry) {
                 MANAGER.addSorted(LIST_TODO, entry);
+            } else if (dateEdited) {
+                MANAGER.sortEntry(LIST_TODO, entry);
             }
+            MANAGER.save(LIST_TODO);
         }
 
         //cancels editing of an entry
