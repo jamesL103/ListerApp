@@ -30,6 +30,13 @@ public abstract class EntryAccessPanel extends JPanel {
     private final GridBagLayout layout;
     protected final GridBagConstraints gbc;
 
+    //component GridBagConstraints
+    private final static GridBagConstraints CONSTRAINTS_NAME = makeNameConstraints();
+    private final static GridBagConstraints CONSTRAINTS_EXIT = makeExitButtonConstraints();
+    private final static GridBagConstraints CONSTRAINTS_DESC = makeDescConstraints();
+    private final static GridBagConstraints CONSTRAINTS_DATE = makeDateConstraints();
+    private final static GridBagConstraints CONSTRAINTS_BUTTONS = makeButtonPanelConstraints();
+
     protected static final Font subTitleFont = new Font("arial", Font.PLAIN, 24);
     protected static final Font smallFont = new Font("arial", Font.PLAIN, 12);
 
@@ -66,24 +73,18 @@ public abstract class EntryAccessPanel extends JPanel {
         comp.setBackground(ListGui.COLOR_BG_ACCENT);
         comp.setForeground(ListGui.COLOR_TEXT);
 
-        //gbc constraints
-        gbc.gridwidth = 1;
-        gbc.weightx = 0.5;
-        gbc.weighty = 0.1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        addComponent(comp, 0, 0);
+        add(comp, CONSTRAINTS_NAME);
     }
 
     protected void addDescAccessor(JComponent comp) {
+        JPanel descPanel = new JPanel();
+        descPanel.setLayout(new BoxLayout(descPanel, BoxLayout.Y_AXIS));
+
         JLabel descTitle = Util.newLabel("Description:");
 
         descTitle.setFont(subTitleFont);
 
-        gbc.gridwidth = 1;
-        gbc.weighty = 0.1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-
-        addComponent(descTitle, 0, 1);
+        descPanel.add(descTitle);
 
         descDisplay = comp;
         comp.setBackground(ListGui.COLOR_BG_ACCENT);
@@ -91,14 +92,13 @@ public abstract class EntryAccessPanel extends JPanel {
 
         JScrollPane descPane = new JScrollPane();
         descPane.setViewportView(comp);
-        descPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        descPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        descPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        descPane.setPreferredSize(new Dimension(30, 50));
 
-        gbc.weighty = 1.0;
-        gbc.gridwidth = 1;
-        gbc.weightx = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
+        descPanel.add(descPane);
 
-        addComponent(descPane, 0, 2);
+        add(descPanel, CONSTRAINTS_DESC);
     }
 
     protected void addDateAccessor(JComponent comp) {
@@ -108,11 +108,7 @@ public abstract class EntryAccessPanel extends JPanel {
         comp.setBackground(ListGui.COLOR_BG_ACCENT);
         comp.setForeground(ListGui.COLOR_TEXT);
 
-        gbc.weighty = 0.1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 1;
-
-        addComponent(comp, 0, 3);
+        add(dateDisplay, CONSTRAINTS_DATE);
 
     }
 
@@ -120,12 +116,7 @@ public abstract class EntryAccessPanel extends JPanel {
         buttonDisplay = comp;
         comp.setFont(smallFont);
 
-        gbc.weighty = 0.1;
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-
-        addComponent(comp, 0, 4);
+        add(buttonDisplay, CONSTRAINTS_BUTTONS);
     }
 
     //create and add the exit button
@@ -133,13 +124,11 @@ public abstract class EntryAccessPanel extends JPanel {
         JButton button = Util.newButton("x");
 
         exitButton = button;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.weightx = 0.1;
-        gbc.weighty = 0.1;
+
 
         button.addActionListener(makeExitListener());
 
-        Util.addToGb(this, button, gbc, 1, 0);
+        add(exitButton, CONSTRAINTS_EXIT);
     }
 
     /**Creates and returns an ActionListener for when the close button is pressed.
@@ -168,16 +157,55 @@ public abstract class EntryAccessPanel extends JPanel {
         return toDisplay;
     }
 
-    //adds components to specified grid in layout
-    protected void addComponent(Component c, int x, int y) {
-        int origx = gbc.gridx;
-        int origy = gbc.gridy;
-        gbc.gridx = x;
-        gbc.gridy = y;
-        layout.setConstraints(c, gbc);
-        add(c);
-        gbc.gridx = origx;
-        gbc.gridy = origy;
+
+    private static GridBagConstraints makeNameConstraints() {
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 1.0;
+        c.weighty = 0.1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        return c;
+    }
+
+    private static GridBagConstraints makeExitButtonConstraints() {
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 0;
+        c.weightx = 0.1;
+        c.weighty = 0.1;
+        c.fill = GridBagConstraints.NONE;
+        return c;
+    }
+
+    private static GridBagConstraints makeDescConstraints() {
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 1.0;
+        c.weighty = 0.5;
+        c.fill = GridBagConstraints.BOTH;
+        return c;
+    }
+
+    private static GridBagConstraints makeDateConstraints() {
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 2;
+        c.weightx = 1.0;
+        c.weighty = 0.1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        return c;
+    }
+
+    private static GridBagConstraints makeButtonPanelConstraints() {
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 3;
+        c.weightx = 1.0;
+        c.weighty = 0.1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        return c;
     }
 
 }

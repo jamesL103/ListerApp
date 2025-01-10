@@ -14,7 +14,6 @@ public class ListGui {
     private static final GridBagConstraints CONSTRAINTS_ENTRY = createEntryViewConstraints();
     private static final GridBagConstraints CONSTRAINTS_L1_DEFAULT = createList1DefConstraints();
     private static final GridBagConstraints CONSTRAINTS_L2_DEFAULT = createDefList2Constraints();
-    private static final GridBagConstraints CONSTRAINTS_L2_SMALL = createSmallList2Constraints();
     private static final GridBagConstraints CONSTRAINTS_CONTROL_BAR = createControlBarConstraints();
 
     private final GridBagLayout layout;
@@ -120,12 +119,13 @@ public class ListGui {
     //create layout constraints for entry viewer
     private static GridBagConstraints createEntryViewConstraints() {
         GridBagConstraints c = new GridBagConstraints();
-        c.gridwidth = 1;
-        c.fill = GridBagConstraints.BOTH;
         c.gridx = 3;
         c.gridy = 0;
-        c.weightx = 0.5;
+        c.weightx = 0.2;
         c.weighty = 1.0;
+        c.gridwidth = 1;
+        c.gridheight = GridBagConstraints.RELATIVE;
+        c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(0,20, 0, 20);
 
         return c;
@@ -141,35 +141,24 @@ public class ListGui {
         c.gridwidth = 1;
         c.gridheight = GridBagConstraints.RELATIVE;
         c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(0, 0, 0, 20);
+        c.insets = new Insets(0, 10, 0, 10);
         return c;
     }
 
     //initialize the default layout constraints for the second list
     private static GridBagConstraints createDefList2Constraints() {
         GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
         c.gridx = 1;
         c.gridy = 0;
-        c.gridwidth = 1;
-        c.gridheight = GridBagConstraints.RELATIVE;
         c.weightx = 0.5;
         c.weighty = 1.0;
+        c.gridwidth = 1;
+        c.gridheight = GridBagConstraints.RELATIVE;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(0, 10, 0, 10);
         return c;
     }
 
-    //initialize the minimized layout constraints for the second list
-    private static GridBagConstraints createSmallList2Constraints() {
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.gridx = 1;
-        constraints.gridy = 0;
-        constraints.weightx = 0.5;
-        constraints.weighty = 1.0;
-        constraints.gridwidth = 1;
-        constraints.gridheight = GridBagConstraints.RELATIVE;
-        constraints.fill = GridBagConstraints.BOTH;
-        return constraints;
-    }
 
     //create the layout constraints for the control bar
     private static GridBagConstraints createControlBarConstraints() {
@@ -177,10 +166,9 @@ public class ListGui {
         c.gridx = 0;
         c.gridy = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth= GridBagConstraints.REMAINDER;
+        c.gridwidth = GridBagConstraints.REMAINDER;
         c.gridheight = 1;
-        c.ipady = 0;
-        c.weightx = 0.0;
+        c.weightx = 1.0;
         c.weighty = 1.0;
         return c;
     }
@@ -191,12 +179,6 @@ public class ListGui {
 
         PARENT.remove(currentView);
         currentView = panel;
-
-        //change layout constraints for completed list
-        layout.setConstraints(LIST_COMPLETED, CONSTRAINTS_L2_SMALL);
-
-        layout.setConstraints(currentView, CONSTRAINTS_ENTRY);
-
 
         PARENT.add(panel, CONSTRAINTS_ENTRY);
         currentView.setEntry(entry);
@@ -257,7 +239,6 @@ public class ListGui {
 
         //opens editing of the currently viewed entry
         public void notifyEdit(ListEntry entry) {
-            //todo sort lists after date is edited
             displayEntry(entry, EDIT_PANEL);
             EDIT_PANEL.setCreatingNewEntry(false);
         }
