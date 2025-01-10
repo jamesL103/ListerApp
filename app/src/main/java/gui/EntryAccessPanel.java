@@ -24,11 +24,8 @@ public abstract class EntryAccessPanel extends JPanel {
     protected JComponent buttonDisplay;
 
     //exit button
-    //actionlistener automatically added on init using makeExitListener()
-    protected JButton exitButton;
-
-    private final GridBagLayout layout;
-    protected final GridBagConstraints gbc;
+    //ActionListener automatically added on init using makeExitListener()
+    private final JButton EXIT_BUTTON = Util.newButton("x");
 
     //component GridBagConstraints
     private final static GridBagConstraints CONSTRAINTS_NAME = makeNameConstraints();
@@ -37,14 +34,13 @@ public abstract class EntryAccessPanel extends JPanel {
     private final static GridBagConstraints CONSTRAINTS_DATE = makeDateConstraints();
     private final static GridBagConstraints CONSTRAINTS_BUTTONS = makeButtonPanelConstraints();
 
-    protected static final Font subTitleFont = new Font("arial", Font.PLAIN, 24);
-    protected static final Font smallFont = new Font("arial", Font.PLAIN, 12);
+    public static final Font subTitleFont = new Font("arial", Font.PLAIN, 24);
+    public static final Font smallFont = new Font("arial", Font.PLAIN, 12);
 
     public EntryAccessPanel(ListEntry entry) {
         super();
         toDisplay = entry;
-        layout = new GridBagLayout();
-        gbc = new GridBagConstraints();
+        GridBagLayout layout = new GridBagLayout();
 
         setBackground(ListGui.COLOR_BACKGROUND);
 
@@ -121,14 +117,9 @@ public abstract class EntryAccessPanel extends JPanel {
 
     //create and add the exit button
     private void addExitButton() {
-        JButton button = Util.newButton("x");
+        EXIT_BUTTON.addActionListener(makeExitListener());
 
-        exitButton = button;
-
-
-        button.addActionListener(makeExitListener());
-
-        add(exitButton, CONSTRAINTS_EXIT);
+        add(EXIT_BUTTON, CONSTRAINTS_EXIT);
     }
 
     /**Creates and returns an ActionListener for when the close button is pressed.
