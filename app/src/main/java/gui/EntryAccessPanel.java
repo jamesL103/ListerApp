@@ -74,9 +74,16 @@ public abstract class EntryAccessPanel extends JPanel {
 
     protected void addDescAccessor(JComponent comp) {
         JPanel descPanel = new JPanel();
-        descPanel.setLayout(new BoxLayout(descPanel, BoxLayout.Y_AXIS));
+        descPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        BoxLayout layout = new BoxLayout(descPanel, BoxLayout.Y_AXIS);
+        descPanel.setLayout(layout);
+        descPanel.setBackground(ListGui.COLOR_BACKGROUND);
 
         JLabel descTitle = Util.newLabel("Description:");
+        descTitle.setMaximumSize(null);
+        descTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
+        descTitle.setHorizontalAlignment(SwingConstants.LEFT);
+        descTitle.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         descTitle.setFont(subTitleFont);
 
@@ -85,6 +92,7 @@ public abstract class EntryAccessPanel extends JPanel {
         descDisplay = comp;
         comp.setBackground(ListGui.COLOR_BG_ACCENT);
         comp.setForeground(ListGui.COLOR_TEXT);
+        descDisplay.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JScrollPane descPane = new JScrollPane();
         descPane.setViewportView(comp);
