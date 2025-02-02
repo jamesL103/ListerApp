@@ -8,7 +8,7 @@ import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class EntryViewPanel extends EntryAccessPanel {
+public class EntryViewPanel extends AbstractEntryPanel {
 
     private ListGui.EntryPanelObserver observer;
 
@@ -33,17 +33,18 @@ public class EntryViewPanel extends EntryAccessPanel {
         JScrollPane title = new JScrollPane(Util.newLabel());
         title.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         title.getViewport().setSize(1, 50);
+        title.setBorder(null);
 
         JLabel name = new JLabel();
-        name.setFont(ListGui.TITLE);
+        name.setFont(ListGui.FONT_TITLE);
         name.setText("default");
 
 
         name.setForeground(ListGui.COLOR_TEXT);
 
         title.getViewport().setBackground(ListGui.COLOR_BG_ACCENT);
-        title.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         title.setViewportView(name);
+        title.setPreferredSize(new Dimension(name.getWidth(), name.getHeight() + 40));
 
         return title;
     }
@@ -60,8 +61,8 @@ public class EntryViewPanel extends EntryAccessPanel {
 
     private JLabel makeDate() {
         JLabel date = new JLabel();
+        date.setFont(ListGui.FONT_SMALL_TEXT);
         date.setText("Due: " + toDisplay.getStringDate());
-
         return date;
     }
 

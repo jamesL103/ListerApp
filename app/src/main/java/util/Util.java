@@ -11,7 +11,7 @@ public class Util {
      * The months are zero indexed.
      *
      */
-    public static enum Months {
+    public enum Months {
         JANUARY("Jan"),
         FEBUARY("Feb"),
         MARCH("March"),

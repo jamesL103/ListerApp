@@ -14,7 +14,6 @@ public class ListGui {
     private static final GridBagConstraints CONSTRAINTS_ENTRY = createEntryViewConstraints();
     private static final GridBagConstraints CONSTRAINTS_L1_DEFAULT = createList1DefConstraints();
     private static final GridBagConstraints CONSTRAINTS_L2_DEFAULT = createDefList2Constraints();
-    private static final GridBagConstraints CONSTRAINTS_L2_SMALL = createSmallList2Constraints();
     private static final GridBagConstraints CONSTRAINTS_CONTROL_BAR = createControlBarConstraints();
 
     private final GridBagLayout layout;
@@ -32,7 +31,7 @@ public class ListGui {
     private ScrollListPanel activeList;
 
     //panels for accessing and editing entry fields
-    private EntryAccessPanel currentView;
+    private AbstractEntryPanel currentView;
     private final EntryViewPanel VIEW_PANEL = new EntryViewPanel(ListEntry.DEFAULT_ENTRY);
     private final EntryEditPanel EDIT_PANEL = new EntryEditPanel(ListEntry.DEFAULT_ENTRY);
 
@@ -42,10 +41,11 @@ public class ListGui {
     public static final Color COLOR_BORDER = new Color(101, 101, 101);
     public static final Color COLOR_TEXT = new Color(255, 255, 255);
     public static final Color COLOR_BUTTON = new Color(116, 160, 255);
+    public static final Color COLOR_TEXT_ACCENT = new Color(172, 172, 172);
 
     //fonts
-    public static final Font TITLE = new Font("arial", Font.PLAIN, 24);
-    public static final Font SMALL_TEXT = new Font("arial", Font.PLAIN, 12);
+    public static final Font FONT_TITLE = new Font("arial", Font.PLAIN, 24);
+    public static final Font FONT_SMALL_TEXT = new Font("arial", Font.PLAIN, 12);
 
     //create the gui for the list app
     public ListGui() {
@@ -74,9 +74,8 @@ public class ListGui {
 
         //to do list
         LIST_TODO.setTitle("To-Do");
-        MANAGER.registerList(LIST_TODO.LIST, "todo");
+        MANAGER.registerList(LIST_TODO, "todo");
 
-        LIST_TODO.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         activeList = LIST_TODO;
 
@@ -85,9 +84,7 @@ public class ListGui {
 
         //completed list
         LIST_COMPLETED.setTitle("Completed");
-        MANAGER.registerList(LIST_COMPLETED.LIST, "completed");
-
-        LIST_COMPLETED.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        MANAGER.registerList(LIST_COMPLETED, "completed");
 
         PARENT.add(LIST_COMPLETED, CONSTRAINTS_L2_DEFAULT);
 
@@ -122,12 +119,14 @@ public class ListGui {
     //create layout constraints for entry viewer
     private static GridBagConstraints createEntryViewConstraints() {
         GridBagConstraints c = new GridBagConstraints();
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.fill = GridBagConstraints.VERTICAL;
         c.gridx = 3;
         c.gridy = 0;
-        c.weightx = 0.25;
-        c.weighty = 0.5;
+        c.weightx = 0.2;
+        c.weighty = 1.0;
+        c.gridwidth = 1;
+        c.gridheight = GridBagConstraints.RELATIVE;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(0,20, 0, 20);
 
         return c;
     }
@@ -139,36 +138,27 @@ public class ListGui {
         c.gridy = 0;
         c.weightx = 0.5;
         c.weighty = 1.0;
+        c.gridwidth = 1;
         c.gridheight = GridBagConstraints.RELATIVE;
         c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(0, 10, 0, 10);
         return c;
     }
 
     //initialize the default layout constraints for the second list
     private static GridBagConstraints createDefList2Constraints() {
         GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
         c.gridx = 1;
         c.gridy = 0;
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.gridheight = GridBagConstraints.RELATIVE;
         c.weightx = 0.5;
         c.weighty = 1.0;
+        c.gridwidth = 1;
+        c.gridheight = GridBagConstraints.RELATIVE;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(0, 10, 0, 10);
         return c;
     }
 
-    //initialize the minimized layout constraints for the second list
-    private static GridBagConstraints createSmallList2Constraints() {
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.gridx = 1;
-        constraints.gridy = 0;
-        constraints.weightx = 0.25;
-        constraints.weighty = 1.0;
-        constraints.gridwidth = GridBagConstraints.RELATIVE;
-        constraints.gridheight = GridBagConstraints.RELATIVE;
-        constraints.fill = GridBagConstraints.BOTH;
-        return constraints;
-    }
 
     //create the layout constraints for the control bar
     private static GridBagConstraints createControlBarConstraints() {
@@ -176,29 +166,24 @@ public class ListGui {
         c.gridx = 0;
         c.gridy = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth= GridBagConstraints.REMAINDER;
+        c.gridwidth = GridBagConstraints.REMAINDER;
         c.gridheight = 1;
-        c.ipady = 0;
-        c.weightx = 0.0;
+        c.weightx = 1.0;
         c.weighty = 1.0;
         return c;
     }
 
     //displays the specified entry and its fields as a side panel of a specified type
     //replaces the current display panel if one is visible
-    private void displayEntry(ListEntry entry, EntryAccessPanel panel) {
+    private void displayEntry(ListEntry entry, AbstractEntryPanel panel) {
 
         PARENT.remove(currentView);
         currentView = panel;
 
-        //change layout constraints for completed list
-        layout.setConstraints(LIST_COMPLETED, CONSTRAINTS_L2_SMALL);
-
-        layout.setConstraints(currentView, CONSTRAINTS_ENTRY);
-
-
         PARENT.add(panel, CONSTRAINTS_ENTRY);
         currentView.setEntry(entry);
+
+        PARENT.paintComponents(PARENT.getGraphics());
     }
 
     //close the panel currently displaying an entry
@@ -206,6 +191,7 @@ public class ListGui {
         PARENT.remove(currentView);
         PARENT.paintComponents(PARENT.getGraphics());
         layout.setConstraints(LIST_COMPLETED, CONSTRAINTS_L2_DEFAULT);
+        layout.setConstraints(LIST_TODO, CONSTRAINTS_L1_DEFAULT);
         LIST_TODO.clearSelection();
         LIST_COMPLETED.clearSelection();
     }
@@ -255,16 +241,22 @@ public class ListGui {
         public void notifyEdit(ListEntry entry) {
             displayEntry(entry, EDIT_PANEL);
             EDIT_PANEL.setCreatingNewEntry(false);
-            PARENT.paintComponents(PARENT.getGraphics());
         }
 
-        //saves the data of the entry being edited
-        public void notifySave(ListEntry entry, boolean newEntry) {
-            MANAGER.save(LIST_TODO);
+        //notifies that the edited entry is being saved
+        public void notifySave(ListEntry entry, boolean newEntry, boolean dateEdited) {
             displayEntry(entry, VIEW_PANEL);
             if (newEntry) {
-                MANAGER.addTo(LIST_TODO, entry);
+                MANAGER.addSorted(LIST_TODO, entry);
+            } else if (dateEdited) {
+                MANAGER.sortEntry(LIST_TODO, entry);
             }
+            MANAGER.save(LIST_TODO);
+        }
+
+        //cancels editing of an entry
+        public void notifyCancel(ListEntry entry) {
+            displayEntry(entry, VIEW_PANEL);
         }
 
         public void notifyDelete(ListEntry entry) {

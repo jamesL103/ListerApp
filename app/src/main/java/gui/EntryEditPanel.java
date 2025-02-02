@@ -11,7 +11,7 @@ import java.util.Calendar;
 
 import util.Util;
 
-public class EntryEditPanel extends EntryAccessPanel {
+public class EntryEditPanel extends AbstractEntryPanel {
 
     private final DatePanel DATE_EDITOR;
 
@@ -19,6 +19,8 @@ public class EntryEditPanel extends EntryAccessPanel {
 
     //determines if the panel is creating a new entry or editing a preexisting one
     private boolean isCreatingNewEntry;
+    //original date of the entry before being edited
+    private Calendar originalDate;
 
 
     public EntryEditPanel(ListEntry entry) {
@@ -26,14 +28,14 @@ public class EntryEditPanel extends EntryAccessPanel {
         DATE_EDITOR = new DatePanel();
 
         addDateAccessor(DATE_EDITOR);
-        updateDate();
+        setPanelDate();
     }
 
     @Override
     public void initialize() {
         addNameAccessor(makeName());
         addDescAccessor(makeDescription());
-        addButtons(makeButton());
+        addButtons(makeButtons());
 
         updateFields();
     }
@@ -51,13 +53,21 @@ public class EntryEditPanel extends EntryAccessPanel {
         };
     }
 
+    //sets the fields of the panel and records the original date
+    @Override
+    public void setEntry(ListEntry entry) {
+        super.setEntry(entry);
+        setPanelDate();
+        originalDate = (Calendar) (entry.getDate().clone());
+    }
+
     //sets the panel's observer
     public void setObserver(ListGui.EntryPanelObserver ob) {
         observer = ob;
     }
 
     //set all fields in the date panel based on the entry
-    private void updateDate() {
+    private void setPanelDate() {
         Calendar cal = toDisplay.getDate();
         DATE_EDITOR.MONTH.setSelectedIndex(cal.get(Calendar.MONTH));
         DATE_EDITOR.DATE.setText(String.valueOf(cal.get(Calendar.DATE)));
@@ -66,11 +76,11 @@ public class EntryEditPanel extends EntryAccessPanel {
 
     private JTextField makeName() {
         JTextField name = new JTextField();
+        name.setBorder(BorderFactory.createLineBorder(ListGui.COLOR_BORDER));
         name.setCaretColor(ListGui.COLOR_TEXT);
         name.setText("default");
-        name.setFont(ListGui.TITLE);
+        name.setFont(ListGui.FONT_TITLE);
         name.setHorizontalAlignment(JLabel.LEFT);
-        name.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         return name;
     }
 
@@ -130,16 +140,22 @@ public class EntryEditPanel extends EntryAccessPanel {
 
     //makes the save button for the edit panel
     //updates the fields of the current entry
-    private JPanel makeButton() {
+    private JPanel makeButtons() {
         JPanel panel = new JPanel();
         panel.setBackground(ListGui.COLOR_BACKGROUND);
 
         JButton save = Util.newButton("Save");
         save.addActionListener(makeSaveListener());
         panel.add(save);
+
+        JButton cancel = Util.newButton("Cancel");
+        cancel.addActionListener(makeCancelListener());
+        panel.add(cancel);
+
         return panel;
     }
 
+    //Listener for the save button
     private ActionListener makeSaveListener() {
         return new ActionListener() {
             @Override
@@ -147,7 +163,14 @@ public class EntryEditPanel extends EntryAccessPanel {
                 toDisplay.setName(((JTextField) nameDisplay).getText());
                 toDisplay.setDescription(((JTextArea) descDisplay).getText());
                 setDate();
-                observer.notifySave(toDisplay, isCreatingNewEntry);
+
+                if (isCreatingNewEntry) {
+                    observer.notifySave(toDisplay, true, false);
+                } else {
+                    //check if the date was changed
+                    boolean dateChanged = !originalDate.equals(toDisplay.getDate());
+                    observer.notifySave(toDisplay, false, dateChanged);
+                }
             }
 
             private void setDate() {
@@ -158,6 +181,12 @@ public class EntryEditPanel extends EntryAccessPanel {
             }
         };
 
+    }
+
+    private ActionListener makeCancelListener() {
+        return e -> {
+            observer.notifyCancel(toDisplay);
+        };
     }
 
     /**Sets whether the panel is creating a new entry or editing an
