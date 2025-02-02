@@ -18,13 +18,13 @@ public class ListFileWriter {
 
     private static final DecimalFormat TWO_DIGIT = new DecimalFormat("00");
 
-    private File fin;
+    private final File FIN;
 
     private final DefaultListModel<ListEntry> SOURCE;
 
 
-    public ListFileWriter(File fin, DefaultListModel<ListEntry> list)  throws IOException{
-        this.fin = fin;
+    public ListFileWriter(File fin, DefaultListModel<ListEntry> list)  throws IOException {
+        this.FIN = fin;
         SOURCE = list;
         new FileWriter(fin);
     }
@@ -33,7 +33,7 @@ public class ListFileWriter {
      * This will replace the previous contents of the file.
      */
     public void writeList() throws IOException  {
-        FileWriter writer = new FileWriter(fin);
+        FileWriter writer = new FileWriter(FIN);
         for (int i = 0; i < SOURCE.getSize(); i ++) {
             writeEntry(SOURCE.get(i), writer);
             if (i % 128 == 0) {
@@ -48,7 +48,7 @@ public class ListFileWriter {
     private void writeEntry(ListEntry entry, FileWriter writer) throws IOException{
         writer.write((entry.getName() +","));
         writer.write(entry.getDescription() + ",");
-        String date = "" + TWO_DIGIT.format(entry.getDate().get(Calendar.DATE)) + "/"
+        String date = TWO_DIGIT.format(entry.getDate().get(Calendar.DATE)) + "/"
                 + TWO_DIGIT.format(entry.getDate().get(Calendar.MONTH) + 1) + "/" +
                 entry.getDate().get(Calendar.YEAR);
         writer.write(date + "\n");

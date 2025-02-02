@@ -9,14 +9,14 @@ import java.awt.event.ActionListener;
  */
 public class EntryControlBar extends JPanel {
 
-    private ListGui.ControlBarObserver observer;
+    private ListGui.ControlBarObserver OBSERVER;
 
     private final int BAR_HEIGHT = 50;
 
     public EntryControlBar(ListGui.ControlBarObserver observer) {
         super();
 
-        this.observer = observer;
+        OBSERVER = observer;
         FlowLayout layout = new FlowLayout();
         layout.setHgap(20);
         setLayout(layout);
@@ -43,12 +43,12 @@ public class EntryControlBar extends JPanel {
 
     //event for creating a new entry
     private final ActionListener EVENT_ADD = (e) -> {
-        observer.notifyAdd();
+        OBSERVER.notifyAdd();
     };
 
     //event for completing and entry and moving it to the completed list
     private final ActionListener EVENT_COMPLETE = (e) -> {
-        observer.notifyComplete();
+        OBSERVER.notifyComplete();
     };
 
 }
