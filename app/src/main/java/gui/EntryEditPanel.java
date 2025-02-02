@@ -11,7 +11,7 @@ import java.util.Calendar;
 
 import util.Util;
 
-public class EntryEditPanel extends EntryAccessPanel {
+public class EntryEditPanel extends AbstractEntryPanel {
 
     private final DatePanel DATE_EDITOR;
 

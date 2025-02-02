@@ -8,7 +8,7 @@ import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class EntryViewPanel extends EntryAccessPanel {
+public class EntryViewPanel extends AbstractEntryPanel {
 
     private ListGui.EntryPanelObserver observer;
 

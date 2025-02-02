@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
  * but their properties will have to be set by any implementing subclass.
  *
  */
-public abstract class EntryAccessPanel extends JPanel {
+public abstract class AbstractEntryPanel extends JPanel {
 
     protected ListEntry toDisplay;
 
@@ -37,7 +37,7 @@ public abstract class EntryAccessPanel extends JPanel {
     public static final Font subTitleFont = new Font("arial", Font.PLAIN, 24);
     public static final Font smallFont = new Font("arial", Font.PLAIN, 12);
 
-    public EntryAccessPanel(ListEntry entry) {
+    public AbstractEntryPanel(ListEntry entry) {
         super();
         toDisplay = entry;
         GridBagLayout layout = new GridBagLayout();

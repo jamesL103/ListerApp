@@ -31,7 +31,7 @@ public class ListGui {
     private ScrollListPanel activeList;
 
     //panels for accessing and editing entry fields
-    private EntryAccessPanel currentView;
+    private AbstractEntryPanel currentView;
     private final EntryViewPanel VIEW_PANEL = new EntryViewPanel(ListEntry.DEFAULT_ENTRY);
     private final EntryEditPanel EDIT_PANEL = new EntryEditPanel(ListEntry.DEFAULT_ENTRY);
 
@@ -175,7 +175,7 @@ public class ListGui {
 
     //displays the specified entry and its fields as a side panel of a specified type
     //replaces the current display panel if one is visible
-    private void displayEntry(ListEntry entry, EntryAccessPanel panel) {
+    private void displayEntry(ListEntry entry, AbstractEntryPanel panel) {
 
         PARENT.remove(currentView);
         currentView = panel;
