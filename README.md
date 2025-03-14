@@ -11,3 +11,7 @@ This project is still in progress and has many more features that need to be imp
 - Online information storage
 - Nicer looking UI
 - Better organization of tasks
+
+# Building from Source
+
+In the project directory use `./gradlew.bat build` on Windows or `./gradew build` on Linux in the command line to build the project. The JAR file will be in `[project Directory]/app/build/libs`. 
