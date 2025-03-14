@@ -43,6 +43,7 @@ tasks.named<Test>("test") {
 }
 
 tasks.jar {
+    archiveBaseName = "Lister"
     manifest {
         attributes["Main-Class"] = application.mainClass
     }
