@@ -31,6 +31,9 @@ public class ListGui {
     private final ScrollListPanel LIST_TODO = createScroll();
     private final ScrollListPanel LIST_COMPLETED = createScroll();
 
+    //Control bar with buttons
+    private final EntryControlBar CONTROL_BAR = new EntryControlBar(new ControlBarObserver());
+
     //the list with the current active selection
     private ScrollListPanel activeList;
 
@@ -106,8 +109,7 @@ public class ListGui {
 
     //create and add control bar
     private void addControlBar() {
-        EntryControlBar bar = new EntryControlBar(new ControlBarObserver());
-        PARENT.add(bar, CONSTRAINTS_CONTROL_BAR);
+        PARENT.add(CONTROL_BAR, CONSTRAINTS_CONTROL_BAR);
     }
 
     //creates the EntryViewPanel
@@ -196,12 +198,14 @@ public class ListGui {
         PARENT.paintComponents(PARENT.getGraphics());
         layout.setConstraints(LIST_COMPLETED, CONSTRAINTS_L2_DEFAULT);
         layout.setConstraints(LIST_TODO, CONSTRAINTS_L1_DEFAULT);
+        CONTROL_BAR.BUTTON_COMPLETE.setEnabled(false);
         LIST_TODO.clearSelection();
         LIST_COMPLETED.clearSelection();
     }
 
     //completes an entry, moving it from to-do to completed
     private void completeEntry(ListEntry entry) {
+        CONTROL_BAR.BUTTON_COMPLETE.setEnabled(false);
         MANAGER.moveEntry(LIST_TODO, LIST_COMPLETED, entry);
     }
 
@@ -226,6 +230,7 @@ public class ListGui {
         //called when list selection is updated
         public void notifySelection(ListEntry entry, ScrollListPanel caller) {
             if (entry != null) {
+                CONTROL_BAR.BUTTON_COMPLETE.setEnabled(true);
                 displayEntry(entry, VIEW_PANEL);
                 activeList = caller;
             }
