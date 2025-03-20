@@ -49,9 +49,7 @@ public class EntryEditPanel extends AbstractEntryPanel {
 
     @Override
     public ActionListener makeExitListener() {
-        return (e) -> {
-            observer.notifyClose();
-        };
+        return (e) -> observer.notifyClose();
     }
 
     //sets the fields of the panel and records the original date
@@ -185,9 +183,7 @@ public class EntryEditPanel extends AbstractEntryPanel {
     }
 
     private ActionListener makeCancelListener() {
-        return e -> {
-            observer.notifyCancel(toDisplay);
-        };
+        return e -> observer.notifyCancel(toDisplay);
     }
 
     /**Sets whether the panel is creating a new entry or editing an

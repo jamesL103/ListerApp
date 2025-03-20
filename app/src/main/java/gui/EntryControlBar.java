@@ -44,13 +44,9 @@ public class EntryControlBar extends JPanel {
     }
 
     //event for creating a new entry
-    private final ActionListener EVENT_ADD = (e) -> {
-        OBSERVER.notifyAdd();
-    };
+    private final ActionListener EVENT_ADD = (e) -> OBSERVER.notifyAdd();
 
     //event for completing and entry and moving it to the completed list
-    private final ActionListener EVENT_COMPLETE = (e) -> {
-        OBSERVER.notifyComplete();
-    };
+    private final ActionListener EVENT_COMPLETE = (e) -> OBSERVER.notifyComplete();
 
 }

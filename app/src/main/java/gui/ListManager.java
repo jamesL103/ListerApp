@@ -37,10 +37,6 @@ public class ListManager {
             ID = count++;
         }
 
-        public List_t() {
-            ID = count++;
-            name = "list" + ID;
-        }
     }
 
     private final Map<ScrollListPanel, List_t> LIST_MODELS;
@@ -58,16 +54,6 @@ public class ListManager {
                 System.out.println("ERROR: Couldn't create directory for storing lists.");
             }
         }
-    }
-
-    /**Registers the specified JList to the list of managed lists.
-     * All JLists must be registered in an instance for their contents to be managed.
-     * Will give the list's file the default name.
-     *
-     * @param list the JList to register
-     */
-    public void registerList(ScrollListPanel list) {
-        LIST_MODELS.put(list, new List_t());
     }
 
     /**Registers the specified JList to the list of managed lists.

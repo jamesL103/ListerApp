@@ -87,15 +87,11 @@ public class EntryViewPanel extends AbstractEntryPanel {
 
     @Override
     public ActionListener makeExitListener() {
-        return (e) -> {
-            observer.notifyClose();
-        };
+        return (e) -> observer.notifyClose();
     }
 
     private ActionListener makeEditListener() {
-        return (e) -> {
-            observer.notifyEdit(toDisplay);
-        };
+        return (e) -> observer.notifyEdit(toDisplay);
     }
 
     private ActionListener makeDeleteListener() {
