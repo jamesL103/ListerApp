@@ -73,12 +73,12 @@ public class EntryViewPanel extends AbstractEntryPanel {
 
         JButton edit = Util.newButton("Edit");
         edit.addActionListener(makeEditListener());
-        edit.setFont(smallFont);
+        edit.setFont(ListGui.FONT_SMALL_TEXT);
         panel.add(edit);
 
         JButton delete = Util.newButton("Delete Entry");
         delete.addActionListener(makeDeleteListener());
-        delete.setFont(smallFont);
+        delete.setFont(ListGui.FONT_SMALL_TEXT);
         panel.add(delete);
 
         return panel;

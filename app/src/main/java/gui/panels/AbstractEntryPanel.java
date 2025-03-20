@@ -35,8 +35,7 @@ public abstract class AbstractEntryPanel extends JPanel {
     private final static GridBagConstraints CONSTRAINTS_DATE = makeDateConstraints();
     private final static GridBagConstraints CONSTRAINTS_BUTTONS = makeButtonPanelConstraints();
 
-    public static final Font subTitleFont = new Font("arial", Font.PLAIN, 24);
-    public static final Font smallFont = new Font("arial", Font.PLAIN, 12);
+    private static final Font subTitleFont = new Font("arial", Font.PLAIN, 24);
 
     public AbstractEntryPanel(ListEntry entry) {
         super();
@@ -108,7 +107,7 @@ public abstract class AbstractEntryPanel extends JPanel {
 
     protected void addDateAccessor(JComponent comp) {
         dateDisplay = comp;
-        comp.setFont(smallFont);
+        comp.setFont(ListGui.FONT_SMALL_TEXT);
 
         comp.setBackground(ListGui.COLOR_BG_ACCENT);
         comp.setForeground(ListGui.COLOR_TEXT);
@@ -119,7 +118,7 @@ public abstract class AbstractEntryPanel extends JPanel {
 
     protected void addButtons(JComponent comp) {
         buttonDisplay = comp;
-        comp.setFont(smallFont);
+        comp.setFont(ListGui.FONT_SMALL_TEXT);
 
         add(buttonDisplay, CONSTRAINTS_BUTTONS);
     }

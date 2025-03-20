@@ -107,7 +107,7 @@ public class EntryEditPanel extends AbstractEntryPanel {
             super();
             ((FlowLayout)getLayout()).setAlignment(FlowLayout.LEFT);
             Label title = new Label("Due:");
-            title.setFont(smallFont);
+            title.setFont(ListGui.FONT_SMALL_TEXT);
             add(title);
 
             JTextField date = new JTextField("1");
