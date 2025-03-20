@@ -1,5 +1,6 @@
-package gui;
+package gui.panels;
 
+import gui.ListGui;
 import listItemStorage.ListEntry;
 import util.Util;
 

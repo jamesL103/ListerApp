@@ -1,5 +1,6 @@
-package gui;
+package gui.lists;
 
+import gui.ListGui;
 import listItemStorage.ListEntry;
 
 import javax.swing.*;
