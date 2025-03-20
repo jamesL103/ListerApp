@@ -1,5 +1,6 @@
 package gui;
 
+import gui.lists.ScrollListPanel;
 import listItemStorage.ListEntry;
 import listItemStorage.ListFileReader;
 import listItemStorage.ListFileWriter;
@@ -97,20 +98,26 @@ public class ListManager {
      */
     public void addSorted(ScrollListPanel lstPanel, ListEntry entry) {
         DefaultListModel<ListEntry> model = lstPanel.MODEL;
+
+        //check if the list is empty
+        if (model.getSize() == 0) {
+            model.addElement(entry);
+            return;
+        }
         int middle_index = model.getSize()/2;
         //check if the inserted entry has an earlier date than the entry in the middle of the list
         //from the start of the list, find the first element greater than the entry
         if (entry.getDate().compareTo(model.get(middle_index).getDate()) < 0) {
             for (int i = 0; i < model.getSize(); i ++) {
                 if (entry.getDate().compareTo(model.get(i).getDate()) <= 0) {
-                    model.insertElementAt(entry, i);
+                    model.add(i, entry);
                     return;
                 }
             }
         } else { //otherwise start from the end of the list and work backwards
             for (int i = model.getSize() - 1; i >= 0; i --) {
                 if (entry.getDate().compareTo(model.get(i).getDate()) >= 0) {
-                    model.insertElementAt(entry, i + 1);
+                    model.add(i + 1, entry);
                     return;
                 }
             }

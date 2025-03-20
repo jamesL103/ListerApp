@@ -1,5 +1,9 @@
 package gui;
 
+import gui.lists.ScrollListPanel;
+import gui.panels.AbstractEntryPanel;
+import gui.panels.EntryEditPanel;
+import gui.panels.EntryViewPanel;
 import listItemStorage.ListEntry;
 
 import javax.swing.*;
@@ -49,7 +53,7 @@ public class ListGui {
 
     //create the gui for the list app
     public ListGui() {
-        PARENT = new JFrame("List App");
+        PARENT = new JFrame("Lister");
         PARENT.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         PARENT.setSize(new Dimension(800, 500));
         layout = new GridBagLayout();
