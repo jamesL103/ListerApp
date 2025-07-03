@@ -1,5 +1,6 @@
-package gui;
+package gui.panels;
 
+import gui.ListGui;
 import listItemStorage.ListEntry;
 import util.Util;
 
@@ -72,12 +73,12 @@ public class EntryViewPanel extends AbstractEntryPanel {
 
         JButton edit = Util.newButton("Edit");
         edit.addActionListener(makeEditListener());
-        edit.setFont(smallFont);
+        edit.setFont(ListGui.FONT_SMALL_TEXT);
         panel.add(edit);
 
         JButton delete = Util.newButton("Delete Entry");
         delete.addActionListener(makeDeleteListener());
-        delete.setFont(smallFont);
+        delete.setFont(ListGui.FONT_SMALL_TEXT);
         panel.add(delete);
 
         return panel;
@@ -86,15 +87,11 @@ public class EntryViewPanel extends AbstractEntryPanel {
 
     @Override
     public ActionListener makeExitListener() {
-        return (e) -> {
-            observer.notifyClose();
-        };
+        return (e) -> observer.notifyClose();
     }
 
     private ActionListener makeEditListener() {
-        return (e) -> {
-            observer.notifyEdit(toDisplay);
-        };
+        return (e) -> observer.notifyEdit(toDisplay);
     }
 
     private ActionListener makeDeleteListener() {

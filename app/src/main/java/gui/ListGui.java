@@ -1,9 +1,17 @@
 package gui;
 
+import gui.lists.ScrollListPanel;
+import gui.panels.AbstractEntryPanel;
+import gui.panels.EntryEditPanel;
+import gui.panels.EntryViewPanel;
 import listItemStorage.ListEntry;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class ListGui {
 
@@ -27,6 +35,9 @@ public class ListGui {
     private final ScrollListPanel LIST_TODO = createScroll();
     private final ScrollListPanel LIST_COMPLETED = createScroll();
 
+    //Control bar with buttons
+    private final EntryControlBar CONTROL_BAR = new EntryControlBar(new ControlBarObserver());
+
     //the list with the current active selection
     private ScrollListPanel activeList;
 
@@ -49,13 +60,19 @@ public class ListGui {
 
     //create the gui for the list app
     public ListGui() {
-        PARENT = new JFrame("List App");
+        PARENT = new JFrame("Lister");
         PARENT.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         PARENT.setSize(new Dimension(800, 500));
         layout = new GridBagLayout();
 
         PARENT.setLayout(layout);
         PARENT.getContentPane().setBackground(COLOR_BACKGROUND);
+
+        //set up key binds
+        PARENT.addMouseListener(new MouseFocusListener());
+        PARENT.setFocusable(true);
+        PARENT.requestFocusInWindow();
+        PARENT.addKeyListener(new KeyBindListener());
 
         initViewPanel();
         initEditPanel();
@@ -102,8 +119,7 @@ public class ListGui {
 
     //create and add control bar
     private void addControlBar() {
-        EntryControlBar bar = new EntryControlBar(new ControlBarObserver());
-        PARENT.add(bar, CONSTRAINTS_CONTROL_BAR);
+        PARENT.add(CONTROL_BAR, CONSTRAINTS_CONTROL_BAR);
     }
 
     //creates the EntryViewPanel
@@ -192,12 +208,14 @@ public class ListGui {
         PARENT.paintComponents(PARENT.getGraphics());
         layout.setConstraints(LIST_COMPLETED, CONSTRAINTS_L2_DEFAULT);
         layout.setConstraints(LIST_TODO, CONSTRAINTS_L1_DEFAULT);
+        CONTROL_BAR.BUTTON_COMPLETE.setEnabled(false);
         LIST_TODO.clearSelection();
         LIST_COMPLETED.clearSelection();
     }
 
     //completes an entry, moving it from to-do to completed
     private void completeEntry(ListEntry entry) {
+        CONTROL_BAR.BUTTON_COMPLETE.setEnabled(false);
         MANAGER.moveEntry(LIST_TODO, LIST_COMPLETED, entry);
     }
 
@@ -222,6 +240,7 @@ public class ListGui {
         //called when list selection is updated
         public void notifySelection(ListEntry entry, ScrollListPanel caller) {
             if (entry != null) {
+                CONTROL_BAR.BUTTON_COMPLETE.setEnabled(true);
                 displayEntry(entry, VIEW_PANEL);
                 activeList = caller;
             }
@@ -282,6 +301,59 @@ public class ListGui {
             }
         }
 
+    }
+
+    /** Listener for application key binds
+     *
+     */
+    private class KeyBindListener implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                if (currentView != null) {
+                    closeEntryPanel();
+                }
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
+        }
+    }
+
+    private class MouseFocusListener implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            PARENT.requestFocusInWindow();
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
     }
 
 }

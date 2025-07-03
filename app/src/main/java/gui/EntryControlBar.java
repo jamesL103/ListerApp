@@ -13,6 +13,8 @@ public class EntryControlBar extends JPanel {
 
     private final int BAR_HEIGHT = 50;
 
+    public final JButton BUTTON_COMPLETE = new JButton();
+
     public EntryControlBar(ListGui.ControlBarObserver observer) {
         super();
 
@@ -33,22 +35,18 @@ public class EntryControlBar extends JPanel {
         add.addActionListener(EVENT_ADD);
         add(add);
 
-        JButton complete = new JButton();
-        complete.setBackground(ListGui.COLOR_BUTTON);
-        complete.setForeground(ListGui.COLOR_TEXT);
-        complete.setText("Complete");
-        complete.addActionListener(EVENT_COMPLETE);
-        add(complete);
+        BUTTON_COMPLETE.setBackground(ListGui.COLOR_BUTTON);
+        BUTTON_COMPLETE.setForeground(ListGui.COLOR_TEXT);
+        BUTTON_COMPLETE.setText("Complete");
+        BUTTON_COMPLETE.addActionListener(EVENT_COMPLETE);
+        BUTTON_COMPLETE.setEnabled(false);
+        add(BUTTON_COMPLETE);
     }
 
     //event for creating a new entry
-    private final ActionListener EVENT_ADD = (e) -> {
-        OBSERVER.notifyAdd();
-    };
+    private final ActionListener EVENT_ADD = (e) -> OBSERVER.notifyAdd();
 
     //event for completing and entry and moving it to the completed list
-    private final ActionListener EVENT_COMPLETE = (e) -> {
-        OBSERVER.notifyComplete();
-    };
+    private final ActionListener EVENT_COMPLETE = (e) -> OBSERVER.notifyComplete();
 
 }

@@ -1,5 +1,6 @@
-package gui;
+package gui.panels;
 
+import gui.ListGui;
 import listItemStorage.ListEntry;
 
 import javax.swing.*;
@@ -48,9 +49,7 @@ public class EntryEditPanel extends AbstractEntryPanel {
 
     @Override
     public ActionListener makeExitListener() {
-        return (e) -> {
-            observer.notifyClose();
-        };
+        return (e) -> observer.notifyClose();
     }
 
     //sets the fields of the panel and records the original date
@@ -106,7 +105,7 @@ public class EntryEditPanel extends AbstractEntryPanel {
             super();
             ((FlowLayout)getLayout()).setAlignment(FlowLayout.LEFT);
             Label title = new Label("Due:");
-            title.setFont(smallFont);
+            title.setFont(ListGui.FONT_SMALL_TEXT);
             add(title);
 
             JTextField date = new JTextField("1");
@@ -184,9 +183,7 @@ public class EntryEditPanel extends AbstractEntryPanel {
     }
 
     private ActionListener makeCancelListener() {
-        return e -> {
-            observer.notifyCancel(toDisplay);
-        };
+        return e -> observer.notifyCancel(toDisplay);
     }
 
     /**Sets whether the panel is creating a new entry or editing an

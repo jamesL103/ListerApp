@@ -1,5 +1,6 @@
 package gui;
 
+import gui.lists.ScrollListPanel;
 import listItemStorage.ListEntry;
 import listItemStorage.ListFileReader;
 import listItemStorage.ListFileWriter;
@@ -36,10 +37,6 @@ public class ListManager {
             ID = count++;
         }
 
-        public List_t() {
-            ID = count++;
-            name = "list" + ID;
-        }
     }
 
     private final Map<ScrollListPanel, List_t> LIST_MODELS;
@@ -57,16 +54,6 @@ public class ListManager {
                 System.out.println("ERROR: Couldn't create directory for storing lists.");
             }
         }
-    }
-
-    /**Registers the specified JList to the list of managed lists.
-     * All JLists must be registered in an instance for their contents to be managed.
-     * Will give the list's file the default name.
-     *
-     * @param list the JList to register
-     */
-    public void registerList(ScrollListPanel list) {
-        LIST_MODELS.put(list, new List_t());
     }
 
     /**Registers the specified JList to the list of managed lists.
@@ -97,20 +84,26 @@ public class ListManager {
      */
     public void addSorted(ScrollListPanel lstPanel, ListEntry entry) {
         DefaultListModel<ListEntry> model = lstPanel.MODEL;
+
+        //check if the list is empty
+        if (model.getSize() == 0) {
+            model.addElement(entry);
+            return;
+        }
         int middle_index = model.getSize()/2;
         //check if the inserted entry has an earlier date than the entry in the middle of the list
         //from the start of the list, find the first element greater than the entry
         if (entry.getDate().compareTo(model.get(middle_index).getDate()) < 0) {
             for (int i = 0; i < model.getSize(); i ++) {
                 if (entry.getDate().compareTo(model.get(i).getDate()) <= 0) {
-                    model.insertElementAt(entry, i);
+                    model.add(i, entry);
                     return;
                 }
             }
         } else { //otherwise start from the end of the list and work backwards
             for (int i = model.getSize() - 1; i >= 0; i --) {
                 if (entry.getDate().compareTo(model.get(i).getDate()) >= 0) {
-                    model.insertElementAt(entry, i + 1);
+                    model.add(i + 1, entry);
                     return;
                 }
             }
