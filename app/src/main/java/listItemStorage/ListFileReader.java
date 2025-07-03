@@ -26,12 +26,6 @@ public class ListFileReader {
         FIN = new File(file.getPath());
     }
 
-    //private default
-    private ListFileReader() {
-        READ = null;
-        FIN = null;
-    }
-
     /**Loads all ListEntries from the reader's file.
      * Returns the entries as a List of ListEntries.
      * Should the reader encounter an invalid Entry in the file,

@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.List;
 
 /**Class to write a list model to a file.
  *The Writer is instantiated to write the entries from a single list
@@ -22,11 +23,37 @@ public class ListFileWriter {
 
     private final DefaultListModel<ListEntry> SOURCE;
 
+    private final List<ListEntry> LIST;
+
 
     public ListFileWriter(File fin, DefaultListModel<ListEntry> list)  throws IOException {
         this.FIN = fin;
         SOURCE = list;
-        new FileWriter(fin);
+        LIST = null;
+
+        if (fin.isDirectory()) {
+            throw new IOException(fin.getName() +" is a directory");
+        }
+        if (!fin.exists()) {
+            if (!fin.createNewFile()) {
+                throw new IOException("Cannot create file " + fin.getName());
+            }
+        }
+    }
+
+    public ListFileWriter(File fin, List<ListEntry> list)  throws IOException {
+        this.FIN = fin;
+        SOURCE = null;
+        LIST = list;
+
+        if (fin.isDirectory()) {
+            throw new IOException(fin.getName() +" is a directory");
+        }
+        if (!fin.exists()) {
+            if (!fin.createNewFile()) {
+                throw new IOException("Cannot create file " + fin.getName());
+            }
+        }
     }
 
     /**Writes the entirety of the source list to the target file.

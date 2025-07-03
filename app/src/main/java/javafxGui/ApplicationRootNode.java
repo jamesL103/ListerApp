@@ -13,6 +13,8 @@ public class ApplicationRootNode extends VBox { //vertical box
     private final ListPanel list1 = new ListPanel("To-do");
     private final ListPanel list2 = new ListPanel("Resolved");
 
+    private final ListManager MANAGER = new ListManager();
+
     public ApplicationRootNode() {
         super();
 
@@ -28,6 +30,10 @@ public class ApplicationRootNode extends VBox { //vertical box
 
         listsChildren.add(list1);
         listsChildren.add(list2);
+
+        MANAGER.addList(list1);
+        MANAGER.addList(list2);
+        MANAGER.loadAll();
 
 
         getChildren().add(listBox);
