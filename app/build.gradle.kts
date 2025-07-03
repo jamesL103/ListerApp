@@ -8,6 +8,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    id("org.openjfx.javafxplugin").version("0.1.0")
 }
 
 repositories {
@@ -32,9 +33,14 @@ java {
     }
 }
 
+javafx {
+    version = "21.0.7"
+    modules("javafx.base", "javafx.fxml", "javafx.controls", "javafx.graphics")
+}
+
 application {
     // Define the main class for the application.
-    mainClass = "Main"
+    mainClass = "JavaFXApp"
 }
 
 tasks.named<Test>("test") {
