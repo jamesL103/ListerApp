@@ -1,5 +1,6 @@
 plugins {
-    id("java")
+    id "java"
+    id "org.openjfx.javafxplugin" version "0.1.0"
 }
 
 group = "james"
@@ -14,6 +15,11 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
-tasks.test {
+javafx {
+    version = '21.0.7'
+    modules = ['javafx.base', 'javafx.fxml', 'javafx.controls', 'javafx.graphics']
+}
+
+test {
     useJUnitPlatform()
 }
