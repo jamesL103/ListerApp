@@ -61,8 +61,8 @@ public class ListFileWriter {
      */
     public void writeList() throws IOException  {
         FileWriter writer = new FileWriter(FIN);
-        for (int i = 0; i < SOURCE.getSize(); i ++) {
-            writeEntry(SOURCE.get(i), writer);
+        for (int i = 0; i < LIST.size(); i ++) {
+            writeEntry(LIST.get(i), writer);
             if (i % 128 == 0) {
                 writer.flush();
             }

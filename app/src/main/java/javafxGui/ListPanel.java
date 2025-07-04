@@ -19,8 +19,10 @@ public class ListPanel extends VBox {
 
     private final List<Node> NODE_LIST;
 
+    //displays number of entries
     private final Label COUNT;
 
+    //unique name for identifying lists
     public final String NAME;
 
     private final ObservableList<ListEntry> LIST;
