@@ -7,7 +7,7 @@ import java.util.Locale;
  * An entry stores a string name, string description, and a date object.
  *
  */
-public class ListEntry {
+public class ListEntry implements Comparable<ListEntry> {
 
     //the default, blank ListEntry
     public static final ListEntry DEFAULT_ENTRY = new ListEntry("Default");
@@ -77,4 +77,11 @@ public class ListEntry {
     public String toString() {
         return name;
     }
+
+    @Override
+    public int compareTo(ListEntry o) {
+        return date.compareTo(o.getDate());
+    }
+
+
 }

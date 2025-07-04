@@ -8,6 +8,7 @@ import listItemStorage.ListFileWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ListManager {
@@ -46,6 +47,28 @@ public class ListManager {
     }
 
     public void addEntrySorted(ListEntry entry, String name) {
+        List<ListEntry> list = LISTS.get(name);
+        if (list == null) {
+            return;
+        }
+        int i;
+        int start = 0, end = list.size();
+        while (start < end) {
+            i = (end - start) / 2;
+            if (entry.compareTo(list.get(i)) > 0) { //entry is later than the current element
+                start = i + 1;
+            } else if (entry.compareTo(list.get(i)) < 0) { //entry earlier than current element
+                end = i - 1;
+            } else { //entry is at same date
+                list.add(i + 1, entry);
+                return;
+            }
+        }
+        if (entry.compareTo(list.get(start)) < 0) {
+            list.add(start - 1, entry);
+        } else {
+            list.add(start + 1, entry);
+        }
 
     }
 
