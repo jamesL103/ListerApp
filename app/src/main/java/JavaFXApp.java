@@ -3,6 +3,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafxGui.ApplicationRootNode;
+import javafxGui.CreateEntryPanel;
+import util.Util;
 
 public class JavaFXApp extends Application {
 
