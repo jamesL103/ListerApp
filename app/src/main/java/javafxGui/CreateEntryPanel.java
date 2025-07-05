@@ -29,6 +29,7 @@ public class CreateEntryPanel extends VBox {
     private final TextField YEAR;
 
     private final Button CLOSE;
+    private final Button CANCEL;
 
     public CreateEntryPanel() {
         this(ListEntry.DEFAULT_ENTRY);
@@ -74,9 +75,9 @@ public class CreateEntryPanel extends VBox {
         setDate(entry.getDate());
 
         Button save = new Button("Save");
-        Button cancel = new Button("Cancel");
+        CANCEL = new Button("Cancel");
 
-        HBox buttons = new HBox(save, cancel);
+        HBox buttons = new HBox(save, CANCEL);
         buttons.setSpacing(20);
         buttons.setPadding(new Insets(10, 0, 10, 0));
         buttons.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
@@ -98,6 +99,11 @@ public class CreateEntryPanel extends VBox {
         CLOSE.setOnAction((e) -> {
             callback.run();
         });
+
+        CANCEL.setOnAction((e) -> {
+            callback.run();
+        });
+
     }
 
 }

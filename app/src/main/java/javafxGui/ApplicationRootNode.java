@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import listItemStorage.ListEntry;
 
 import java.util.List;
 
@@ -57,7 +58,8 @@ public class ApplicationRootNode extends VBox { //vertical box
 
         Button create = new Button("Create New Entry");
         create.setOnAction((event) -> {
-            CreateEntryPanel createNew = new CreateEntryPanel();
+            ListEntry entry = new ListEntry();
+            CreateEntryPanel createNew = new CreateEntryPanel(entry);
             createNew.setCloseButtonCallback(CLOSE_EDIT);
             LISTS.getChildren().add(createNew);
         });
@@ -71,6 +73,15 @@ public class ApplicationRootNode extends VBox { //vertical box
         children.add(complete);
 
         getChildren().add(buttonBox);
+    }
+
+    public class EntryCreateObserver {
+        public void saveEntry(ListEntry entry, boolean newEntry) {
+            if (newEntry) {
+                MANAGER.addEntrySorted(entry, list1.NAME);
+            }
+            MANAGER.saveList(list1.NAME);
+        }
     }
 
 

@@ -46,8 +46,8 @@ public class ListManager {
         }
     }
 
-    public void addEntrySorted(ListEntry entry, String name) {
-        List<ListEntry> list = LISTS.get(name);
+    public void addEntrySorted(ListEntry entry, String listName) {
+        List<ListEntry> list = LISTS.get(listName);
         if (list == null) {
             return;
         }
