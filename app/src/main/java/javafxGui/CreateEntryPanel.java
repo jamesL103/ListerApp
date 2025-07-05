@@ -28,6 +28,8 @@ public class CreateEntryPanel extends VBox {
     private final ComboBox<String> MONTH;
     private final TextField YEAR;
 
+    private final Button CLOSE;
+
     public CreateEntryPanel() {
         this(ListEntry.DEFAULT_ENTRY);
     }
@@ -38,7 +40,10 @@ public class CreateEntryPanel extends VBox {
         NODE_LIST = getChildren();
 
         NAME = new TextField(entry.getName());
-        NODE_LIST.add(NAME);
+        CLOSE = new Button("x");
+
+        HBox topBar = new HBox(NAME, CLOSE);
+        NODE_LIST.add(topBar);
 
         Label desc = new Label("Description: ");
         NODE_LIST.add(desc);
@@ -87,6 +92,12 @@ public class CreateEntryPanel extends VBox {
         DAY.setText(String.valueOf(day));
         MONTH.setValue(Months.LIST.get(month));
         YEAR.setText(String.valueOf(year));
+    }
+
+    public void setCloseButtonCallback(Runnable callback) {
+        CLOSE.setOnAction((e) -> {
+            callback.run();
+        });
     }
 
 }
