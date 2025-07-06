@@ -35,7 +35,7 @@ public class ApplicationRootNode extends VBox { //vertical box
     }
 
     private void addLists() {
-        LISTS.setAlignment(Pos.BASELINE_CENTER);
+        LISTS.setAlignment(Pos.CENTER);
 
         List<Node> listsChildren = LISTS.getChildren();
 
