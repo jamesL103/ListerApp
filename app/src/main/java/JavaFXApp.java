@@ -3,8 +3,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafxGui.ApplicationRootNode;
-import javafxGui.CreateEntryPanel;
-import util.Util;
 
 public class JavaFXApp extends Application {
 
@@ -13,7 +11,7 @@ public class JavaFXApp extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         Parent root = new ApplicationRootNode();
 
         Scene scene = new Scene(root, 800, 450);
