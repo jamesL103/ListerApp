@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import listItemStorage.ListEntry;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //panel with label and list
@@ -43,7 +44,8 @@ public class ListPanel extends VBox {
         ScrollPane scroll = new ScrollPane();
         ListView<ListEntry> list = new ListView<>();
         scroll.setContent(list);
-        list.setItems(FXCollections.observableList(List.of(ListEntry.DEFAULT_ENTRY)));
+        ArrayList<ListEntry> items = new ArrayList<>();
+        list.setItems(FXCollections.observableList(items));
 
         LIST = list.getItems();
 

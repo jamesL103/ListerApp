@@ -64,8 +64,9 @@ public class ListManager {
                 return;
             }
         }
-        if (entry.compareTo(list.get(start)) < 0) {
-            list.add(start - 1, entry);
+
+        if (start == list.size() || entry.compareTo(list.get(start)) < 0) {
+            list.add(start, entry);
         } else {
             list.add(start + 1, entry);
         }

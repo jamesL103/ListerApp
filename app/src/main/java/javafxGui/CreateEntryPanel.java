@@ -18,6 +18,8 @@ import java.util.List;
 
 public class CreateEntryPanel extends VBox {
 
+    private ListEntry entry;
+    private boolean isNewEntry = false;
 
     private final List<Node> NODE_LIST;
 
@@ -30,13 +32,18 @@ public class CreateEntryPanel extends VBox {
 
     private final Button CLOSE;
     private final Button CANCEL;
+    private final Button SAVE;
+
+    private ApplicationRootNode.EntryCreateObserver observer;
 
     public CreateEntryPanel() {
-        this(ListEntry.DEFAULT_ENTRY);
+        this(ListEntry.DEFAULT_ENTRY, true);
     }
 
-    public CreateEntryPanel(ListEntry entry) {
+    public CreateEntryPanel(ListEntry entry, boolean newEntry) {
         super();
+        this.entry = entry;
+        isNewEntry = newEntry;
         setSpacing(10);
         NODE_LIST = getChildren();
 
@@ -74,10 +81,10 @@ public class CreateEntryPanel extends VBox {
         NODE_LIST.add(dateEdit);
         setDate(entry.getDate());
 
-        Button save = new Button("Save");
+        SAVE = new Button("Save");
         CANCEL = new Button("Cancel");
 
-        HBox buttons = new HBox(save, CANCEL);
+        HBox buttons = new HBox(SAVE, CANCEL);
         buttons.setSpacing(20);
         buttons.setPadding(new Insets(10, 0, 10, 0));
         buttons.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
@@ -104,6 +111,13 @@ public class CreateEntryPanel extends VBox {
             callback.run();
         });
 
+    }
+
+    public void setObserver(ApplicationRootNode.EntryCreateObserver observer) {
+        this.observer = observer;
+        SAVE.setOnAction((e) -> {
+            observer.saveEntry(entry, isNewEntry);
+        });
     }
 
 }

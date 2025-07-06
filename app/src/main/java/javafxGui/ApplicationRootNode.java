@@ -22,6 +22,8 @@ public class ApplicationRootNode extends VBox { //vertical box
 
     private final ListManager MANAGER = new ListManager();
 
+    private final EntryCreateObserver entryCreate = new EntryCreateObserver();
+
     public ApplicationRootNode() {
         super();
         NODE_LIST = getChildren();
@@ -59,8 +61,9 @@ public class ApplicationRootNode extends VBox { //vertical box
         Button create = new Button("Create New Entry");
         create.setOnAction((event) -> {
             ListEntry entry = new ListEntry();
-            CreateEntryPanel createNew = new CreateEntryPanel(entry);
+            CreateEntryPanel createNew = new CreateEntryPanel(entry, true);
             createNew.setCloseButtonCallback(CLOSE_EDIT);
+            createNew.setObserver(entryCreate);
             LISTS.getChildren().add(createNew);
         });
 
@@ -79,7 +82,9 @@ public class ApplicationRootNode extends VBox { //vertical box
         public void saveEntry(ListEntry entry, boolean newEntry) {
             if (newEntry) {
                 MANAGER.addEntrySorted(entry, list1.NAME);
+                System.out.println("Adding entry '" + entry + "'");
             }
+            System.out.println("Saving list 1");
             MANAGER.saveList(list1.NAME);
         }
     }
