@@ -10,13 +10,14 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import listItemStorage.ListEntry;
 import util.Months;
 
 import java.util.Calendar;
 import java.util.List;
 
-public class CreateEntryPanel extends VBox {
+public class CreateEntryPanel extends VBox implements EntryDisplay{
 
     private ListEntry entry;
     private boolean isNewEntry = false;
@@ -34,6 +35,8 @@ public class CreateEntryPanel extends VBox {
     private final Button CANCEL;
     private final Button SAVE;
 
+    private Runnable closeCallback;
+
     private ApplicationRootNode.EntryCreateObserver observer;
 
     public CreateEntryPanel() {
@@ -42,15 +45,23 @@ public class CreateEntryPanel extends VBox {
 
     public CreateEntryPanel(ListEntry entry, boolean newEntry) {
         super();
+        setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         this.entry = entry;
         isNewEntry = newEntry;
-        setSpacing(10);
+        setSpacing(VERTICAL_SPACING);
+        setPadding(PANEL_INSETS);
         NODE_LIST = getChildren();
 
         NAME = new TextField(entry.getName());
+        NAME.setFont(new Font(20));
         CLOSE = new Button("x");
+        CLOSE.setOnAction((e) -> {
+            close();
+        });
 
         HBox topBar = new HBox(NAME, CLOSE);
+        topBar.setAlignment(Pos.CENTER);
+        topBar.setSpacing(5);
         NODE_LIST.add(topBar);
 
         Label desc = new Label("Description: ");
@@ -58,8 +69,8 @@ public class CreateEntryPanel extends VBox {
 
         DESCRIPTION = new TextArea(entry.getDescription());
         DESCRIPTION.setPromptText("enter description");
-        DESCRIPTION.setPrefColumnCount(60);
-        DESCRIPTION.setPrefRowCount(5);
+        DESCRIPTION.setPrefColumnCount(DESCRIPTION_COLUMNS);
+        DESCRIPTION.setPrefRowCount(DESCRIPTION_ROWS);
         NODE_LIST.add(DESCRIPTION);
 
         Label date = new Label("Date: ");
@@ -67,11 +78,13 @@ public class CreateEntryPanel extends VBox {
 
 
         DAY = new TextField("0");
+        DAY.setPromptText("dd");
         DAY.setPrefColumnCount(2);
         MONTH = new ComboBox<>();
         MONTH.setItems(Months.LIST);
         MONTH.setValue(Months.LIST.get(0));
         YEAR = new TextField("0");
+        YEAR.setPromptText("yyyy");
         YEAR.setPrefColumnCount(4);
 
         HBox dateEdit = new HBox(DAY, MONTH, YEAR);
@@ -83,6 +96,9 @@ public class CreateEntryPanel extends VBox {
 
         SAVE = new Button("Save");
         CANCEL = new Button("Cancel");
+        CANCEL.setOnAction((e) -> {
+            close();
+        });
 
         HBox buttons = new HBox(SAVE, CANCEL);
         buttons.setSpacing(20);
@@ -102,22 +118,33 @@ public class CreateEntryPanel extends VBox {
         YEAR.setText(String.valueOf(year));
     }
 
+    private void close() {
+        if (closeCallback != null){
+            closeCallback.run();
+        }
+    }
+
     public void setCloseButtonCallback(Runnable callback) {
-        CLOSE.setOnAction((e) -> {
-            callback.run();
-        });
-
-        CANCEL.setOnAction((e) -> {
-            callback.run();
-        });
-
+        closeCallback = callback;
     }
 
     public void setObserver(ApplicationRootNode.EntryCreateObserver observer) {
         this.observer = observer;
         SAVE.setOnAction((e) -> {
-            observer.saveEntry(entry, isNewEntry);
+            entry.setName(NAME.getText());
+            entry.setDescription(DESCRIPTION.getText());
+
+            Calendar cal = entry.getDate();
+            cal.set(Calendar.DATE, Integer.parseInt(DAY.getText()));
+            cal.set(Calendar.MONTH, MONTH.getSelectionModel().getSelectedIndex());
+            cal.set(Calendar.YEAR, Integer.parseInt(YEAR.getText()));
+
+
+            this.observer.saveEntry(entry, isNewEntry);
+            close();
         });
     }
+
+
 
 }
