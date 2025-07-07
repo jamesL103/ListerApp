@@ -1,5 +1,6 @@
 package javafxGui;
 
+import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -28,6 +29,10 @@ public class ListPanel extends VBox {
     private final ObservableList<ListEntry> LIST;
     private final ListView<ListEntry> VIEW;
 
+    private final ReadOnlyIntegerProperty selectedIndex;
+    private ApplicationRootNode.ListSelectionObserver selection;
+
+
     public ListPanel(String name) {
         super();
         NAME = name;
@@ -43,6 +48,12 @@ public class ListPanel extends VBox {
 
         ScrollPane scroll = new ScrollPane();
         VIEW = new ListView<>();
+        selectedIndex = VIEW.getSelectionModel().selectedIndexProperty();
+        selectedIndex.addListener((observable, oldVal, newVal) -> {
+            if (newVal.intValue() >= 0) {
+                selection.selectionChanged(this);
+            }
+        });
         scroll.setContent(VIEW);
         ArrayList<ListEntry> items = new ArrayList<>();
         VIEW.setItems(FXCollections.observableList(items));
@@ -59,13 +70,26 @@ public class ListPanel extends VBox {
         NODE_LIST.add(scroll);
     }
 
+    public int getSelectedIndex() {
+        return selectedIndex.get();
+    }
+
+    public ReadOnlyIntegerProperty selectedIndexProperty() {
+        return selectedIndex;
+    }
+
     public ObservableList<ListEntry> getList() {
         return LIST;
     }
 
-    public void setSelectionListener() {
-
+    public void setChangeListener(ApplicationRootNode.ListSelectionObserver observer) {
+        selection = observer;
     }
+
+    public ListView<ListEntry> getListView() {
+        return VIEW;
+    }
+
 
 
 

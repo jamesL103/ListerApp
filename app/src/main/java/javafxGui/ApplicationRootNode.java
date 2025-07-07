@@ -27,9 +27,7 @@ public class ApplicationRootNode extends VBox { //vertical box
     public ApplicationRootNode() {
         super();
         NODE_LIST = getChildren();
-        CLOSE_EDIT = () -> {
-            LISTS.getChildren().remove(2);
-        };
+        CLOSE_EDIT = () -> LISTS.getChildren().remove(2);
         addLists();
         addButtons();
     }
@@ -39,8 +37,11 @@ public class ApplicationRootNode extends VBox { //vertical box
 
         List<Node> listsChildren = LISTS.getChildren();
 
+        ListSelectionObserver selection = new ListSelectionObserver();
         listsChildren.add(list1);
+        list1.setChangeListener(selection);
         listsChildren.add(list2);
+        list2.setChangeListener(selection);
 
 
         MANAGER.addList(list1);
@@ -48,7 +49,7 @@ public class ApplicationRootNode extends VBox { //vertical box
         MANAGER.loadAll();
 
 
-        getChildren().add(LISTS);
+        NODE_LIST.add(LISTS);
     }
 
     private void addButtons() {
@@ -75,7 +76,7 @@ public class ApplicationRootNode extends VBox { //vertical box
         children.add(delete);
         children.add(complete);
 
-        getChildren().add(buttonBox);
+        NODE_LIST.add(buttonBox);
     }
 
     public class EntryCreateObserver {
@@ -88,6 +89,19 @@ public class ApplicationRootNode extends VBox { //vertical box
             MANAGER.saveList(list1.NAME);
         }
     }
+
+    public class ListSelectionObserver {
+
+        public void selectionChanged(ListPanel caller) {
+            if (caller == list1) {
+                list2.getListView().getSelectionModel().clearSelection();
+            } else {
+                list1.getListView().getSelectionModel().clearSelection();
+            }
+
+        }
+    }
+
 
 
 }
