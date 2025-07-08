@@ -54,7 +54,7 @@ public class ListManager {
         int i;
         int start = 0, end = list.size();
         while (start < end) {
-            i = (end - start) / 2;
+            i = ((end - start) / 2 + start);
             if (entry.compareTo(list.get(i)) > 0) { //entry is later than the current element
                 start = i + 1;
             } else if (entry.compareTo(list.get(i)) < 0) { //entry earlier than current element
