@@ -61,13 +61,16 @@ public class ListManager {
                 end = i - 1;
             } else { //entry is at same date
                 list.add(i + 1, entry);
+                System.out.println("Adding entry '" + entry.getName() + "' at index " + (i + 1) + " in '" + listName + "'");
                 return;
             }
         }
 
         if (start == list.size() || entry.compareTo(list.get(start)) < 0) {
             list.add(start, entry);
+            System.out.println("Adding entry '" + entry.getName() + "' at index" + start + "in '" + listName + "'");
         } else {
+            System.out.println("Adding entry '" + entry.getName() + "' at index" + (start + 1) + "in '" + listName + "'");
             list.add(start + 1, entry);
         }
 

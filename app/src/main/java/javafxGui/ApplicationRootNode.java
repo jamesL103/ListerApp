@@ -24,10 +24,17 @@ public class ApplicationRootNode extends VBox { //vertical box
 
     private final EntryCreateObserver entryCreate = new EntryCreateObserver();
 
+    private EntryDisplay currentView = null;
+
     public ApplicationRootNode() {
         super();
         NODE_LIST = getChildren();
-        CLOSE_EDIT = () -> LISTS.getChildren().remove(2);
+        CLOSE_EDIT = () -> {
+            LISTS.getChildren().remove(2);
+            currentView = null;
+            list1.getListView().getSelectionModel().clearSelection();
+            list2.getListView().getSelectionModel().clearSelection();
+        };
         addLists();
         addButtons();
     }
@@ -63,9 +70,8 @@ public class ApplicationRootNode extends VBox { //vertical box
         create.setOnAction((event) -> {
             ListEntry entry = new ListEntry();
             CreateEntryPanel createNew = new CreateEntryPanel(entry, true);
-            createNew.setCloseButtonCallback(CLOSE_EDIT);
             createNew.setObserver(entryCreate);
-            LISTS.getChildren().add(createNew);
+            changeView(createNew);
         });
 
 
@@ -79,11 +85,28 @@ public class ApplicationRootNode extends VBox { //vertical box
         NODE_LIST.add(buttonBox);
     }
 
+    private void changeView(EntryDisplay display) {
+        if (currentView instanceof CreateEntryPanel && display instanceof CreateEntryPanel) {
+            currentView.setEntry(display.getEntry());
+            return;
+        } else if (currentView instanceof ViewEntryPanel && display instanceof ViewEntryPanel) {
+            currentView.setEntry(display.getEntry());
+            return;
+        }
+
+        if (currentView != null) {
+            LISTS.getChildren().remove(2);
+        }
+        display.setCloseButtonCallback(CLOSE_EDIT);
+        LISTS.getChildren().add(display);
+        currentView = display;
+    }
+
     public class EntryCreateObserver {
         public void saveEntry(ListEntry entry, boolean newEntry) {
             if (newEntry) {
                 MANAGER.addEntrySorted(entry, list1.NAME);
-                System.out.println("Adding entry '" + entry + "'");
+                System.out.println("Added entry '" + entry + "'");
             }
             System.out.println("Saving list 1");
             MANAGER.saveList(list1.NAME);
@@ -98,7 +121,8 @@ public class ApplicationRootNode extends VBox { //vertical box
             } else {
                 list1.getListView().getSelectionModel().clearSelection();
             }
-
+            ViewEntryPanel display = new ViewEntryPanel(caller.getSelectedItem());
+            changeView(display);
         }
     }
 
