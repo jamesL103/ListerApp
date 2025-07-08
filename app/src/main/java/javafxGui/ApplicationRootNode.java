@@ -3,7 +3,9 @@ package javafxGui;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import listItemStorage.ListEntry;
@@ -76,6 +78,24 @@ public class ApplicationRootNode extends VBox { //vertical box
 
 
         Button delete = new Button("Delete Entry");
+        delete.setOnAction((e)-> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete Entry? This action is permanent!");
+            alert.showAndWait().ifPresent(result -> {
+                if (result != ButtonType.OK) {
+                    return;
+                }
+                int selectedIndex;
+                String selectedList;
+                if (list1.getSelectedIndex() >= 0) {
+                    selectedIndex = list1.getSelectedIndex();
+                    selectedList = list1.NAME;
+                } else {
+                    selectedIndex = list2.getSelectedIndex();
+                    selectedList = list2.NAME;
+                }
+                MANAGER.deleteEntry(selectedIndex, selectedList);
+            });
+        });
         Button complete = new Button("Mark as Complete");
 
         children.add(create);
@@ -108,8 +128,6 @@ public class ApplicationRootNode extends VBox { //vertical box
                 MANAGER.addEntrySorted(entry, list1.NAME);
                 System.out.println("Added entry '" + entry + "'");
             }
-            System.out.println("Saving list 1");
-            MANAGER.saveList(list1.NAME);
         }
     }
 

@@ -62,6 +62,7 @@ public class ListManager {
             } else { //entry is at same date
                 list.add(i + 1, entry);
                 System.out.println("Adding entry '" + entry.getName() + "' at index " + (i + 1) + " in '" + listName + "'");
+                saveList(listName);
                 return;
             }
         }
@@ -73,15 +74,24 @@ public class ListManager {
             System.out.println("Adding entry '" + entry.getName() + "' at index" + (start + 1) + "in '" + listName + "'");
             list.add(start + 1, entry);
         }
+        saveList(listName);
+    }
 
+    public void deleteEntry(int index, String listName) {
+        System.out.println("Deleting entry at index " + index + " in '" + listName + "'");
+        List<ListEntry> list = LISTS.get(listName);
+        list.remove(index);
+        saveList(listName);
     }
 
 
     public void saveList(String name) {
         File file = new File(LIST_DIR + name);
         try {
+            System.out.println("Saving list '" + name + "'");
             ListFileWriter writer = new ListFileWriter(file, LISTS.get(name));
             writer.writeList();
+            System.out.println("List saved");
         } catch (IOException e) {
             System.err.println("Error saving list " + name + ": " + e.getMessage());
         }
