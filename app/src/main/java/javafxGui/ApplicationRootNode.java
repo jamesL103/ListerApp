@@ -26,7 +26,10 @@ public class ApplicationRootNode extends VBox { //vertical box
 
     private final EntryCreateObserver entryCreate = new EntryCreateObserver();
 
+    private final EditEntryObserver editEntry = new EditEntryObserver();
+
     private EntryDisplay currentView = null;
+
 
     public ApplicationRootNode() {
         super();
@@ -113,12 +116,12 @@ public class ApplicationRootNode extends VBox { //vertical box
     private void changeView(EntryDisplay display) {
         if (currentView instanceof CreateEntryPanel && display instanceof CreateEntryPanel) {
             currentView.setEntry(display.getEntry());
+            ((CreateEntryPanel)currentView).setNewEntry(((CreateEntryPanel)display).isNewEntry());
             return;
         } else if (currentView instanceof ViewEntryPanel && display instanceof ViewEntryPanel) {
             currentView.setEntry(display.getEntry());
             return;
         }
-
         if (currentView != null) {
             LISTS.getChildren().remove(2);
         }
@@ -133,6 +136,9 @@ public class ApplicationRootNode extends VBox { //vertical box
                 MANAGER.addEntrySorted(entry, list1.NAME);
                 System.out.println("Added entry '" + entry + "'");
             }
+            ViewEntryPanel display = new ViewEntryPanel(entry);
+            display.setEditButtonObserver(editEntry);
+            changeView(display);
         }
     }
 
@@ -145,8 +151,19 @@ public class ApplicationRootNode extends VBox { //vertical box
                 list1.getListView().getSelectionModel().clearSelection();
             }
             ViewEntryPanel display = new ViewEntryPanel(caller.getSelectedItem());
+            display.setEditButtonObserver(editEntry);
             changeView(display);
         }
+    }
+
+    public class EditEntryObserver {
+
+        public void editEntry(ListEntry entry) {
+            CreateEntryPanel create = new CreateEntryPanel(entry, false);
+            create.setObserver(entryCreate);
+            changeView(create);
+        }
+
     }
 
 

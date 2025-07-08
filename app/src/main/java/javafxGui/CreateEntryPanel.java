@@ -93,9 +93,9 @@ public class CreateEntryPanel extends EntryDisplay {
         CANCEL.setOnAction((e) -> close());
 
         HBox buttons = new HBox(SAVE, CANCEL);
-        buttons.setSpacing(20);
-        buttons.setPadding(new Insets(10, 0, 10, 0));
-        buttons.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        buttons.setSpacing(BUTTON_SPACING);
+        buttons.setPadding(BUTTON_PADDING);
+        buttons.setBorder(BUTTON_BORDER);
         buttons.setAlignment(Pos.BASELINE_CENTER);
         NODE_LIST.add(buttons);
     }
@@ -114,6 +114,14 @@ public class CreateEntryPanel extends EntryDisplay {
         if (closeCallback != null){
             closeCallback.run();
         }
+    }
+
+    public void setNewEntry(boolean newEntry) {
+        isNewEntry = newEntry;
+    }
+
+    public boolean isNewEntry() {
+        return isNewEntry;
     }
 
     @Override
@@ -148,7 +156,6 @@ public class CreateEntryPanel extends EntryDisplay {
 
 
             this.observer.saveEntry(entry, isNewEntry);
-            close();
         });
     }
 

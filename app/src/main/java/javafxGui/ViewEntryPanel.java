@@ -1,5 +1,6 @@
 package javafxGui;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -24,6 +25,7 @@ public class ViewEntryPanel extends EntryDisplay {
     private final Button CLOSE;
 
     private Runnable closeCallback;
+    private ApplicationRootNode.EditEntryObserver editEntry;
 
     public ViewEntryPanel(ListEntry entry) {
         super();
@@ -57,6 +59,24 @@ public class ViewEntryPanel extends EntryDisplay {
         DATE = new Label("Due: ");
         NODE_LIST.add(DATE);
         setDate(entry.getDate());
+
+
+        Button edit = new Button("Edit Entry");
+        edit.setOnAction((e) -> {
+            if (editEntry == null) {
+                System.err.println("Error: Edit Button observer not set");
+                return;
+            }
+            editEntry.editEntry(entry);
+        });
+
+        HBox buttons = new HBox(edit);
+        buttons.setSpacing(BUTTON_SPACING);
+        buttons.setPadding(BUTTON_PADDING);
+        buttons.setBorder(BUTTON_BORDER);
+        buttons.setAlignment(Pos.BASELINE_CENTER);
+        NODE_LIST.add(buttons);
+
     }
 
     private void setDate(Calendar date) {
@@ -76,6 +96,10 @@ public class ViewEntryPanel extends EntryDisplay {
     @Override
     public void setCloseButtonCallback(Runnable callback) {
         closeCallback = callback;
+    }
+
+    public void setEditButtonObserver(ApplicationRootNode.EditEntryObserver observer) {
+        editEntry = observer;
     }
 
     @Override

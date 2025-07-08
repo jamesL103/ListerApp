@@ -104,6 +104,8 @@ public class ListManager {
         System.out.printf("Moving entry '%s' from '%s' to '%s'%n", entry.getName(), fromList, targetList);
         List<ListEntry> target = LISTS.get(targetList);
         target.add(entry);
+        saveList(fromList);
+        saveList(targetList);
     }
 
 }
