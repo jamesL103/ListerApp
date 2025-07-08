@@ -97,4 +97,13 @@ public class ListManager {
         }
     }
 
+    //moves entry from list to the end of the target list
+    public void moveEntry(int index, String fromList, String targetList) {
+        List<ListEntry> from = LISTS.get(fromList);
+        ListEntry entry = from.remove(index);
+        System.out.printf("Moving entry '%s' from '%s' to '%s'%n", entry.getName(), fromList, targetList);
+        List<ListEntry> target = LISTS.get(targetList);
+        target.add(entry);
+    }
+
 }

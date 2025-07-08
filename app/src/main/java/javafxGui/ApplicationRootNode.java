@@ -97,6 +97,11 @@ public class ApplicationRootNode extends VBox { //vertical box
             });
         });
         Button complete = new Button("Mark as Complete");
+        complete.setOnAction((e) -> {
+            if (list1.getSelectedIndex() >= 0) {
+                MANAGER.moveEntry(list1.getSelectedIndex(), list1.NAME, list2.NAME);
+            }
+        });
 
         children.add(create);
         children.add(delete);
