@@ -41,7 +41,7 @@ public class ListPanel extends VBox {
         NODE_LIST = getChildren();
 
         Label title = new Label(name);
-        title.setFont(Fonts.TITLE);
+        title.getStyleClass().add("header");
         title.setAlignment(Pos.BASELINE_LEFT);
         NODE_LIST.add(title);
 

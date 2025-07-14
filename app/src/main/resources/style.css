@@ -1,0 +1,21 @@
+.root {
+	-fx-font-family: "Segoe UI";
+	-fx-font-size: 12pt;
+	bg_base: #3b3b3b;
+	text_base: #fafafa;
+	bg_text_base: #2e2e2e;
+	-fx-background: bg_base;
+	-fx-text-fill: text_base;
+}
+
+.header {
+	-fx-font-size: 24pt;
+}
+
+.list-cell {
+	-fx-background: bg_text_base;
+}
+
+.button {
+	-fx-background: bg_text_base;
+}
