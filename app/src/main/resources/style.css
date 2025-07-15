@@ -4,6 +4,9 @@
 	bg_base: #3b3b3b;
 	text_base: #fafafa;
 	bg_text_base: #2e2e2e;
+	bg_button: #25608a;
+	bg_button_hover: #1f5073;
+	bg_button_disabled: #50758f;
 	-fx-background: bg_base;
 	-fx-text-fill: text_base;
 }
@@ -17,5 +20,15 @@
 }
 
 .button {
-	-fx-background: bg_text_base;
+	-fx-background-color: bg_button;
+	-fx-text-fill: text_base;
+	-fx-background-radius: 20;
+}
+
+.button:hover {
+	-fx-background-color: bg_button_hover;
+}
+
+.button:disabled {
+	-fx-background-color: bg_button_disabled;
 }

@@ -30,6 +30,9 @@ public class ApplicationRootNode extends VBox { //vertical box
 
     private EntryDisplay currentView = null;
 
+    private final Button DELETE = new Button("Delete Entry");;
+    private final Button COMPLETE = new Button("Mark as Complete");
+
 
     public ApplicationRootNode() {
         super();
@@ -79,9 +82,8 @@ public class ApplicationRootNode extends VBox { //vertical box
             changeView(createNew);
         });
 
-
-        Button delete = new Button("Delete Entry");
-        delete.setOnAction((e)-> {
+        DELETE.setDisable(true);
+        DELETE.setOnAction((e)-> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete Entry? This action is permanent!");
             alert.showAndWait().ifPresent(result -> {
                 if (result != ButtonType.OK) {
@@ -99,16 +101,16 @@ public class ApplicationRootNode extends VBox { //vertical box
                 MANAGER.deleteEntry(selectedIndex, selectedList);
             });
         });
-        Button complete = new Button("Mark as Complete");
-        complete.setOnAction((e) -> {
+        COMPLETE.setDisable(true);
+        COMPLETE.setOnAction((e) -> {
             if (list1.getSelectedIndex() >= 0) {
                 MANAGER.moveEntry(list1.getSelectedIndex(), list1.NAME, list2.NAME);
             }
         });
 
         children.add(create);
-        children.add(delete);
-        children.add(complete);
+        children.add(DELETE);
+        children.add(COMPLETE);
 
         NODE_LIST.add(buttonBox);
     }
@@ -147,8 +149,10 @@ public class ApplicationRootNode extends VBox { //vertical box
         public void selectionChanged(ListPanel caller) {
             if (caller == list1) {
                 list2.getListView().getSelectionModel().clearSelection();
+                COMPLETE.setDisable(false);
             } else {
                 list1.getListView().getSelectionModel().clearSelection();
+                COMPLETE.setDisable(true);
             }
             ViewEntryPanel display = new ViewEntryPanel(caller.getSelectedItem());
             display.setEditButtonObserver(editEntry);
