@@ -1,6 +1,7 @@
 package javafxGui;
 
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -12,6 +13,8 @@ public abstract class EntryDisplay extends VBox {
     public static final int DESC_COLS = 20;
     public static final int DESC_ROWS = 5;
     public static final int TOP_BAR_SPACING = 5;
+
+    protected final Button CLOSE = new Button("x");
 
     public static final Insets DATE_PADDING = new Insets(10, 0, 10, 0);
     public static final Insets PANEL_INSETS = new Insets(0, 10, 10, 10);
@@ -26,5 +29,12 @@ public abstract class EntryDisplay extends VBox {
     public abstract void setEntry(ListEntry entry);
 
     public abstract ListEntry getEntry();
+
+    protected abstract void close();
+
+    public EntryDisplay() {
+        CLOSE.setOnAction((e) -> close());
+        CLOSE.getStyleClass().add("close-button");
+    }
 
 }

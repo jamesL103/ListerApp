@@ -22,8 +22,6 @@ public class ViewEntryPanel extends EntryDisplay {
     private final TextArea DESCRIPTION;
     private final Label DATE;
 
-    private final Button CLOSE;
-
     private Runnable closeCallback;
     private ApplicationRootNode.EditEntryObserver editEntry;
 
@@ -37,8 +35,6 @@ public class ViewEntryPanel extends EntryDisplay {
 
         NAME = new Label(entry.getName());
         NAME.setFont(TITLE);
-        CLOSE = new Button("x");
-        CLOSE.setOnAction((e) -> close());
 
 
         HBox topBar = new HBox(NAME, CLOSE);
@@ -87,7 +83,7 @@ public class ViewEntryPanel extends EntryDisplay {
         DATE.setText("Due: " + Months.LIST.get(month) + " " + day + ", " + year);
     }
 
-    private void close() {
+    protected void close() {
         if (closeCallback != null){
             closeCallback.run();
         }

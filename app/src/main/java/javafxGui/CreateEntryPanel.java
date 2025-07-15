@@ -30,7 +30,6 @@ public class CreateEntryPanel extends EntryDisplay {
     private final ComboBox<String> MONTH;
     private final TextField YEAR;
 
-    private final Button CLOSE;
     private final Button CANCEL;
     private final Button SAVE;
 
@@ -49,9 +48,6 @@ public class CreateEntryPanel extends EntryDisplay {
 
         NAME = new TextField(entry.getName());
         NAME.setFont(TITLE);
-        CLOSE = new Button("x");
-        CLOSE.setOnAction((e) -> close());
-
 
         HBox topBar = new HBox(NAME, CLOSE);
         topBar.setAlignment(Pos.CENTER);
@@ -110,7 +106,7 @@ public class CreateEntryPanel extends EntryDisplay {
         YEAR.setText(String.valueOf(year));
     }
 
-    private void close() {
+    protected void close() {
         if (closeCallback != null){
             closeCallback.run();
         }

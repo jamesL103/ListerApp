@@ -7,6 +7,8 @@
 	bg_button: #25608a;
 	bg_button_hover: #1f5073;
 	bg_button_disabled: #50758f;
+	bg_close_button: #912f2f;
+	bg_close_button_hover: #6e2323;
 	-fx-background: bg_base;
 	-fx-text-fill: text_base;
 }
@@ -31,4 +33,21 @@
 
 .button:disabled {
 	-fx-background-color: bg_button_disabled;
+}
+
+.close-button {
+	-fx-background-color: bg_close_button;
+	-fx-background-radius: 2;
+}
+
+.close-button:hover {
+	-fx-background-color: bg_close_button_hover;
+}
+
+.text-area .content {
+	-fx-background-color: bg_text_base;
+}
+
+.text-area {
+	-fx-text-fill: text_base;
 }
