@@ -42,10 +42,14 @@ public class ListPanel extends VBox {
 
         Label title = new Label(name);
         title.getStyleClass().add("header");
+        title.getStyleClass().add("bordered");
+        title.setMaxWidth(Double.MAX_VALUE);
         title.setAlignment(Pos.BASELINE_LEFT);
         NODE_LIST.add(title);
 
         COUNT = new Label("0 Entries");
+        COUNT.getStyleClass().add("bordered");
+        COUNT.setMaxWidth(Double.MAX_VALUE);
         NODE_LIST.add(COUNT);
 
         ScrollPane scroll = new ScrollPane();

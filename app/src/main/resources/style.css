@@ -51,3 +51,7 @@
 .text-area {
 	-fx-text-fill: text_base;
 }
+
+.bordered {
+	-fx-border-color: black;
+}

@@ -86,7 +86,7 @@ public class CreateEntryPanel extends EntryDisplay {
 
         SAVE = new Button("Save");
         CANCEL = new Button("Cancel");
-        CANCEL.setOnAction((e) -> close());
+        CANCEL.setOnAction((e) -> observer.cancelEdit(entry));
 
         HBox buttons = new HBox(SAVE, CANCEL);
         buttons.setSpacing(BUTTON_SPACING);

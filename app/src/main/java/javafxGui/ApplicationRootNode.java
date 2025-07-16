@@ -42,6 +42,7 @@ public class ApplicationRootNode extends VBox { //vertical box
             currentView = null;
             list1.getListView().getSelectionModel().clearSelection();
             list2.getListView().getSelectionModel().clearSelection();
+            DELETE.setDisable(true);
         };
         addLists();
         addButtons();
@@ -138,8 +139,12 @@ public class ApplicationRootNode extends VBox { //vertical box
                 MANAGER.addEntrySorted(entry, list1.NAME);
                 System.out.println("Added entry '" + entry + "'");
             }
-            ViewEntryPanel display = new ViewEntryPanel(entry);
-            display.setEditButtonObserver(editEntry);
+            ViewEntryPanel display = new ViewEntryPanel(entry, editEntry);
+            changeView(display);
+        }
+
+        public void cancelEdit(ListEntry entry) {
+            ViewEntryPanel display = new ViewEntryPanel(entry, editEntry);
             changeView(display);
         }
     }
@@ -147,6 +152,7 @@ public class ApplicationRootNode extends VBox { //vertical box
     public class ListSelectionObserver {
 
         public void selectionChanged(ListPanel caller) {
+            DELETE.setDisable(false);
             if (caller == list1) {
                 list2.getListView().getSelectionModel().clearSelection();
                 COMPLETE.setDisable(false);
@@ -154,8 +160,7 @@ public class ApplicationRootNode extends VBox { //vertical box
                 list1.getListView().getSelectionModel().clearSelection();
                 COMPLETE.setDisable(true);
             }
-            ViewEntryPanel display = new ViewEntryPanel(caller.getSelectedItem());
-            display.setEditButtonObserver(editEntry);
+            ViewEntryPanel display = new ViewEntryPanel(caller.getSelectedItem(), editEntry);
             changeView(display);
         }
     }

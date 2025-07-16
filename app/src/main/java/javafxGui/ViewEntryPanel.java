@@ -25,13 +25,15 @@ public class ViewEntryPanel extends EntryDisplay {
     private Runnable closeCallback;
     private ApplicationRootNode.EditEntryObserver editEntry;
 
-    public ViewEntryPanel(ListEntry entry) {
+    public ViewEntryPanel(ListEntry entry, ApplicationRootNode.EditEntryObserver observer) {
         super();
         setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         this.entry = entry;
         setSpacing(VERTICAL_SPACING);
         setPadding(PANEL_INSETS);
         NODE_LIST = getChildren();
+
+        editEntry = observer;
 
         NAME = new Label(entry.getName());
         NAME.setFont(TITLE);
@@ -65,6 +67,7 @@ public class ViewEntryPanel extends EntryDisplay {
             }
             editEntry.editEntry(entry);
         });
+
 
         HBox buttons = new HBox(edit);
         buttons.setSpacing(BUTTON_SPACING);
