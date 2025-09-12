@@ -46,6 +46,7 @@ public class ApplicationRootNode extends VBox { //vertical box
         };
         addLists();
         addButtons();
+        addSyncDisplay();
     }
 
     private void addLists() {
@@ -114,6 +115,10 @@ public class ApplicationRootNode extends VBox { //vertical box
         children.add(COMPLETE);
 
         NODE_LIST.add(buttonBox);
+    }
+
+    public void addSyncDisplay() {
+        NODE_LIST.add(new SyncPanel());
     }
 
     private void changeView(EntryDisplay display) {
