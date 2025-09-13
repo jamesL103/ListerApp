@@ -83,9 +83,11 @@ public class SyncPanel extends Group {
                 this.id = Integer.parseInt(result.get());
                 try { //id is valid
                     //request list data from server
+                    updateMode(Mode.SYNCING);
                     HttpResponse<Path> res = MANAGER.getDataFromServer(id).get();
                     System.out.println(res);
                     SYNC.updateLists();
+                    updateMode(Mode.SYNC_ENABLED);
                 } catch (ExecutionException ex) {
                     System.err.println("Error retrieving server data result: " + ex.getMessage());
                 } catch (InterruptedException ex) {
