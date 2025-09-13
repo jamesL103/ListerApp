@@ -16,8 +16,8 @@ public class ApplicationRootNode extends VBox { //vertical box
 
     private final List<Node> NODE_LIST;
 
-    private final ListPanel list1 = new ListPanel("To-do");
-    private final ListPanel list2 = new ListPanel("Resolved");
+    private final ListPanel list1 = new ListPanel("To-do" ,"todo");
+    private final ListPanel list2 = new ListPanel("Resolved", "resolved");
     private final HBox LISTS = new HBox();
 
     private final Runnable CLOSE_EDIT;
@@ -95,10 +95,10 @@ public class ApplicationRootNode extends VBox { //vertical box
                 String selectedList;
                 if (list1.getSelectedIndex() >= 0) {
                     selectedIndex = list1.getSelectedIndex();
-                    selectedList = list1.NAME;
+                    selectedList = list1.ID;
                 } else {
                     selectedIndex = list2.getSelectedIndex();
-                    selectedList = list2.NAME;
+                    selectedList = list2.ID;
                 }
                 MANAGER.deleteEntry(selectedIndex, selectedList);
             });
@@ -106,7 +106,7 @@ public class ApplicationRootNode extends VBox { //vertical box
         COMPLETE.setDisable(true);
         COMPLETE.setOnAction((e) -> {
             if (list1.getSelectedIndex() >= 0) {
-                MANAGER.moveEntry(list1.getSelectedIndex(), list1.NAME, list2.NAME);
+                MANAGER.moveEntry(list1.getSelectedIndex(), list1.ID, list2.ID);
             }
         });
 
@@ -141,7 +141,7 @@ public class ApplicationRootNode extends VBox { //vertical box
     public class EntryCreateObserver {
         public void saveEntry(ListEntry entry, boolean newEntry) {
             if (newEntry) {
-                MANAGER.addEntrySorted(entry, list1.NAME);
+                MANAGER.addEntrySorted(entry, list1.ID);
                 System.out.println("Added entry '" + entry + "'");
             }
             ViewEntryPanel display = new ViewEntryPanel(entry, editEntry);

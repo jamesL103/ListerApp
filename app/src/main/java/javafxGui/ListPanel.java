@@ -24,8 +24,9 @@ public class ListPanel extends VBox {
     //displays number of entries
     private final Label COUNT;
 
-    //unique name for identifying lists
-    public final String NAME;
+    private final String NAME;
+
+    public final String ID;
 
     private final ObservableList<ListEntry> LIST;
     private final ListView<ListEntry> VIEW;
@@ -35,9 +36,10 @@ public class ListPanel extends VBox {
     private ApplicationRootNode.ListSelectionObserver selection;
 
 
-    public ListPanel(String name) {
+    public ListPanel(String name, String id) {
         super();
         NAME = name;
+        ID = id;
         NODE_LIST = getChildren();
 
         Label title = new Label(name);

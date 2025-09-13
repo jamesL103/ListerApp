@@ -22,30 +22,31 @@ public class ListManager {
     }
 
     public void addList(ListPanel list) {
-        LISTS.put(list.NAME, list.getList());
+        LISTS.put(list.ID, list.getList());
     }
 
     //load all lists from file
     public void loadAll() {
-        for (String name: LISTS.keySet()) {
-            ObservableList<ListEntry> list = LISTS.get(name);
-            File lstFile = new File(LIST_DIR + name);
+        for (String id: LISTS.keySet()) {
+            ObservableList<ListEntry> list = LISTS.get(id);
+            File lstFile = new File(LIST_DIR + id);
             try {
                 ListFileReader read = new ListFileReader(lstFile);
                 list.addAll(read.loadFromFile());
             } catch (IOException e) {
-                System.err.println("Error: couldn't load list " + name + " from file: " + e.getMessage());
+                System.err.println("Error: couldn't load list " + id + " from file: " + e.getMessage());
                 try {
+                    System.out.println("Creating missing file...");
                     lstFile.createNewFile();
                 } catch (IOException ioException){
-                    System.err.println("Error: couldn't create list file + " + name + ": " + e.getMessage());
+                    System.err.println("Error: couldn't create list file + " + id + ": " + e.getMessage());
                 }
             }
         }
     }
 
-    public void addEntrySorted(ListEntry entry, String listName) {
-        List<ListEntry> list = LISTS.get(listName);
+    public void addEntrySorted(ListEntry entry, String id) {
+        List<ListEntry> list = LISTS.get(id);
         if (list == null) {
             return;
         }
@@ -59,39 +60,39 @@ public class ListManager {
                 end = i - 1;
             } else { //entry is at same date
                 list.add(i + 1, entry);
-                System.out.println("Adding entry '" + entry.getName() + "' at index " + (i + 1) + " in '" + listName + "'");
-                saveList(listName);
+                System.out.println("Adding entry '" + entry.getName() + "' at index " + (i + 1) + " in '" + id + "'");
+                saveList(id);
                 return;
             }
         }
 
         if (start == list.size() || entry.compareTo(list.get(start)) < 0) {
             list.add(start, entry);
-            System.out.println("Adding entry '" + entry.getName() + "' at index" + start + "in '" + listName + "'");
+            System.out.println("Adding entry '" + entry.getName() + "' at index" + start + "in '" + id + "'");
         } else {
-            System.out.println("Adding entry '" + entry.getName() + "' at index" + (start + 1) + "in '" + listName + "'");
+            System.out.println("Adding entry '" + entry.getName() + "' at index" + (start + 1) + "in '" + id + "'");
             list.add(start + 1, entry);
         }
-        saveList(listName);
+        saveList(id);
     }
 
-    public void deleteEntry(int index, String listName) {
-        System.out.println("Deleting entry at index " + index + " in '" + listName + "'");
-        List<ListEntry> list = LISTS.get(listName);
+    public void deleteEntry(int index, String id) {
+        System.out.println("Deleting entry at index " + index + " in '" + id + "'");
+        List<ListEntry> list = LISTS.get(id);
         list.remove(index);
-        saveList(listName);
+        saveList(id);
     }
 
 
-    public void saveList(String name) {
-        File file = new File(LIST_DIR + name);
+    public void saveList(String id) {
+        File file = new File(LIST_DIR + id);
         try {
-            System.out.println("Saving list '" + name + "'");
-            ListFileWriter writer = new ListFileWriter(file, LISTS.get(name));
+            System.out.println("Saving list '" + id + "'");
+            ListFileWriter writer = new ListFileWriter(file, LISTS.get(id));
             writer.writeList();
             System.out.println("List saved");
         } catch (IOException e) {
-            System.err.println("Error saving list " + name + ": " + e.getMessage());
+            System.err.println("Error saving list " + id + ": " + e.getMessage());
         }
     }
 
