@@ -8,8 +8,8 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import listItemStorage.FileSync;
 import network.SyncManager;
-
 import java.net.http.HttpResponse;
 import java.nio.file.Path;
 import java.util.List;
@@ -24,6 +24,7 @@ public class SyncPanel extends Group {
     private final Pane INTERACTION = new HBox();
 
     private final SyncManager MANAGER = new SyncManager();
+    private final FileSync SYNC = new FileSync();
 
     private Mode mode = Mode.NO_SYNC;
 
@@ -72,18 +73,19 @@ public class SyncPanel extends Group {
             Dialog<String> dialog = new TextInputDialog();
             dialog.setContentText("Enter your generated ID from the Lister Web App.");
 
-            try {
+            try { //check if string input is a valid int
                 int id = 0;
                 Optional<String> result = dialog.showAndWait();
                 if (result.isEmpty()) {
                     return;
                 }
                 id = Integer.parseInt(result.get());
-                try {
+                try { //id is valid
+                    //request list data from server
                     HttpResponse<Path> res = MANAGER.getDataFromServer(id).get();
                     System.out.println(res);
+                    SYNC.updateLists();
                 } catch (ExecutionException ex) {
-
                     System.err.println("Error retrieving server data result: " + ex.getMessage());
                 } catch (InterruptedException ex) {
                     throw new RuntimeException(ex);
@@ -96,5 +98,6 @@ public class SyncPanel extends Group {
 
         return button;
     }
+
 
 }

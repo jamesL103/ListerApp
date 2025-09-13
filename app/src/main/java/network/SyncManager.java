@@ -11,6 +11,8 @@ public class SyncManager {
 
     private static final String SERVER_URL = "http://localhost:3000/session_manager";
 
+    public static final String SERVER_SYNC_PATH = "./temp/sync_res";
+
     private final HttpClient CLIENT = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
 
     public CompletableFuture<HttpResponse<Path>> getDataFromServer(int sessionId) {
