@@ -15,12 +15,10 @@ public class ListManager {
 
     //track all lists and their elements
     private final Map<String, ObservableList<ListEntry>> LISTS;
-    public final String LIST_DIR;
+    public static final String LIST_DIR = System.getProperty("user.dir") + "/lists/";
 
     public ListManager() {
         LISTS = new HashMap<>();
-
-        LIST_DIR = System.getProperty("user.dir") + "/lists/";
     }
 
     public void addList(ListPanel list) {
