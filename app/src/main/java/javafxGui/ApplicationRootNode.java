@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import listItemStorage.FileSync;
 import listItemStorage.ListEntry;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class ApplicationRootNode extends VBox { //vertical box
     private final Runnable CLOSE_EDIT;
 
     private final ListManager MANAGER = new ListManager();
+    private final FileSync SYNC = new FileSync();
 
     private final EntryCreateObserver entryCreate = new EntryCreateObserver();
 
@@ -30,7 +32,7 @@ public class ApplicationRootNode extends VBox { //vertical box
 
     private EntryDisplay currentView = null;
 
-    private final Button DELETE = new Button("Delete Entry");;
+    private final Button DELETE = new Button("Delete Entry");
     private final Button COMPLETE = new Button("Mark as Complete");
 
 
@@ -118,7 +120,8 @@ public class ApplicationRootNode extends VBox { //vertical box
     }
 
     public void addSyncDisplay() {
-        NODE_LIST.add(new SyncPanel());
+        NODE_LIST.add(new SyncPanel(SYNC));
+        SYNC.addListener((observable -> MANAGER.loadAll()));
     }
 
     private void changeView(EntryDisplay display) {

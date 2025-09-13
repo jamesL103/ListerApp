@@ -1,5 +1,7 @@
 package listItemStorage;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafxGui.ListManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -10,11 +12,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
-public class FileSync {
+public class FileSync implements Observable {
 
     public static final Path TEMP_FILE = Path.of(System.getProperty("user.dir") + "/temp/sync_res");
 
+    private final List<InvalidationListener> LISTENERS = new ArrayList<>();
 
     //write temp file data to applicable list files
     public void updateLists() {
@@ -26,6 +31,10 @@ public class FileSync {
             JSONArray complete = body.getJSONObject("complete").getJSONArray("data");
             writeToListFile(todo, Path.of(ListManager.LIST_DIR + "todo"));
             writeToListFile(complete, Path.of(ListManager.LIST_DIR + "resolved"));
+
+            for (InvalidationListener listener: LISTENERS) {
+                listener.invalidated(this);
+            }
         } catch (IOException e) {
             System.err.println("Error: cannot load temp server sync file: " + e.getMessage());
         }
@@ -51,4 +60,13 @@ public class FileSync {
         return buffer;
     }
 
+    @Override
+    public void addListener(InvalidationListener invalidationListener) {
+        LISTENERS.add(invalidationListener);
+    }
+
+    @Override
+    public void removeListener(InvalidationListener invalidationListener) {
+        LISTENERS.remove(invalidationListener);
+    }
 }

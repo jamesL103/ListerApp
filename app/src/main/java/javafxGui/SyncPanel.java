@@ -24,7 +24,7 @@ public class SyncPanel extends Group {
     private final Pane INTERACTION = new HBox();
 
     private final SyncManager MANAGER = new SyncManager();
-    private final FileSync SYNC = new FileSync();
+    private final FileSync SYNC;
 
     private Mode mode = Mode.NO_SYNC;
 
@@ -36,10 +36,11 @@ public class SyncPanel extends Group {
         SYNCING
     }
 
-    public SyncPanel() {
+    public SyncPanel(FileSync synchronizer) {
         super();
 
         List<Node> NODES = ROOT.getChildren();
+        SYNC = synchronizer;
         Text sync = new Text("Sync: ");
         NODES.add(sync);
         NODES.add(STATUS);
@@ -64,6 +65,8 @@ public class SyncPanel extends Group {
             STATUS.setText("Enabled");
             List<Node> children = INTERACTION.getChildren();
             children.clear();
+        } else if (mode == Mode.SYNCING) {
+
         }
     }
 
@@ -72,14 +75,12 @@ public class SyncPanel extends Group {
         button.setOnAction((e) -> {
             Dialog<String> dialog = new TextInputDialog();
             dialog.setContentText("Enter your generated ID from the Lister Web App.");
-
             try { //check if string input is a valid int
-                int id = 0;
                 Optional<String> result = dialog.showAndWait();
                 if (result.isEmpty()) {
                     return;
                 }
-                id = Integer.parseInt(result.get());
+                this.id = Integer.parseInt(result.get());
                 try { //id is valid
                     //request list data from server
                     HttpResponse<Path> res = MANAGER.getDataFromServer(id).get();

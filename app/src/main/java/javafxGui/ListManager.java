@@ -26,9 +26,11 @@ public class ListManager {
     }
 
     //load all lists from file
+    //clears currently loaded lists
     public void loadAll() {
         for (String id: LISTS.keySet()) {
             ObservableList<ListEntry> list = LISTS.get(id);
+            list.clear();
             File lstFile = new File(LIST_DIR + id);
             try {
                 ListFileReader read = new ListFileReader(lstFile);
@@ -37,7 +39,10 @@ public class ListManager {
                 System.err.println("Error: couldn't load list " + id + " from file: " + e.getMessage());
                 try {
                     System.out.println("Creating missing file...");
-                    lstFile.createNewFile();
+                    if (!lstFile.createNewFile()) {
+                        // this should be impossible bc file should not already exist
+                        System.out.println("Note: file " + lstFile.getName() + " already exists");
+                    }
                 } catch (IOException ioException){
                     System.err.println("Error: couldn't create list file + " + id + ": " + e.getMessage());
                 }

@@ -19,7 +19,7 @@ import java.util.List;
 //panel with label and list
 public class ListPanel extends VBox {
 
-    private final List<Node> NODE_LIST;
+    private final List<Node> CHILDREN;
 
     //displays number of entries
     private final Label COUNT;
@@ -40,19 +40,19 @@ public class ListPanel extends VBox {
         super();
         NAME = name;
         ID = id;
-        NODE_LIST = getChildren();
+        CHILDREN = getChildren();
 
         Label title = new Label(name);
         title.getStyleClass().add("header");
         title.getStyleClass().add("bordered");
         title.setMaxWidth(Double.MAX_VALUE);
         title.setAlignment(Pos.BASELINE_LEFT);
-        NODE_LIST.add(title);
+        CHILDREN.add(title);
 
         COUNT = new Label("0 Entries");
         COUNT.getStyleClass().add("bordered");
         COUNT.setMaxWidth(Double.MAX_VALUE);
-        NODE_LIST.add(COUNT);
+        CHILDREN.add(COUNT);
 
         ScrollPane scroll = new ScrollPane();
         VIEW = new ListView<>();
@@ -76,7 +76,7 @@ public class ListPanel extends VBox {
             }
         });
 
-        NODE_LIST.add(scroll);
+        CHILDREN.add(scroll);
     }
 
     public int getSelectedIndex() {
