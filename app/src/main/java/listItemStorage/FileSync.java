@@ -9,10 +9,12 @@ import org.json.JSONTokener;
 
 import java.io.File;
 
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class FileSync implements Observable {
@@ -28,7 +30,7 @@ public class FileSync implements Observable {
             JSONTokener tokener = new JSONTokener(reader);
             JSONObject body = new JSONObject(tokener);
             JSONArray todo = body.getJSONObject("list").getJSONArray("data");
-            JSONArray complete = body.getJSONObject("complete").getJSONArray("data");
+            JSONArray complete = body.getJSONObject("resolved").getJSONArray("data");
             writeToListFile(todo, Path.of(ListManager.LIST_DIR + "todo"));
             writeToListFile(complete, Path.of(ListManager.LIST_DIR + "resolved"));
 
@@ -58,6 +60,23 @@ public class FileSync implements Observable {
             buffer[i] = b;
         }
         return buffer;
+    }
+
+    //I think this should create an array of byte data
+    //I fucking hope so at least
+    public JSONArray toJson(File file) throws IOException{
+        JSONArray arr;
+        try (FileInputStream input = new FileInputStream(file)) {
+            byte[] bytes = new byte[input.available()];
+            if (input.read(bytes) == -1) {
+                throw new IOException("Error reading file " + file);
+            }
+            arr = new JSONArray(bytes);
+            return arr;
+        } catch (IOException e) {
+            System.err.println("Error loading JSON from file " + file);
+            throw e;
+        }
     }
 
     @Override
