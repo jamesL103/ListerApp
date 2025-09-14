@@ -55,19 +55,6 @@ public class ListEntry implements Comparable<ListEntry> {
         return date;
     }
 
-
-    /**Returns a string representation of the date stored in the ListEntry.
-     * The date will be of format 'mmm' dd, [year]
-     *
-     * @return the string representation of the date
-     */
-    public String getStringDate() {
-        String display = date.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH);
-        display = display + " " + date.get(Calendar.DATE);
-        display = display + ", " + date.get(Calendar.YEAR);
-        return display;
-    }
-
     /**Returns the Entry as a String.
      * The String representation of an Entry is its name.
      *

@@ -21,29 +21,11 @@ public class ListFileWriter {
 
     private final File FIN;
 
-    private final DefaultListModel<ListEntry> SOURCE;
-
     private final List<ListEntry> LIST;
 
 
-    public ListFileWriter(File fin, DefaultListModel<ListEntry> list)  throws IOException {
-        this.FIN = fin;
-        SOURCE = list;
-        LIST = null;
-
-        if (fin.isDirectory()) {
-            throw new IOException(fin.getName() +" is a directory");
-        }
-        if (!fin.exists()) {
-            if (!fin.createNewFile()) {
-                throw new IOException("Cannot create file " + fin.getName());
-            }
-        }
-    }
-
     public ListFileWriter(File fin, List<ListEntry> list)  throws IOException {
         this.FIN = fin;
-        SOURCE = null;
         LIST = list;
 
         if (fin.isDirectory()) {

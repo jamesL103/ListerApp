@@ -97,10 +97,6 @@ public class ViewEntryPanel extends EntryDisplay {
         closeCallback = callback;
     }
 
-    public void setEditButtonObserver(ApplicationRootNode.EditEntryObserver observer) {
-        editEntry = observer;
-    }
-
     @Override
     public ListEntry getEntry() {
         return entry;

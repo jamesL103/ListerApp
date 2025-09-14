@@ -17,16 +17,11 @@ public class ListFileReader implements Closeable {
 
     private final Scanner READ;
 
-    public final File FIN;
-
-    private List<ListEntry> entries;
-
     //regex pattern to match with a valid date
     private final static Pattern DATE_REGEX = Pattern.compile("\\s*[0-9]{1,2}/[0-9]{1,2}/[0-9]{1,4}\\s*");
 
     public ListFileReader(File file) throws FileNotFoundException {
         READ = new Scanner(file);
-        FIN = new File(file.getPath());
     }
 
     /**Loads all ListEntries from the reader's file.

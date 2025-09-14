@@ -12,20 +12,6 @@ public class ListByteWriter implements Closeable {
     private final FileOutputStream STREAM;
     private final byte[] SOURCE;
 
-    public ListByteWriter(File output, List<Integer> source) throws IOException {
-        OUT = output;
-        if (!output.exists()) {
-            throw new IOException("Cannot find file " + output.getName());
-        }
-        STREAM = new FileOutputStream(OUT);
-        SOURCE = new byte[source.size()];
-        for (int i = 0; i < source.size(); i ++) {
-            Integer num = source.get(i);
-            byte b = num.byteValue();
-            SOURCE[i] = b;
-        }
-    }
-
     public ListByteWriter(File output, byte[] source) throws IOException {
         OUT = output;
         if (!output.exists()) {
