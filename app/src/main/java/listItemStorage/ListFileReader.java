@@ -1,7 +1,10 @@
 package listItemStorage;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,7 +13,7 @@ import java.util.regex.Pattern;
  * The FileReader is instantiated to read from a specified file, and the file cannot be changed after.
  *
  */
-public class ListFileReader {
+public class ListFileReader implements Closeable {
 
     private final Scanner READ;
 
@@ -97,4 +100,8 @@ public class ListFileReader {
         return toReturn;
     }
 
+    @Override
+    public void close() {
+        READ.close();
+    }
 }
