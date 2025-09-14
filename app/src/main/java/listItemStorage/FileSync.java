@@ -14,7 +14,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class FileSync implements Observable {
@@ -29,7 +28,7 @@ public class FileSync implements Observable {
         try (FileReader reader = new FileReader(in)) {
             JSONTokener tokener = new JSONTokener(reader);
             JSONObject body = new JSONObject(tokener);
-            JSONArray todo = body.getJSONObject("list").getJSONArray("data");
+            JSONArray todo = body.getJSONObject("todo").getJSONArray("data");
             JSONArray complete = body.getJSONObject("resolved").getJSONArray("data");
             writeToListFile(todo, Path.of(ListManager.LIST_DIR + "todo"));
             writeToListFile(complete, Path.of(ListManager.LIST_DIR + "resolved"));
