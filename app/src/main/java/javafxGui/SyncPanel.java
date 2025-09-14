@@ -10,6 +10,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import listItemStorage.FileSync;
 import network.SyncManager;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.nio.file.Path;
 import java.util.List;
@@ -65,8 +70,11 @@ public class SyncPanel extends Group {
             STATUS.setText("Enabled");
             List<Node> children = INTERACTION.getChildren();
             children.clear();
+            children.add(resync());
         } else if (mode == Mode.SYNCING) {
-
+            STATUS.setText("fetching data");
+            List<Node> children = INTERACTION.getChildren();
+            children.clear();
         }
     }
 
@@ -86,6 +94,9 @@ public class SyncPanel extends Group {
                     updateMode(Mode.SYNCING);
                     HttpResponse<Path> res = MANAGER.getDataFromServer(id).get();
                     System.out.println(res);
+                    if (res.statusCode() == SyncManager.NO_LIST_FOUND) {
+                        return;
+                    }
                     SYNC.updateLists();
                     updateMode(Mode.SYNC_ENABLED);
                 } catch (ExecutionException ex) {
@@ -98,6 +109,41 @@ public class SyncPanel extends Group {
             }
         });
 
+
+        return button;
+    }
+
+    private Button resync() {
+        Button button = new Button("Save changes to server");
+        button.setOnAction(e -> {
+            File todo = new File(ListManager.LIST_DIR + "todo");
+            File resolved = new File(ListManager.LIST_DIR + "resolved");
+            JSONArray listTodo, listResolved;
+            try {
+                listTodo = SYNC.toJson(todo);
+                listResolved = SYNC.toJson(resolved);
+            } catch (IOException err) {
+                System.err.println("Couldn't load list files: " + err.getMessage());
+                return;
+            }
+
+            JSONObject body = new JSONObject();
+            body
+                    .put("id", id)
+                    .put("operation", "sendData")
+                    .put("todo", listTodo)
+                    .put("resolved", listResolved);
+
+            try {
+                HttpResponse<String> res = MANAGER.sendData(body).get();
+                System.out.println(res);
+                System.out.println(res.body());
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            } catch (ExecutionException ex) {
+                System.err.println("Error sending list data: " + ex.getMessage());
+            }
+        });
 
         return button;
     }
